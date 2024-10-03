@@ -4,92 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="styleLogin.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
     <div class="fondo-cuadros">
         <!-- Los cuadros se generarán aquí dinámicamente -->
     </div>
     <div class="login">
-        <div class="Imagen">
-            <img src="img/Logo" alt="">
-        </div>
-        <div class="Usuario">
-            <input   type="text" placeholder="Usuario"><i class="bi bi-person-fill"></i>
-        </div>
-        <div class="Contraseña">
-            <input type="text" placeholder="Contraseña"><i class="bi bi-lock-fill"></i>
-        </div>
-        
-        <div class="Boton">
-            <button type="submit">Iniciar Sesión</button>
-        </div>
-        <div class="Registro">
-            <h4>¿No tienes cuenta? <a href="">Registrate</a></h4>
-        </div>
-            
-        
-        
+        <form action="/acceso" method="post">
+            <div class="Imagen">
+                <img src="/static/img/GLACER.jpg" alt="">
+            </div>
+            <div class="Usuario">
+                <input   type="text" id="txtusuario" name="txtusuario" placeholder="Usuario" required><i class="bi bi-person-fill"></i>
+            </div>
+            <div class="Contraseña">
+                <input type="text" id="txtcontrasena" name="txtcontrasena" placeholder="Contraseña" required><i class="bi bi-lock-fill"></i>
+            </div>
+            <div class="Registro">
+                <h4>¿No tienes cuenta? <a href="/registro">Registrate</a></h4>
+            </div>
+            <div class="Boton">
+                <button type="submit">Iniciar Sesión</button>
+            </div>
+        </form>
     </div>
 
- <script>
-    const fondoCuadros = document.querySelector('.fondo-cuadros');
-
-// Crear una cuadrícula de cuadros
-for(let i = 0; i < 200; i++) { // 20 columnas * 10 filas = 200 cuadros
-    let cuadro = document.createElement('div');
-    fondoCuadros.appendChild(cuadro);
-}
-
-// Definir el camino en forma de serpiente
-function generarCaminoViborita(columnas, filas) {
-    let camino = [];
-    let haciaDerecha = true;
-
-    for (let fila = 0; fila < filas; fila++) {
-        if (haciaDerecha) {
-            for (let columna = 0; columna < columnas; columna++) {
-                camino.push(fila * columnas + columna);
-            }
-        } else {
-            for (let columna = columnas - 1; columna >= 0; columna--) {
-                camino.push(fila * columnas + columna);
-            }
-        }
-        haciaDerecha = !haciaDerecha; // Cambia la dirección
-    }
-    return camino;
-}
-
-function animarViborita() {
-    // Generar el camino y empezar la animación
-    const caminoViborita = generarCaminoViborita(20, 10);
-    cambiarColorViborita(caminoViborita);
-}
-
-// Función para cambiar el color de los cuadros secuencialmente
-function cambiarColorViborita(camino) {
-    const cuadros = document.querySelectorAll('.fondo-cuadros div');
-
-    camino.forEach((indice, i) => {
-        setTimeout(() => {
-            cuadros[indice].style.backgroundColor = '#a8a8a8'; // Cambia el color
-            setTimeout(() => {
-                cuadros[indice].style.backgroundColor = '#fff'; // Vuelve al color original
-                // Reiniciar la animación cuando termine
-                if (i === camino.length - 1) {
-                    setTimeout(animarViborita, 1000); // Tiempo de espera antes de reiniciar
-                }
-            }, 500); // Duración del color
-        }, i * 100); // Retardo para crear el efecto "viborita"
-    });
-}
-
-animarViborita();
-// Generar el camino y empezar la animación una sola vez
-
-
+ 
 
  </script>
  

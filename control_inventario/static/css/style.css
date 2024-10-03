@@ -1,146 +1,164 @@
 
-body, html {
-    margin: 0;
+*{margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    overflow: hidden;
-}
-
-.fondo-cuadros {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: repeat(20, 1fr); /* 20 columnas */
-    grid-template-rows: repeat(10, 1fr); /* 10 filas */
-    z-index: 0;
-}
-
-.fondo-cuadros div {
-    background-color: #fff;
-    transition: background-color 0.5s ease;
-}
-
-.login{
-    width: 23%;
-    height: 70%;
-    background-color:#F5F5F5;
-    display: grid;
-    place-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    box-shadow: 7px 7px 12px #969595 ;
-    z-index: 1;
-}
-
-.Imagen{
-   translate: 60px -70px ;
-}
-
-img{
-   border-radius: 50%;
-   translate: 0 -70% 9px 7px;
-   width: 50%;
-   height: 80%;
- 
-}
-
-
-input{
-    border-radius: 5px;
-    width: 70%;
-    height: 23px;
+    box-sizing: border-box;}
+    body{
+        background: url(/static/img/FONDO.jpg);
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
     
-
-}
-
-.Usuario {
-    translate: 0 -30px;
-    position: relative;
-    display: inline-block;
-    display: grid;
-    place-items: center;
+    }
     
-  }
-
-.Usuario input{
+    body, html {
+        
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        
+    }
     
-    padding-left: 35px; 
+    .fondo-cuadros {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: repeat(20, 1fr); /* 20 columnas */
+        grid-template-rows: repeat(10, 1fr); /* 10 filas */
+        z-index: 0;
+    }
     
-
-}
-
-.Usuario i{
-  display: grid;
-  place-items: center;
-  width: 13%;
-  height: 28px;
-  position: absolute;
-  left: 12px; 
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; 
-  color: #050505; 
-  background-color: rgb(171, 177, 175);
- 
-}
-
-.Contraseña {
-    translate: 0 -10px;
-    position: relative;
-    display: inline-block;
-    display: grid;
-    place-items: center;
-  }
-
-.Contraseña input{
-    padding-left: 35px; /* Ajusta el valor según el tamaño del ícono */
-
-}
-
-.Contraseña i{
-  display: grid;
-  place-items: center;
-  width: 13%;
-  height: 28px;
-  position: absolute;
-  left: 12px; 
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; 
-  color: #050505; 
-  background-color: rgb(171, 177, 175);
- 
-}
-
-.Registro{
-    translate: 0 -20px;
-}
-.Boton{
-    translate: 0 -5px;
-    width: 30%;
-    height: 50px;
-    margin-right: 5px;
-}
-
-
-button{
-    background-color: #d61313;
-    color: #fff;
-    border: none;
-    width: 110px;
-    height: 60%;
-    border-radius: 5px;
-    box-shadow: 2px 2px 3px #2f2e2e ;
-}
-
-a{
-    text-decoration: none;
-    color: #d61313;
-}
-
+    .fondo-cuadros div {
+        background-color: #fff;
+        transition: background-color 0.5s ease;
+    }
+    
+    .login{
+        width: 23%;
+        height: 70%;
+        background-color:#F5F5F5;
+        display: grid;
+        place-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        box-shadow: 7px 7px 12px #969595 ;
+        z-index: 1;
+    }
+    
+    .Imagen{
+       translate: 60px -147px ;
+    }
+    
+    img{
+       border-radius: 50%;
+        margin-left: 15%;
+       width: 33%;
+       height: 63%;
+     
+    }
+    
+    
+    input{
+        border-radius: 5px;
+        width: 60%;
+        height: 28px;
+        translate: 0px -60px;
+        
+    }
+    
+    .Usuario {
+        translate: 0 -30px;
+        position: relative;
+        display: inline-block;
+        display: grid;
+        place-items: center;
+        
+      }
+    
+    .Usuario input{
+        
+        padding-left: 40px; 
+        
+    
+    }
+    
+    .Usuario i{
+      display: grid;
+      place-items: center;
+      width: 10%;
+      height: 28px;
+      position: absolute;
+      left: 62px; 
+      top: 50%;
+      transform: translateY(-265%);
+      pointer-events: none; 
+      color: #050505; 
+      background-color: rgb(171, 177, 175);
+      border-radius: 2px;
+     
+    }
+    
+    .Contraseña {
+        translate: 0 -10px;
+        position: relative;
+        display: inline-block;
+        display: grid;
+        place-items: center;
+      }
+    
+    .Contraseña input{
+        padding-left: 40px; 
+        margin-top: 25px;
+    
+    }
+    
+    .Contraseña i{
+      display: grid;
+      place-items: center;
+      width: 10%;
+      height: 28px;
+      position: absolute;
+      left: 62px; 
+      top: 50%;
+      transform: translateY(-220%);
+      pointer-events: none; 
+      color: #050505; 
+      background-color: rgb(171, 177, 175);
+      border-color: #050505;
+      border-radius: 2px;
+     
+    }
+    
+    .Registro{
+        translate: 0 40px;
+        margin-left: 40px;
+    }
+    .Boton{
+        translate: 0 -40px;
+        width: 30%;
+        height: 50px;
+        margin-left: 100px;
+    }
+    
+    
+    button{
+        background-color: #d61313;
+        color: #fff;
+        border: none;
+        width: 110px;
+        height: 60%;
+        border-radius: 5px;
+        box-shadow: 2px 2px 3px #2f2e2e ;
+    }
+    
+    a{
+        text-decoration: none;
+        color: #d61313;
+    }
+    
+    

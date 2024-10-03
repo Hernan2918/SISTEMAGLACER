@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modalRegistroLabel">Nueva Difusión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form action="/registro_difusion" method="post" onsubmit="return validarFormulario()">
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="fecha" name="fecha">
+                <div class="invalid-feedback" id="fechaError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="docentes" class="form-label">Docentes</label><br>
+                {% for docente in docentes %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="docentes[]" id="docente_{{ docente.id_docente }}" value="{{ docente.id_docente }}">
+                    <label class="form-check-label" for="docente_{{ docente.id_docente }}">
+                        {{ docente.nombre }}
+                    </label>
+                </div>
+                {% endfor %}
+                <div class="invalid-feedback" id="docentesError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="escuelas" class="form-label">Escuelas</label><br>
+                <select id="escuelas" name="escuelas" class="form-control">
+                    <option value="" id="escuelas">Selecciona una opción</option>
+                    {% for escuela in escuelas %}
+                    <option value="{{ escuela.id_escuela }}">{{ escuela.nombre }}</option>
+                    {% endfor %}
+                </select> 
+                <div class="invalid-feedback" id="escuelasError"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn" id="Registrar" name="Registrar">Guardar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
