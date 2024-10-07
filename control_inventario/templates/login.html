@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-    <div class="fondo-cuadros">
-        <!-- Los cuadros se generarán aquí dinámicamente -->
-    </div>
     <div class="login">
         <form action="/acceso" method="post">
             <div class="Imagen">
@@ -28,24 +25,16 @@
             <div class="Boton">
                 <button type="submit">Iniciar Sesión</button>
             </div>
-
             <div class="mensaje">
                 {% if mensaje %}
                 {{ mensaje }}
                 {% endif %}
             </div>
-
             <div class="Registro">
                 <h4>¿No tienes cuenta? <a href="/registro">Registrate</a></h4>
             </div>
-
-            
         </form>
     </div>
-
- 
-
- </script>
  
 </body>
 </html>

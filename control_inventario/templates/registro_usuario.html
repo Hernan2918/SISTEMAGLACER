@@ -18,16 +18,14 @@
       <link rel="stylesheet" href="/static/css/styleform.css">
 </head>
 <body>
-    
-        
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editarEscuelaModal">Nuevo usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/registro_usuarios" method="post" >
-                        <input type="hidden" id="editarEscuelaId" name="id_escuela">
+                    <form action="#" method="post" >
+                        
                         <div class="mb-3">
                             <label for="registarnombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="registarnombre" name="registarnombre">
@@ -73,7 +71,7 @@
                             {% endif %}
                         {% endwith %}
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" id="cerrar" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" id="cerrar" >Atras</button>
                             <button type="submit" class="btn btn-danger">Registar</button>
                         </div>
                     </form>

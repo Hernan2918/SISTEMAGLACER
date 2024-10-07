@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
-
+from forms import DifusionForm 
 from flask import flash
 from functools import wraps
 
@@ -45,13 +45,6 @@ def acceso():
     return redirect('/')
 
 
-@app.route('/consulta_productos')
-
-def consulta_productos():
-
-    return render_template('productos.html')
-
-
 @app.route('/registro_usuarios', methods=['POST'])
 def registro_usuarios():
     if request.method == 'POST':
@@ -82,6 +75,32 @@ def registro_usuarios():
     return render_template('registro.html')
 
 
+@app.route('/consulta_productos')
+def consulta_productos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_producto, d.medidas, doc.nombre as proveedor_nombre, producto, calidad, existencias, rotas, precio, embalaje, ubicacion,  esc.nombre as categoria_nombre
+    FROM productos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+
+    query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
+    cur.execute(query_proveedores)
+    proveedores = cur.fetchall()
+
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
+    categorias = cur.fetchall()
+    cur.close()
+    
+    form = DifusionForm()
+    form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
+    form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
+
+    return render_template('productos.html', productos=productos, proveedores= proveedores, categorias=categorias)
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"

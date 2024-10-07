@@ -93,8 +93,9 @@ body{
 
 
 .menu2{
-    height: 100%;
+    
     width: 95%;
+    height: 200px;
     display: flex;
     position: absolute;
 
@@ -105,7 +106,7 @@ body{
     padding: 0;
     background-color: white;
     width: 5%;
-    height: 580px;
+    height: 588px;
     
 }
 
@@ -312,4 +313,47 @@ thead tr:nth-child(odd){
     width: 50px;
     height: 50px;
     margin-left: 10px;
+}
+
+
+/* ------------------------------------SECCION DE TABLAS------------------- */
+
+#Tabla{
+    margin: 2% 0 0 10%;
+    
+    padding: 0;
+    border: none;
+}
+#contenido{
+    box-shadow: 3px 3px 5px #000;
+    
+}
+
+#registroProducto{
+    width: 10%;
+    height: 1%;
+    translate: 58px -25px;
+}
+
+#registroProducto{
+    margin: 2% 0 0 85%;
+}
+
+#tabla_productos th, td{
+    text-align: center;
+}
+
+.modal-header{
+    background-color: #d61313;
+    color: #fff;
+    
+    
+}
+
+#modalRegistroLabel{
+    margin-left: 34%;
+}
+
+#Registrar{
+    background-color: #d61313 ;
 }
