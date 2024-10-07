@@ -26,7 +26,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/actualizar_escuela" method="post" onsubmit="return validarFormularioEscuelaActualizar()">
+                    <form action="/registro_usuarios" method="post" >
                         <input type="hidden" id="editarEscuelaId" name="id_escuela">
                         <div class="mb-3">
                             <label for="registarnombre" class="form-label">Nombre</label>
@@ -39,11 +39,12 @@
                             <div class="invalid-feedback" id="directorErrorAC"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="registrargenero" class="form-label">Generó</label>
-                            <select class="form-control" name="registrargenero" id="registrargenero">Selecciona tú generó
+                            <label for="registrargenero" class="form-label">Género</label>
+                            <select class="form-control" name="registrargenero" id="registrargenero">
+                                <option selected>Selecciona tú género</option>
                                 <option value="Masculino">Masculino</option>
                                 <option value="Femenino">Femenino</option>
-                                Selecciona tú generó
+                                
                             </select>
                             <div class="invalid-feedback" id="cctErrorAC"></div>
                         </div>
@@ -54,14 +55,23 @@
                         </div>
                         <div class="mb-3">
                             <label for="registrarcontraseña" class="form-label">Contraseña</label>
-                            <input type="text" class="form-control" id="registrarcontraseña" name="registrarcontraseña">
+                            <input type="password" class="form-control" id="registrarcontraseña" name="registrarcontraseña">
                             <div class="invalid-feedback" id="cctErrorAC"></div>
                         </div>
                         <div class="mb-3">
                             <label for="registrarcontraseñaC" class="form-label">Confirmar Contraseña</label>
-                            <input type="text" class="form-control" id="registrarcontraseñaC" name="registrarcontraseñaC">
+                            <input type="password" class="form-control" id="registrarcontraseñaC" name="registrarcontraseñaC">
                             <div class="invalid-feedback" id="cctErrorAC"></div>
                         </div>
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <ul>
+                                    {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" id="cerrar" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-danger">Registar</button>

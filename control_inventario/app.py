@@ -52,6 +52,36 @@ def consulta_productos():
     return render_template('productos.html')
 
 
+@app.route('/registro_usuarios', methods=['POST'])
+def registro_usuarios():
+    if request.method == 'POST':
+        nombre = request.form['registarnombre']
+        apellidos = request.form['registrarapellido']  # Capturar todos los IDs seleccionados
+        genero = request.form['registrargenero']
+        usuario = request.form['registrarusuario']
+        contrasena= request.form['registrarcontraseña']
+        confirmar_c = request.form['registrarcontraseñaC']
+
+        if contrasena != confirmar_c:
+            flash("Las contraseñas no coinciden. Inténtalo de nuevo.")
+            return redirect('/registro')  # Redirigir de nuevo al formulario de registro
+
+
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO usuarios (nombre, apellidos, genero, usuario, contrasena, c_contraseña) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, apellidos, genero, usuario, contrasena, confirmar_c ))
+            mysql.connection.commit()
+            cur.close()
+
+            flash('Usuario registrado exitosamente!', 'success')
+            return redirect(url_for('acceso'))
+    
+        except Exception as e:
+            flash(f"Error al registrar el usuario: {e}")
+            return redirect('/registro')
+    return render_template('registro.html')
+
+
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"

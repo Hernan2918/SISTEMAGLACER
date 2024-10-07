@@ -6,13 +6,13 @@
     width: 35%;
     height: 70%;
     
-    margin: 2% 0 10% 33%;
-    box-shadow: 3px 3px 15px #4e4d4d;
-    border-radius: 5px;
+    margin: 0 0 10% 33%;
+    box-shadow: 3px 3px 10px #4e4d4d;
+    
 }
 .modal-header{
     background-color: #d71111;
-    border-radius: 5px 5px 0 0;
+    
     padding: 15px;
     color: #fff;
     

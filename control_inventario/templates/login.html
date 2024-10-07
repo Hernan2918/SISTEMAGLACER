@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="styleLogin.css">
+    
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="static/css/style.css">
 </head>
@@ -23,12 +24,22 @@
             <div class="Contraseña">
                 <input type="text" id="txtcontrasena" name="txtcontrasena" placeholder="Contraseña" required><i class="bi bi-lock-fill"></i>
             </div>
-            <div class="Registro">
-                <h4>¿No tienes cuenta? <a href="/registro">Registrate</a></h4>
-            </div>
+           
             <div class="Boton">
                 <button type="submit">Iniciar Sesión</button>
             </div>
+
+            <div class="mensaje">
+                {% if mensaje %}
+                {{ mensaje }}
+                {% endif %}
+            </div>
+
+            <div class="Registro">
+                <h4>¿No tienes cuenta? <a href="/registro">Registrate</a></h4>
+            </div>
+
+            
         </form>
     </div>
 

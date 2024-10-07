@@ -1,4 +1,10 @@
 
+@font-face{
+    font-family: Medium;
+    src: url(../css/Nunito/static/Nunito-Medium.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
 *{margin: 0;
     padding: 0;
     box-sizing: border-box;}
@@ -135,16 +141,20 @@
     }
     
     .Registro{
-        translate: 0 40px;
+        translate: 0 8px;
         margin-left: 40px;
     }
     .Boton{
-        translate: 0 -40px;
+        translate: 0 -20px;
         width: 30%;
         height: 50px;
         margin-left: 100px;
     }
-    
+    .mensaje{
+        margin: -4px 0 15px 0;
+        text-align: center;
+        color: #d61313;
+    }
     
     button{
         background-color: #d61313;
