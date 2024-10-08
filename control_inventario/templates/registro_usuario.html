@@ -24,7 +24,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" method="post" >
+                    <form action="/registro_usuarios" method="post" >
                         
                         <div class="mb-3">
                             <label for="registarnombre" class="form-label">Nombre</label>
@@ -59,17 +59,30 @@
                         <div class="mb-3">
                             <label for="registrarcontraseñaC" class="form-label">Confirmar Contraseña</label>
                             <input type="password" class="form-control" id="registrarcontraseñaC" name="registrarcontraseñaC">
-                            <div class="invalid-feedback" id="cctErrorAC"></div>
-                        </div>
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                <ul>
+                            <div class="mensaje" id="flash-messages">
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    
                                     {% for message in messages %}
-                                        <li>{{ message }}</li>
+                                        <div class="flash-message">{{ message }}</div>
                                     {% endfor %}
-                                </ul>
-                            {% endif %}
-                        {% endwith %}
+                                    
+                                {% endif %}
+                            {% endwith %}
+                            </div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    const flashMessages = document.getElementById("flash-messages");
+                                    if (flashMessages) {
+                                        setTimeout(() => {
+                                            flashMessages.style.display = 'none';
+                                        }, 2000); // Cambia 3000 por el tiempo en milisegundos que desees (3 segundos en este caso)
+                                    }
+                                });
+                            </script>
+                            
+                        </div >
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" id="cerrar" >Atras</button>
                             <button type="submit" class="btn btn-danger">Registar</button>

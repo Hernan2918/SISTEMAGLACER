@@ -33,3 +33,12 @@
     margin-right: 63%;
     
 }
+
+.mensaje{
+    margin: 0;
+    padding: 0;
+    color: #d61313;
+    text-align: left;
+    margin-bottom: 5px;
+    
+}

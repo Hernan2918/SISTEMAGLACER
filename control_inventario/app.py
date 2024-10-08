@@ -72,7 +72,7 @@ def registro_usuarios():
         except Exception as e:
             flash(f"Error al registrar el usuario: {e}")
             return redirect('/registro')
-    return render_template('registro.html')
+    return render_template('login.html')
 
 
 @app.route('/consulta_productos')
@@ -101,6 +101,36 @@ def consulta_productos():
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
     return render_template('productos.html', productos=productos, proveedores= proveedores, categorias=categorias)
+
+
+@app.route('/registro_productos', methods=['POST'])
+def registro_productos():
+    if request.method == 'POST':
+        medida = request.form['medida']
+        proveedor_id = request.form['proveedores']
+        producto = request.form['producto']
+        calidad = request.form['calidad']
+        existencia = request.form['existencia']
+        rotas = request.form['rotas']
+        precio = request.form['precio']
+        embalaje = request.form['embalaje']
+        ubicacion = request.form['ubicacion']
+        categoria_id = request.form['categorias']
+        
+
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO productos (medidas, proveedor, producto, calidad, existencias, rotas, precio, embalaje, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                    (medida, proveedor_id, producto, calidad, existencia, rotas, precio, embalaje, ubicacion, categoria_id  ))
+        mysql.connection.commit()
+        cur.close()
+
+        
+        flash('Difusión registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_productos'))
+
+
+
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"
