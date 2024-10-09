@@ -117,8 +117,6 @@ def registro_productos():
         ubicacion = request.form['ubicacion']
         categoria_id = request.form['categorias']
         
-
-
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO productos (medidas, proveedor, producto, calidad, existencias, rotas, precio, embalaje, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
                     (medida, proveedor_id, producto, calidad, existencia, rotas, precio, embalaje, ubicacion, categoria_id  ))
@@ -129,6 +127,46 @@ def registro_productos():
         flash('Difusión registrada exitosamente!', 'success')
         return redirect(url_for('consulta_productos'))
 
+@app.route('/actualizar_producto', methods=['POST'])
+def actualizar_producto():
+    if request.method == 'POST':
+        id_producto = request.form['id_producto']
+        medida = request.form['medidaeditar']
+        proveedor_id = request.form['proveedoreseditar']
+        producto = request.form['productoeditar']
+        calidad = request.form['calidadeditar']
+        existencia = request.form['existenciaeditar']
+        rotas = request.form['rotaseditar']
+        precio = request.form['precioeditar']
+        embalaje = request.form['embalajeeditar']
+        ubicacion = request.form['ubicacioneditar']
+        categoria_id = request.form['categoriaseditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE productos
+            SET medidas = %s, proveedor = %s, producto = %s, calidad = %s, existencias = %s, rotas = %s, precio = %s, embalaje =%s, ubicacion = %s, categoria = %s
+            WHERE id_producto = %s
+            """,
+            (medida, proveedor_id, producto, calidad, existencia, rotas, precio, embalaje, ubicacion, categoria_id, id_producto)
+        )
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Producto actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_productos'))
+
+
+@app.route('/eliminar_producto/<int:producto_id>', methods=['POST'])
+def eliminar_producto(producto_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM productos WHERE id_producto = %s", (producto_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Producto eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_productos'))
 
 
 
