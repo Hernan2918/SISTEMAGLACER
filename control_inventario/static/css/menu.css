@@ -343,15 +343,22 @@ thead tr:nth-child(odd){
 #contenido{
     box-shadow: 3px 3px 5px #000;
 }
-#registroProducto{
+#registroProducto {
     width: 10%;
     height: 1%;
     translate: 58px -25px;
-}
-#registroProducto{
     margin: 2% 0 0 85%;
 }
-#tabla_productos th, td{
+
+#registroProveedor{
+    width: 11%;
+    height: 1%;
+    translate: 50px -25px;
+    margin: 2% 0 0 85%;
+}
+
+
+#tabla_productos, #tabla_proveedores, #tabla_categorias th, td{
     text-align: center;
 }
 
@@ -418,15 +425,32 @@ thead tr:nth-child(odd){
     background-color: rgb(236, 236, 236);
     color: #0e0d0d;
     font-size: 0.9em;
-    text-align: left;
-    
-    
+    text-align: left; 
     
 }
-
 
 
 .menuProductos{
    translate: -33px 0px;
 }
+
+#btnactualizar{
+    background-color: rgb(48, 122, 190);
+    border: 1px solid rgb(48, 122, 190) ;
+
+
+}
+
+#btneliminar{
+    background-color: #d61313;
+}
+
+#preview{
+    display: none;
+    margin-top: 10px;
+    max-width: 100px; /* Ajusta el ancho según sea necesario */
+    height: auto;
+    
+}
+
 

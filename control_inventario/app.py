@@ -170,6 +170,35 @@ def eliminar_producto(producto_id):
 
 
 
+
+@app.route('/consulta_proveedores')
+
+def consulta_proveedores():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM proveedores')
+    proveedores = cur.fetchall()
+    cur.close()
+    return render_template('proveedores.html', proveedores=proveedores)
+
+
+
+@app.route('/registro_proveedor', methods=['POST'])
+def registro_proveedor():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        telefono = request.form['telefono']
+        correo = request.form['correo']
+        direccion = request.form['direccion']
+        foto = request.form['foto']
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO proveedores (nombre, telefono, correo, direccion, foto) VALUES (%s, %s, %s, %s, %s)", (nombre, telefono, correo, direccion, foto))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Proveedor registrado exitosamente!', 'success')
+        return redirect(url_for('consulta_proveedores'))
+
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"
     app.run(debug=True)
