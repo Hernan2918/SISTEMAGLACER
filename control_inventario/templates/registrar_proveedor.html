@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/registro_proveedor" method="post" onsubmit="return validarFormulario()">
+                <form action="/registro_proveedor" method="post" enctype="multipart/form-data" onsubmit="return validarFormulario()">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="txt" class="form-control" id="nombre" name="nombre">

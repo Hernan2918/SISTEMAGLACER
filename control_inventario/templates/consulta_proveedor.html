@@ -1,10 +1,24 @@
 <main role="main" id="Tabla" class="col-md-10">
-    <button type="button" id="registroProveedor" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
-        <i class="fas fa-plus"></i> Proveedor
-    </button>
+
+    <div id="nombre">
+        <div class="elemento1">
+            {% if 'nombre' in session %}
+            <h4>¡Hola!, {{ session['nombre'] }} </h4>
+            
+        {% else %}
+            
+        {% endif %}
+        </div>
+        <div class="elemento">
+            <button type="button" id="registroProveedor" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
+                <i class="fas fa-plus"></i> Proveedor
+            </button>
+        </div>
+    </div>
+    
     <div class="card  mt-10" id="contenido">
         <div class="card-header text-center">
-            <h4>Tabla de Productos</h4>
+            <h4>Tabla de proveedores</h4>
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -37,15 +51,12 @@
                     <tbody>
                         {% for proveedor in proveedores %}
                         <tr>
-                            
-                       
                             <td>{{proveedor.nombre}}</td>
                             <td>{{proveedor.telefono}}</td>
                             <td>{{proveedor.correo}}</td>
                             <td>{{proveedor.direccion}}</td>
-                            <td>{{proveedor.foto}}</td>
-                            
-                         
+                            <td><img src="{{ url_for('static', filename='uploads/' + proveedor.foto) }}" alt="Foto de proveedor" style="width: 60px; height: auto;">
+                            </td>
                             <td>
                                 <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProducto" data-id="{{ proveedor.id_producto }}" data-medidas="{{ proveedor.medidas }}" data-proveedor="{{ proveedor.proveedor }}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
                                 <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarP" value="{{ proveedor.id_producto }}" data-id="{{ proveedor.id_producto }}"><i class="bi bi-trash3-fill"></i></button>

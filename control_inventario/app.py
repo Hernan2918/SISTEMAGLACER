@@ -1,10 +1,11 @@
 
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
-from forms import DifusionForm 
+from forms import ProductosForm 
 from flask import flash
 from functools import wraps
-
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -38,6 +39,7 @@ def acceso():
             session['logeado'] = True
             session['id_usuario'] = acceder['id_usuario']
             session['usuario'] = acceder['usuario']
+            session['nombre'] = acceder['nombre']
             
             return redirect(url_for('consulta_productos'))
         else:
@@ -96,7 +98,7 @@ def consulta_productos():
     categorias = cur.fetchall()
     cur.close()
     
-    form = DifusionForm()
+    form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
@@ -182,6 +184,9 @@ def consulta_proveedores():
 
 
 
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/registro_proveedor', methods=['POST'])
 def registro_proveedor():
     if request.method == 'POST':
@@ -189,15 +194,35 @@ def registro_proveedor():
         telefono = request.form['telefono']
         correo = request.form['correo']
         direccion = request.form['direccion']
-        foto = request.form['foto']
+        
+        # Manejo del archivo de imagen
+        foto_db = None
+        if 'foto' in request.files:
+            foto = request.files['foto']
+            if foto.filename != '':
+                # Asegúrate de usar un nombre de archivo seguro
+                filename = secure_filename(foto.filename)
+                # Guardar la imagen en la carpeta especificada
+                foto_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                foto.save(foto_path)
+
+                # Almacena el nombre de la imagen en la base de datos
+                foto_db = filename
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO proveedores (nombre, telefono, correo, direccion, foto) VALUES (%s, %s, %s, %s, %s)", (nombre, telefono, correo, direccion, foto))
+        cur.execute(
+            "INSERT INTO proveedores (nombre, telefono, correo, direccion, foto) VALUES (%s, %s, %s, %s, %s)",
+            (nombre, telefono, correo, direccion, foto_db)
+        )
         mysql.connection.commit()
         cur.close()
 
         flash('Proveedor registrado exitosamente!', 'success')
         return redirect(url_for('consulta_proveedores'))
+
+# Asegúrate de que tu carpeta 'uploads' existe
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"

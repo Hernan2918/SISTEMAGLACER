@@ -2,15 +2,19 @@
 
 *{margin: 0;
     padding: 0;
-    box-sizing: border-box;}
-    body{
-        background: url(/static/img/FONDO.jpg);
-        background-size: cover;
-        background-position: center;
-        height: 100vh;
+    box-sizing: border-box;
+}
+body {
+    background: url(/static/img/FondoLogin.jpg);
+    background-size: contain; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100vw; /* Asegura que el ancho sea completo */
     
-    }
-    
+}
+
 @font-face{
     font-family: Medium;
     src: url(/static/css/Nunito/static/Nunito-Medium.ttf);
@@ -167,9 +171,14 @@
         box-shadow: 2px 2px 3px #2f2e2e ;
     }
     
-    a{
+    #registro{
         text-decoration: none;
         color: #d61313;
+        font-size: 1em;
+        
+    }
+    #texto{
+        font-size: 1.1em;
     }
     
     

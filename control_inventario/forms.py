@@ -3,7 +3,7 @@ from wtforms import StringField, SelectMultipleField, DateField, SubmitField
 from wtforms.validators import DataRequired, Length, Regexp, ValidationError
 from datetime import date
 
-class DifusionForm(FlaskForm):
+class ProductosForm(FlaskForm):
     # Validador personalizado para asegurar que la fecha no sea futura
     def validate_fecha(form, field):
         if field.data > date.today():

@@ -123,6 +123,7 @@ body{
     font-family: 'Droid Sans';
     font-weight: bold;
     box-shadow: 3px 3px 5px rgb(0 0 0 / 50%);
+   
     
 }
 
@@ -344,16 +345,20 @@ thead tr:nth-child(odd){
     box-shadow: 3px 3px 5px #000;
 }
 #registroProducto {
-    width: 10%;
-    height: 1%;
-    translate: 58px -25px;
+    width: 100%;
+    height: 35px;
+    translate: 778px -15px;
     margin: 2% 0 0 85%;
 }
 
+.elemento1{
+    translate: 0px -7px
+}
+
 #registroProveedor{
-    width: 11%;
-    height: 1%;
-    translate: 50px -25px;
+    width: 100%;
+    height: 35px;
+    translate: 755px -15px;
     margin: 2% 0 0 85%;
 }
 
@@ -406,7 +411,7 @@ thead tr:nth-child(odd){
 #subcategories {
     margin: 2px;
     position: absolute; /* Posicionamiento absoluto */
-    top: 530%; /* Colocarlo justo debajo del elemento padre */
+    top: 250%; /* Colocarlo justo debajo del elemento padre */
     z-index: 100;
     display: none; /* Ocultar por defecto */
     left: -22.5px;
@@ -453,4 +458,7 @@ thead tr:nth-child(odd){
     
 }
 
+#nombre{
+    display: flex;
+}
 
