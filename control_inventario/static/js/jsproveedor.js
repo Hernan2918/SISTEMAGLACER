@@ -194,3 +194,71 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
                 
+
+
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    var editarProveedorModal = document.getElementById('editarModalProveedor');
+                    editarProveedorModal.addEventListener('show.bs.modal', function(event) {
+                        var button = event.relatedTarget;
+                        var id = button.getAttribute('data-id');
+                        var nombre = button.getAttribute('data-nombre');
+                        var telefono = button.getAttribute('data-telefono');
+                        var correo = button.getAttribute('data-correo');
+                        var direccion = button.getAttribute('data-direccion');
+                        var foto = button.getAttribute('data-foto');
+                        
+                        
+                
+                        var inputId = editarProveedorModal.querySelector('#editarproveedorId');
+                        var inputNombre = editarProveedorModal.querySelector('#nombreeditar');
+                        
+                        var inputTelefono = editarProveedorModal.querySelector('#telefonoeditar');
+                        var inputCorreo = editarProveedorModal.querySelector('#correoeditar');
+                        var inputDireccion = editarProveedorModal.querySelector('#direccioneditar');
+                        var inputFoto = editarProveedorModal.querySelector('#fotoeditar');
+                        
+                        
+                
+                        inputId.value = id;
+                        inputNombre.value = nombre;
+                        inputTelefono.value= telefono;
+                        inputCorreo.value = correo;
+                        inputDireccion.value = direccion;
+                        inputFoto.value = foto;
+                        
+                    });
+                });
+                
+
+                document.getElementById('fotoeditar').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    const previeweditar = document.getElementById('previeweditar');
+                
+                    if (file) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            previeweditar.src = e.target.result; // Establece la fuente de la imagen a la cargada
+                            previeweditar.style.display = 'block'; // Muestra la imagen
+                        }
+                
+                        reader.readAsDataURL(file); // Lee el archivo como una URL de datos
+                    } else {
+                        previeweditar.src = ""; // Reinicia la fuente si no hay archivo
+                        previeweditar.style.display = 'none'; // Oculta la imagen
+                    }
+                });
+                
+
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    var eliminarModal = document.getElementById('eliminarProveedor');
+                    eliminarModal.addEventListener('show.bs.modal', function (event) {
+                        var button = event.relatedTarget;
+                        var proveedorId = button.getAttribute('data-id');
+                        var formEliminar = document.getElementById('formEliminarPro');
+                        formEliminar.action = '/eliminar_proveedor/' + proveedorId;
+                    });
+                });
+                

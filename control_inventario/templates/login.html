@@ -33,24 +33,29 @@
                 {{ mensaje }}
                 {% endif %}
             </div>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                        {{ message }}
-                        </div>
-                    <script>
-                        setTimeout(function() {
-                        $('.alert').alert('close');
-                        }, 2000);
-                    </script>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+            
             <div class="Registro">
                 <h4 id="texto">¿No tienes cuenta? <a id="registro" href="/registro">Registrate</a></h4>
             </div>
         </form>
+
+       
+    </div>
+    <div class="mensajerE">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+                {{ message }}
+                </div>
+            <script>
+                setTimeout(function() {
+                $('.alert').alert('close');
+                }, 2500);
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     </div>
  
 

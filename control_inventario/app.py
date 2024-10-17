@@ -126,7 +126,7 @@ def registro_productos():
         cur.close()
 
         
-        flash('Difusión registrada exitosamente!', 'success')
+        flash('Producto registrada exitosamente!', 'success')
         return redirect(url_for('consulta_productos'))
 
 @app.route('/actualizar_producto', methods=['POST'])
@@ -220,9 +220,43 @@ def registro_proveedor():
         flash('Proveedor registrado exitosamente!', 'success')
         return redirect(url_for('consulta_proveedores'))
 
-# Asegúrate de que tu carpeta 'uploads' existe
+
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+
+@app.route('/actualizar_proveedor', methods=['POST'])
+def actualizar_proveedor():
+    if request.method == 'POST':
+        id_proveedor = request.form['id_proveedor']
+        nombre = request.form['nombreeditar']
+        telefono = request.form['telefonoeditar']
+        correo = request.form['correoeditar']
+        direccion = request.form['direccioneditar']
+        foto = request.form['fotoeditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            UPDATE proveedores
+            SET nombre = %s, telefono = %s, correo = %s, direccion = %s, foto= %s
+            WHERE id_proveedor = %s
+        """, (nombre, telefono, correo, direccion, foto, id_proveedor))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Proveedor actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_proveedores'))
+    
+
+@app.route('/eliminar_proveedor/<int:proveedor_id>', methods=['POST'])
+def eliminar_proveedor(proveedor_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM proveedores WHERE id_proveedor = %s", (proveedor_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Proveedor eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_proveedores'))
+
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"

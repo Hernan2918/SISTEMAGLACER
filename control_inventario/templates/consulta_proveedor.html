@@ -58,8 +58,8 @@
                             <td><img src="{{ url_for('static', filename='uploads/' + proveedor.foto) }}" alt="Foto de proveedor" style="width: 60px; height: auto;">
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProducto" data-id="{{ proveedor.id_producto }}" data-medidas="{{ proveedor.medidas }}" data-proveedor="{{ proveedor.proveedor }}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
-                                <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarP" value="{{ proveedor.id_producto }}" data-id="{{ proveedor.id_producto }}"><i class="bi bi-trash3-fill"></i></button>
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProveedor" data-id="{{ proveedor.id_proveedor }}" data-nombre="{{ proveedor.nombre }}" data-telefono="{{ proveedor.telefono }}" data-correo="{{ proveedor.correo }}" data-direccion="{{ proveedor.direccion }}" data-foto="{{ proveedor.foto }}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
+                                <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarProveedor" value="{{ proveedor.id_proveedor }}" data-id="{{ proveedor.id_proveedor }}"><i class="bi bi-trash3-fill"></i></button>
                             </td>
                         </tr>
                         {% endfor %}
