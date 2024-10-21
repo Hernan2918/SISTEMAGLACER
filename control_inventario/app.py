@@ -1,4 +1,5 @@
 
+
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
 from forms import ProductosForm 
@@ -6,7 +7,7 @@ from flask import flash
 from functools import wraps
 import os
 from werkzeug.utils import secure_filename
-
+from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -17,7 +18,26 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logeado' not in session:
+            return redirect(url_for('home'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def no_cache(view):
+    @wraps(view)
+    def no_cache_view(*args, **kwargs):
+        response = make_response(view(*args, **kwargs))
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '-1'
+        return response
+    return no_cache_view
+
 @app.route('/')
+
 def home():
     return render_template('login.html')
 
@@ -26,24 +46,35 @@ def registro():
     return render_template('registro_usuario.html')
 
 @app.route('/acceso', methods=["GET", "POST"])
+
 def acceso():
     if request.method == 'POST' and 'txtusuario' in request.form and 'txtcontrasena' in request.form:
         usuario = request.form['txtusuario']
         contrasena = request.form['txtcontrasena']
 
         cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM usuarios WHERE usuario=%s and contrasena=%s', (usuario, contrasena))
+        cur.execute('SELECT * FROM usuarios WHERE usuario=%s', (usuario,))
         acceder = cur.fetchone()
 
+        print(f"Usuario encontrado: {acceder}")  # Para depuración
+        
+
         if acceder:
-            session['logeado'] = True
-            session['id_usuario'] = acceder['id_usuario']
-            session['usuario'] = acceder['usuario']
-            session['nombre'] = acceder['nombre']
-            
-            return redirect(url_for('consulta_productos'))
+
+            print(f"Contraseña ingresada: {contrasena}")  # Para depuración
+            print(f"Hash de la contraseña: {acceder['contrasena']}")  
+            # Verificar la contraseña usando check_password_hash
+            if check_password_hash(acceder['contrasena'], contrasena):
+                session['logeado'] = True
+                session['id_usuario'] = acceder['id_usuario']
+                session['usuario'] = acceder['usuario']
+                session['nombre'] = acceder['nombre']
+
+                return redirect(url_for('consulta_productos'))
+            else:
+                return render_template('login.html', mensaje='Usuario o contraseña incorrectos.')
         else:
-            return render_template('login.html', mensaje='Usuario o contraseña incorrectos..')
+            return render_template('login.html', mensaje='Usuario o contraseña incorrectos.')
     return redirect('/')
 
 
@@ -61,10 +92,13 @@ def registro_usuarios():
             flash("Las contraseñas no coinciden. Inténtalo de nuevo.")
             return redirect('/registro')  # Redirigir de nuevo al formulario de registro
 
+        hashed_contrasena = generate_password_hash(contrasena)
+        print(f"Hash almacenado: {hashed_contrasena}") 
 
         try:
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO usuarios (nombre, apellidos, genero, usuario, contrasena, c_contraseña) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, apellidos, genero, usuario, contrasena, confirmar_c ))
+            cur.execute("INSERT INTO usuarios (nombre, apellidos, genero, usuario, contrasena) VALUES (%s, %s, %s, %s, %s)",
+                         (nombre, apellidos, genero, usuario, hashed_contrasena))
             mysql.connection.commit()
             cur.close()
 
@@ -78,6 +112,8 @@ def registro_usuarios():
 
 
 @app.route('/consulta_productos')
+@login_required
+@no_cache
 def consulta_productos():
     cur = mysql.connection.cursor()
     query = """
@@ -257,6 +293,11 @@ def eliminar_proveedor(proveedor_id):
         flash('Proveedor eliminado correctamente!', 'error')
     return redirect(url_for('consulta_proveedores'))
 
+
+@app.route('/logout')
+def logout():
+    session.pop('logeado', None)  # Eliminar 'logeado' de la sesión
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"
