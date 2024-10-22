@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/actualizar_proveedor" method="post" onsubmit="return validarFormulario()">
+                <form action="/actualizar_proveedor" method="post" enctype="multipart/form-data" onsubmit="return validarFormulario()">
                     <input type="hidden" id="editarproveedorId" name="id_proveedor">
                     <div class="mb-3">
                         <label for="nombreeditar" class="form-label">Nombre</label>
@@ -33,7 +33,7 @@
                         <label for="fotoeditar" class="form-label">Foto</label>
                         <input type="file" class="form-control" id="fotoeditar" name="fotoeditar">
                         <div class="invalid-feedback" id="fotoError"></div>
-                        <img id="previeweditar" src="" alt="previeweditar" style="display: block; max-width: 100%; height: auto;">
+                        <img id="previeweditar" src="" alt="previeweditar" style="display: block; max-width: 30%; height: auto;">
                     </div>
                     
                     <div class="modal-footer">

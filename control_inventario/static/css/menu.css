@@ -336,18 +336,26 @@ thead tr:nth-child(odd){
 /* ------------------------------------SECCION DE TABLAS------------------- */
 
 #Tabla{
-    margin: 2% 0 0 10%;
+    margin: 2% 0 0 11%;
     
     padding: 0;
     border: none;
 }
+
+#TablaProductos{
+    margin: 2% 0 0 6.5%;
+    
+    padding: 0;
+    border: none;
+}
+
 #contenido{
     box-shadow: 3px 3px 5px #000;
 }
 #registroProducto {
     width: 100%;
     height: 35px;
-    translate: 778px -15px;
+    translate: 890px -15px;
     margin: 2% 0 0 85%;
 }
 
@@ -356,6 +364,13 @@ thead tr:nth-child(odd){
 }
 
 #registroProveedor{
+    width: 100%;
+    height: 35px;
+    translate: 755px -15px;
+    margin: 2% 0 0 85%;
+}
+
+#registroCategoria{
     width: 100%;
     height: 35px;
     translate: 755px -15px;
@@ -374,7 +389,7 @@ thead tr:nth-child(odd){
     
 }
 
-#modalRegistroLabel{
+#modalRegistroLabel, #modalRegistroCategoriaLabel{
     margin-left: 34%;
 }
 
@@ -461,4 +476,11 @@ thead tr:nth-child(odd){
 #nombre{
     display: flex;
 }
+
+
+
+.text-rojo {
+    color: red;
+}
+
 

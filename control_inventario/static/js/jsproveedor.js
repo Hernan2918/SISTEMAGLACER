@@ -74,191 +74,111 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('registroProveedor').addEventListener('click', function() {
           abrirModalRegistro();
         });
-    
 
+        $(document).ready(function(){
+            $("#buscarproveedor").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                var noMatch = true;
+                $("#tabla_proveedores tbody tr").filter(function() {
+                    var match = $(this).text().toLowerCase().indexOf(value) > -1;
+                    $(this).toggle(match);
+                    if (match) noMatch = false;
+                });
+                if (noMatch) {
+                    $("#noMatches").show();
+                } else {
+                    $("#noMatches").hide();
+                }
+            });
+        });
+        
 
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            var editarProductoModal = document.getElementById('editarModalProducto');
-            editarProductoModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var id = button.getAttribute('data-id');
-                var medida = button.getAttribute('data-medidas');
-                var proveedor = button.getAttribute('data-proveedor');
-                var producto = button.getAttribute('data-producto');
-                var calidad = button.getAttribute('data-calidad');
-                var existencias = button.getAttribute('data-existencias');
-                var rotas = button.getAttribute('data-rotas');
-                var precio = button.getAttribute('data-precio');
-                var embalaje = button.getAttribute('data-embalaje');
-                var ubicacion = button.getAttribute('data-ubicacion');
-                var categoria = button.getAttribute('data-categoria');
+        document.getElementById('foto').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('preview');
         
-                var inputId = editarProductoModal.querySelector('#editarproductoId');
-                var inputMedida = editarProductoModal.querySelector('#medidaeditar');
-                var inputproveedor = editarProductoModal.querySelector('#proveedoreseditar');
-                var inputproducto = editarProductoModal.querySelector('#productoeditar');
-                var inputCalidad = editarProductoModal.querySelector('#calidadeditar');
-                var inputExistencias = editarProductoModal.querySelector('#existenciaeditar');
-                var inputRotas = editarProductoModal.querySelector('#rotaseditar');
-                var inputPrecio = editarProductoModal.querySelector('#precioeditar');
-                var inputEmbalaje = editarProductoModal.querySelector('#embalajeeditar');
-                var inputUbicacion = editarProductoModal.querySelector('#ubicacioneditar');
-                var inputCategoria = editarProductoModal.querySelector('#categoriaseditar');
-        
-                inputId.value = id;
-                inputMedida.value = medida;
-                inputproducto.value= producto;
-                inputCalidad.value = calidad;
-                inputExistencias.value = existencias;
-                inputRotas.value = rotas;
-                inputPrecio.value=precio;
-                inputEmbalaje.value = embalaje;
-                inputUbicacion.value = ubicacion;
+            if (file) {
+                const reader = new FileReader();
                 
-            
+                reader.onload = function(e) {
+                    preview.src = e.target.result; // Establece la fuente de la imagen a la cargada
+                    preview.style.display = 'block'; // Muestra la imagen
+                }
         
-                // Seleccionar la opción correcta en el select de docente
-              Array.from(inputproveedor.options).forEach(option => {
-                  if (option.value == proveedor) {
-                      option.selected = true;
-                  } else {
-                      option.selected = false;
-                  }
-              });
-      
-              // Seleccionar la opción correcta en el select de escuela
-              Array.from(inputCategoria.options).forEach(option => {
-                  if (option.value == categoria) {
-                      option.selected = true;
-                  } else {
-                      option.selected = false;
-                  }
-              });
+                reader.readAsDataURL(file); // Lee el archivo como una URL de datos
+            } else {
+                preview.src = ""; // Reinicia la fuente si no hay archivo
+                preview.style.display = 'none'; // Oculta la imagen
+            }
+        });
+        
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var editarProveedorModal = document.getElementById('editarModalProveedor');
+        
+            editarProveedorModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget; // Botón que activó el modal
+                var id = button.getAttribute('data-id');
+                var nombre = button.getAttribute('data-nombre');
+                var telefono = button.getAttribute('data-telefono');
+                var correo = button.getAttribute('data-correo');
+                var direccion = button.getAttribute('data-direccion');
+                var foto = button.getAttribute('data-foto');
+        
+                // Asigna los valores a los campos del formulario
+                editarProveedorModal.querySelector('#editarproveedorId').value = id;
+                editarProveedorModal.querySelector('#nombreeditar').value = nombre;
+                editarProveedorModal.querySelector('#telefonoeditar').value = telefono;
+                editarProveedorModal.querySelector('#correoeditar').value = correo;
+                editarProveedorModal.querySelector('#direccioneditar').value = direccion;
+        
+                // Carga la imagen
+                const previeweditar = editarProveedorModal.querySelector('#previeweditar');
+                if (foto) {
+                    previeweditar.src = "/static/uploads/" + foto; // Asigna la URL de la imagen
+                    previeweditar.style.display = 'block'; // Muestra la imagen
+                } else {
+                    previeweditar.src = ""; // Si no hay imagen, reinicia
+                    previeweditar.style.display = 'none';
+                }
+            });
+        
+            // Manejador para la vista previa de la nueva imagen
+            document.getElementById('fotoeditar').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                const previeweditar = document.getElementById('previeweditar');
+        
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previeweditar.src = e.target.result; // Establece la fuente de la imagen a la cargada
+                        previeweditar.style.display = 'block'; // Muestra la imagen
+                    }
+                    reader.readAsDataURL(file); // Lee el archivo como una URL de datos
+                } else {
+                    previeweditar.src = ""; // Reinicia la fuente si no hay archivo
+                    previeweditar.style.display = 'none'; // Oculta la imagen
+                }
             });
         });
         
 
 
-        
-            document.addEventListener('DOMContentLoaded', function() {
-                var eliminarModal = document.getElementById('eliminarP');
-                eliminarModal.addEventListener('show.bs.modal', function (event) {
-                    var button = event.relatedTarget;
-                    var productoId = button.getAttribute('data-id');
-                    
-                    
-                      
-                  
-                    var formEliminar = document.getElementById('formEliminar');
-                    formEliminar.action = '/eliminar_producto/' + productoId;
-                });
+        document.addEventListener('DOMContentLoaded', function() {
+            var eliminarModal = document.getElementById('eliminarProveedor');
+            eliminarModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var proveedorId = button.getAttribute('data-id');
+                var formEliminar = document.getElementById('formEliminarPro');
+                formEliminar.action = '/eliminar_proveedor/' + proveedorId;
             });
+        });
+        
+        
+            
             
 
            
-                $(document).ready(function(){
-                    $("#buscarproveedor").on("keyup", function() {
-                        var value = $(this).val().toLowerCase();
-                        var noMatch = true;
-                        $("#tabla_proveedores tbody tr").filter(function() {
-                            var match = $(this).text().toLowerCase().indexOf(value) > -1;
-                            $(this).toggle(match);
-                            if (match) noMatch = false;
-                        });
-                        if (noMatch) {
-                            $("#noMatches").show();
-                        } else {
-                            $("#noMatches").hide();
-                        }
-                    });
-                });
-                
-
-                document.getElementById('foto').addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    const preview = document.getElementById('preview');
-                
-                    if (file) {
-                        const reader = new FileReader();
-                        
-                        reader.onload = function(e) {
-                            preview.src = e.target.result; // Establece la fuente de la imagen a la cargada
-                            preview.style.display = 'block'; // Muestra la imagen
-                        }
-                
-                        reader.readAsDataURL(file); // Lee el archivo como una URL de datos
-                    } else {
-                        preview.src = ""; // Reinicia la fuente si no hay archivo
-                        preview.style.display = 'none'; // Oculta la imagen
-                    }
-                });
-                
-
-
-
-                document.addEventListener('DOMContentLoaded', function() {
-                    var editarProveedorModal = document.getElementById('editarModalProveedor');
-                    editarProveedorModal.addEventListener('show.bs.modal', function(event) {
-                        var button = event.relatedTarget;
-                        var id = button.getAttribute('data-id');
-                        var nombre = button.getAttribute('data-nombre');
-                        var telefono = button.getAttribute('data-telefono');
-                        var correo = button.getAttribute('data-correo');
-                        var direccion = button.getAttribute('data-direccion');
-                        var foto = button.getAttribute('data-foto');
-                        
-                        
-                
-                        var inputId = editarProveedorModal.querySelector('#editarproveedorId');
-                        var inputNombre = editarProveedorModal.querySelector('#nombreeditar');
-                        
-                        var inputTelefono = editarProveedorModal.querySelector('#telefonoeditar');
-                        var inputCorreo = editarProveedorModal.querySelector('#correoeditar');
-                        var inputDireccion = editarProveedorModal.querySelector('#direccioneditar');
-                        var inputFoto = editarProveedorModal.querySelector('#fotoeditar');
-                        
-                        
-                
-                        inputId.value = id;
-                        inputNombre.value = nombre;
-                        inputTelefono.value= telefono;
-                        inputCorreo.value = correo;
-                        inputDireccion.value = direccion;
-                        inputFoto.value = foto;
-                        
-                    });
-                });
-                
-
-                document.getElementById('fotoeditar').addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    const previeweditar = document.getElementById('previeweditar');
-                
-                    if (file) {
-                        const reader = new FileReader();
-                        
-                        reader.onload = function(e) {
-                            previeweditar.src = e.target.result; // Establece la fuente de la imagen a la cargada
-                            previeweditar.style.display = 'block'; // Muestra la imagen
-                        }
-                
-                        reader.readAsDataURL(file); // Lee el archivo como una URL de datos
-                    } else {
-                        previeweditar.src = ""; // Reinicia la fuente si no hay archivo
-                        previeweditar.style.display = 'none'; // Oculta la imagen
-                    }
-                });
-                
-
-
-                document.addEventListener('DOMContentLoaded', function() {
-                    var eliminarModal = document.getElementById('eliminarProveedor');
-                    eliminarModal.addEventListener('show.bs.modal', function (event) {
-                        var button = event.relatedTarget;
-                        var proveedorId = button.getAttribute('data-id');
-                        var formEliminar = document.getElementById('formEliminarPro');
-                        formEliminar.action = '/eliminar_proveedor/' + proveedorId;
-                    });
-                });
                 

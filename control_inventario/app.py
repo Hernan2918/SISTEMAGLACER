@@ -210,7 +210,8 @@ def eliminar_producto(producto_id):
 
 
 @app.route('/consulta_proveedores')
-
+@login_required
+@no_cache
 def consulta_proveedores():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM proveedores')
@@ -268,30 +269,162 @@ def actualizar_proveedor():
         telefono = request.form['telefonoeditar']
         correo = request.form['correoeditar']
         direccion = request.form['direccioneditar']
-        foto = request.form['fotoeditar']
+
+        print(f'ID del proveedor: {id_proveedor}')  # Verificar ID recibido
+
+        cur = mysql.connection.cursor()
+
+        try:
+            cur.execute("SELECT foto FROM proveedores WHERE id_proveedor = %s", (id_proveedor,))
+            resultado = cur.fetchone()
+
+            if resultado is None:
+                flash('Proveedor no encontrado', 'error')
+                return redirect(url_for('consulta_proveedores'))
+
+            current_foto = resultado['foto']
+            print(f'Foto actual: {current_foto}')  # Verificar la foto actual
+
+            # Determinar si se sube una nueva foto
+            if 'fotoeditar' in request.files and request.files['fotoeditar'].filename != '':
+                foto = request.files['fotoeditar']
+                print(f'Archivo subido: {foto.filename}')  # Verificar el nombre del archivo
+                filename = secure_filename(foto.filename)
+                new_file_path = os.path.join('static/uploads/', filename)
+
+                # Guarda la nueva foto
+                try:
+                    foto.save(new_file_path)
+                    print(f'Nueva foto guardada en: {new_file_path}')  # Verificar si se guardó correctamente
+                    foto_actualizada = filename  # Usa el nuevo nombre de archivo
+                except Exception as e:
+                    print(f"Error al guardar la nueva foto: {e}")
+                    flash('Error al guardar la nueva foto', 'error')
+                    return redirect(url_for('consulta_proveedores'))
+            else:
+                print("No se subió una nueva foto. Manteniendo la foto actual.")
+                foto_actualizada = current_foto  # Mantiene la foto actual si no se subió una nueva
+
+            print(f'Actualizando proveedor con ID: {id_proveedor}, Nueva foto: {foto_actualizada}')  # Verificar los valores
+            cur.execute("""
+                UPDATE proveedores
+                SET nombre = %s, telefono = %s, correo = %s, direccion = %s, foto = %s
+                WHERE id_proveedor = %s
+            """, (nombre, telefono, correo, direccion, foto_actualizada, id_proveedor))
+
+            mysql.connection.commit()
+
+            # Confirmar actualización
+            cur.execute("SELECT foto FROM proveedores WHERE id_proveedor = %s", (id_proveedor,))
+            nueva_foto = cur.fetchone()
+            print(f'Foto actualizada en la base de datos: {nueva_foto["foto"]}')  # Verificar la nueva foto
+
+            flash('Proveedor actualizado exitosamente!', 'info')
+
+        except Exception as e:
+            print(f"Error al actualizar el proveedor: {e}")
+            flash('Error al actualizar el proveedor', 'error')
+        finally:
+            cur.close()
+
+        return redirect(url_for('consulta_proveedores'))
+
+
+
+
+@app.route('/consulta_categorias')
+@login_required
+@no_cache
+def consulta_categorias():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM categorias')
+    categorias = cur.fetchall()
+    cur.close()
+    return render_template('categorias.html', categorias=categorias)
+
+
+@app.route('/registro_categorias', methods=['POST'])
+def registro_categorias():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO categorias (nombre, descripcion) VALUES (%s, %s)", (nombre, descripcion))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Categoría registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_categorias'))
+
+
+@app.route('/actualizar_categoria', methods=['POST'])
+def actualizar_categoria():
+    if request.method == 'POST':
+        id_categoria=request.form['id_categoria']
+        nombre = request.form['nombreeditar']
+        descripcion = request.form['descripcioneditar']
 
         cur = mysql.connection.cursor()
         cur.execute("""
-            UPDATE proveedores
-            SET nombre = %s, telefono = %s, correo = %s, direccion = %s, foto= %s
-            WHERE id_proveedor = %s
-        """, (nombre, telefono, correo, direccion, foto, id_proveedor))
+            UPDATE categorias
+            SET nombre = %s, descripcion = %s
+            WHERE id_categoria = %s
+        """, (nombre, descripcion, id_categoria))
         mysql.connection.commit()
         cur.close()
 
-        flash('Proveedor actualizado exitosamente!', 'info')
-        return redirect(url_for('consulta_proveedores'))
-    
+        flash('Categoría actualizada exitosamente!', 'info')
+        return redirect(url_for('consulta_categorias'))
 
-@app.route('/eliminar_proveedor/<int:proveedor_id>', methods=['POST'])
-def eliminar_proveedor(proveedor_id):
+
+
+@app.route('/eliminar_categoria/<int:categoria_id>', methods=['POST'])
+def eliminar_categoria(categoria_id):
     if request.method == 'POST':
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM proveedores WHERE id_proveedor = %s", (proveedor_id,))
+        cur.execute("DELETE FROM categorias WHERE id_categoria = %s", (categoria_id,))
         mysql.connection.commit()
         cur.close()
-        flash('Proveedor eliminado correctamente!', 'error')
-    return redirect(url_for('consulta_proveedores'))
+        flash('Categoría eliminada correctamente!', 'error')
+    return redirect(url_for('consulta_categorias'))
+
+
+
+
+
+@app.route('/consulta_porcelanicos')
+@login_required
+@no_cache
+def consulta_porcelanicos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_producto, d.medidas, doc.nombre as proveedor_nombre, producto, calidad, existencias, rotas, precio, embalaje, ubicacion,  esc.nombre as categoria_nombre
+    FROM porcelanicos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    """
+    cur.execute(query)
+    porcelanicos = cur.fetchall()
+
+    query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
+    cur.execute(query_proveedores)
+    proveedores = cur.fetchall()
+
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
+    categorias = cur.fetchall()
+    cur.close()
+    
+    form = ProductosForm()
+    form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
+    form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
+
+    return render_template('porcelanicos.html', porcelanicos=porcelanicos, proveedores= proveedores, categorias=categorias)
+
+
+
+
 
 
 @app.route('/logout')

@@ -55,7 +55,7 @@
                             <td>{{proveedor.telefono}}</td>
                             <td>{{proveedor.correo}}</td>
                             <td>{{proveedor.direccion}}</td>
-                            <td><img src="{{ url_for('static', filename='uploads/' + proveedor.foto) }}" alt="Foto de proveedor" style="width: 60px; height: auto;">
+                            <td><img src="{{ url_for('static', filename='uploads/' + proveedor.foto) }}"  alt="Foto de proveedor" style="width: 60px; height: auto;">
                             </td>
                             <td>
                                 <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProveedor" data-id="{{ proveedor.id_proveedor }}" data-nombre="{{ proveedor.nombre }}" data-telefono="{{ proveedor.telefono }}" data-correo="{{ proveedor.correo }}" data-direccion="{{ proveedor.direccion }}" data-foto="{{ proveedor.foto }}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
