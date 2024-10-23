@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
    
         function abrirModalRegistro() {
-          var modal = new bootstrap.Modal(document.getElementById('modalRegistro'));
+          var modal = new bootstrap.Modal(document.getElementById('modalRegistroPor'));
           modal.show();
         }
         document.getElementById('registroProducto').addEventListener('click', function() {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
         document.addEventListener('DOMContentLoaded', function() {
-            var editarProductoModal = document.getElementById('editarModalProducto');
+            var editarProductoModal = document.getElementById('editarModalProductoMuros');
             editarProductoModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
                 var id = button.getAttribute('data-id');
@@ -138,12 +138,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
             document.addEventListener('DOMContentLoaded', function() {
-                var eliminarModal = document.getElementById('eliminarP');
+                var eliminarModal = document.getElementById('eliminarM');
                 eliminarModal.addEventListener('show.bs.modal', function (event) {
                     var button = event.relatedTarget;
                     var productoId = button.getAttribute('data-id');
                     var formEliminar = document.getElementById('formEliminar');
-                    formEliminar.action = '/eliminar_producto/' + productoId;
+                    formEliminar.action = '/eliminar_muros/' + productoId;
                 });
             });
             

@@ -232,20 +232,14 @@ def registro_proveedor():
         correo = request.form['correo']
         direccion = request.form['direccion']
         
-        # Manejo del archivo de imagen
         foto_db = None
         if 'foto' in request.files:
             foto = request.files['foto']
             if foto.filename != '':
-                # Asegúrate de usar un nombre de archivo seguro
                 filename = secure_filename(foto.filename)
-                # Guardar la imagen en la carpeta especificada
                 foto_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 foto.save(foto_path)
-
-                # Almacena el nombre de la imagen en la base de datos
                 foto_db = filename
-
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO proveedores (nombre, telefono, correo, direccion, foto) VALUES (%s, %s, %s, %s, %s)",
@@ -270,8 +264,6 @@ def actualizar_proveedor():
         correo = request.form['correoeditar']
         direccion = request.form['direccioneditar']
 
-        print(f'ID del proveedor: {id_proveedor}')  # Verificar ID recibido
-
         cur = mysql.connection.cursor()
 
         try:
@@ -282,21 +274,19 @@ def actualizar_proveedor():
                 flash('Proveedor no encontrado', 'error')
                 return redirect(url_for('consulta_proveedores'))
 
-            current_foto = resultado['foto']
-            print(f'Foto actual: {current_foto}')  # Verificar la foto actual
+            current_foto = resultado['foto'] 
 
-            # Determinar si se sube una nueva foto
             if 'fotoeditar' in request.files and request.files['fotoeditar'].filename != '':
                 foto = request.files['fotoeditar']
-                print(f'Archivo subido: {foto.filename}')  # Verificar el nombre del archivo
+                print(f'Archivo subido: {foto.filename}')  
                 filename = secure_filename(foto.filename)
                 new_file_path = os.path.join('static/uploads/', filename)
 
-                # Guarda la nueva foto
+
                 try:
                     foto.save(new_file_path)
-                    print(f'Nueva foto guardada en: {new_file_path}')  # Verificar si se guardó correctamente
-                    foto_actualizada = filename  # Usa el nuevo nombre de archivo
+                    print(f'Nueva foto guardada en: {new_file_path}')  
+                    foto_actualizada = filename  
                 except Exception as e:
                     print(f"Error al guardar la nueva foto: {e}")
                     flash('Error al guardar la nueva foto', 'error')
@@ -330,6 +320,15 @@ def actualizar_proveedor():
         return redirect(url_for('consulta_proveedores'))
 
 
+@app.route('/eliminar_proveedor/<int:proveedor_id>', methods=['POST'])
+def eliminar_proveedor(proveedor_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM proveedores WHERE id_proveedor = %s", (proveedor_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Proveedor eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_proveedores'))
 
 
 @app.route('/consulta_categorias')
@@ -393,19 +392,19 @@ def eliminar_categoria(categoria_id):
 
 
 
-@app.route('/consulta_porcelanicos')
+@app.route('/consulta_muros')
 @login_required
 @no_cache
-def consulta_porcelanicos():
+def consulta_muros():
     cur = mysql.connection.cursor()
     query = """
     SELECT d.id_producto, d.medidas, doc.nombre as proveedor_nombre, producto, calidad, existencias, rotas, precio, embalaje, ubicacion,  esc.nombre as categoria_nombre
-    FROM porcelanicos d
+    FROM muros d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
     JOIN categorias esc ON d.categoria = esc.id_categoria
     """
     cur.execute(query)
-    porcelanicos = cur.fetchall()
+    muros = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
     cur.execute(query_proveedores)
@@ -420,10 +419,174 @@ def consulta_porcelanicos():
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('porcelanicos.html', porcelanicos=porcelanicos, proveedores= proveedores, categorias=categorias)
+    return render_template('muros.html', muros=muros, proveedores= proveedores, categorias=categorias)
 
 
 
+
+
+
+@app.route('/registro_muros', methods=['POST'])
+def registro_muros():
+    if request.method == 'POST':
+        medida = request.form['medida']
+        proveedor_id = request.form['proveedores']
+        producto = request.form['producto']
+        calidad = request.form['calidad']
+        existencia = request.form['existencia']
+        rotas = request.form['rotas']
+        precio = request.form['precio']
+        embalaje = request.form['embalaje']
+        ubicacion = request.form['ubicacion']
+        categoria_id = request.form['categorias']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO muros (medidas, proveedor, producto, calidad, existencias, rotas, precio, embalaje, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                    (medida, proveedor_id, producto, calidad, existencia, rotas, precio, embalaje, ubicacion, categoria_id  ))
+        mysql.connection.commit()
+        cur.close()
+
+        
+        flash('Producto registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_muros'))
+
+@app.route('/actualizar_muros', methods=['POST'])
+def actualizar_muros():
+    if request.method == 'POST':
+        id_producto = request.form['id_producto']
+        medida = request.form['medidaeditar']
+        proveedor_id = request.form['proveedoreseditar']
+        producto = request.form['productoeditar']
+        calidad = request.form['calidadeditar']
+        existencia = request.form['existenciaeditar']
+        rotas = request.form['rotaseditar']
+        precio = request.form['precioeditar']
+        embalaje = request.form['embalajeeditar']
+        ubicacion = request.form['ubicacioneditar']
+        categoria_id = request.form['categoriaseditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE muros
+            SET medidas = %s, proveedor = %s, producto = %s, calidad = %s, existencias = %s, rotas = %s, precio = %s, embalaje =%s, ubicacion = %s, categoria = %s
+            WHERE id_producto = %s
+            """,
+            (medida, proveedor_id, producto, calidad, existencia, rotas, precio, embalaje, ubicacion, categoria_id, id_producto)
+        )
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Producto actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_muros'))
+
+
+
+
+@app.route('/eliminar_muros/<int:muro_id>', methods=['POST'])
+def eliminar_muros(muro_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM muros WHERE id_producto = %s", (muro_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Producto eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_muros'))
+
+
+@app.route('/consulta_adhesivos')
+@login_required
+@no_cache
+def consulta_adhesivos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_adhesivos, doc.nombre as proveedor_nombre, d.nombre, kilogramos, existencia, precio, ubicacion,  esc.nombre as categoria_nombre
+    FROM adhesivos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    """
+    cur.execute(query)
+    adhesivos = cur.fetchall()
+
+    query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
+    cur.execute(query_proveedores)
+    proveedores = cur.fetchall()
+
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
+    categorias = cur.fetchall()
+    cur.close()
+    
+    form = ProductosForm()
+    form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
+    form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
+
+    return render_template('adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias)
+
+
+@app.route('/registro_adhesivos', methods=['POST'])
+def registro_adhesivos():
+    if request.method == 'POST':
+        proveedor = request.form['proveedores']
+        nombre = request.form['producto']
+        kilogramos = request.form['kilogramos']
+        existencia = request.form['existencia']
+        precio = request.form['precio']
+        ubicacion = request.form['ubicacion']
+        categoria_id = request.form['categorias']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO adhesivos (proveedor, nombre, kilogramos, existencia, precio, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                    (proveedor, nombre, kilogramos, existencia, precio, ubicacion, categoria_id  ))
+        mysql.connection.commit()
+        cur.close()
+
+        
+        flash('Producto registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_adhesivos'))
+
+
+
+
+@app.route('/actualizar_adhesivos', methods=['POST'])
+def actualizar_adhesivos():
+    if request.method == 'POST':
+        id_producto = request.form['id_producto']
+        proveedor_id = request.form['proveedoreseditar']
+        producto = request.form['productoeditar']
+        kilogramos = request.form['kilogramoseditar']
+        existencia = request.form['existenciaeditar']
+        precio = request.form['precioeditar']
+        ubicacion = request.form['ubicacioneditar']
+        categoria_id = request.form['categoriaseditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE adhesivos
+            SET  proveedor = %s, nombre = %s, kilogramos = %s, existencia = %s,  precio = %s,  ubicacion = %s, categoria = %s
+            WHERE id_adhesivos = %s
+            """,
+            (proveedor_id, producto, kilogramos, existencia, precio, ubicacion, categoria_id, id_producto)
+        )
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Producto actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_adhesivos'))
+
+
+
+
+@app.route('/eliminar_adhesivos/<int:adhesivo_id>', methods=['POST'])
+def eliminar_adhesivos(adhesivo_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM adhesivos WHERE id_adhesivos = %s", (adhesivo_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Producto eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_adhesivos'))
 
 
 

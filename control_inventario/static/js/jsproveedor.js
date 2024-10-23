@@ -2,12 +2,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const homeLink = document.getElementById('home-link');
     const subcategories = document.getElementById('subcategories');
-    const pisosLink = document.getElementById('pisos-link');
-    const subcategoriasPisos = document.querySelector('.subcategorias_pisos');
-    const adLink = document.getElementById('ad-link');
-    const subcategoriasAd = document.querySelector('.subcategorias_ad');
-    const murosLink = document.getElementById('muros-link');
-    const subcategoriasMuros = document.querySelector('.subcategorias_muros');
+    // const pisosLink = document.getElementById('pisos-link');
+    // const subcategoriasPisos = document.querySelector('.subcategorias_pisos');
+    // const adLink = document.getElementById('ad-link');
+    // const subcategoriasAd = document.querySelector('.subcategorias_ad');
+    // const murosLink = document.getElementById('muros-link');
+    // const subcategoriasMuros = document.querySelector('.subcategorias_muros');
 
     // Maneja el clic en "HOME"
     homeLink.addEventListener('click', function (event) {
@@ -16,31 +16,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Maneja el clic en "PISOS"
-    pisosLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        const isVisible = subcategoriasPisos.style.display === 'block';
-        subcategoriasPisos.style.display = isVisible ? 'none' : 'block';
-        subcategoriasAd.style.display = 'none'; // Cierra subcategorías de "Muros"
-        subcategoriasMuros.style.display = 'none'; // Cierra subcategorías de "Adhesivos"
-    });
+    // pisosLink.addEventListener('click', function (event) {
+    //     event.preventDefault();
+    //     const isVisible = subcategoriasPisos.style.display === 'block';
+    //     subcategoriasPisos.style.display = isVisible ? 'none' : 'block';
+    //     subcategoriasAd.style.display = 'none'; // Cierra subcategorías de "Muros"
+    //     subcategoriasMuros.style.display = 'none'; // Cierra subcategorías de "Adhesivos"
+    // });
 
     // Maneja el clic en "MUROS"
-    murosLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        const isVisible = subcategoriasMuros.style.display === 'block';
-        subcategoriasMuros.style.display = isVisible ? 'none' : 'block';
-        subcategoriasPisos.style.display = 'none'; // Cierra subcategorías de "Pisos"
-        subcategoriasAd.style.display = 'none'; // Cierra subcategorías de "Adhesivos"
-    });
+    // murosLink.addEventListener('click', function (event) {
+    //     event.preventDefault();
+    //     const isVisible = subcategoriasMuros.style.display === 'block';
+    //     subcategoriasMuros.style.display = isVisible ? 'none' : 'block';
+    //     subcategoriasPisos.style.display = 'none'; // Cierra subcategorías de "Pisos"
+    //     subcategoriasAd.style.display = 'none'; // Cierra subcategorías de "Adhesivos"
+    // });
 
     // Maneja el clic en "ADHESIVOS"
-    adLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        const isVisible = subcategoriasAd.style.display === 'block';
-        subcategoriasAd.style.display = isVisible ? 'none' : 'block';
-        subcategoriasPisos.style.display = 'none'; // Cierra subcategorías de "Pisos"
-        subcategoriasMuros.style.display = 'none'; // Cierra subcategorías de "Muros"
-    });
+    // adLink.addEventListener('click', function (event) {
+    //     event.preventDefault();
+    //     const isVisible = subcategoriasAd.style.display === 'block';
+    //     subcategoriasAd.style.display = isVisible ? 'none' : 'block';
+    //     subcategoriasPisos.style.display = 'none'; // Cierra subcategorías de "Pisos"
+    //     subcategoriasMuros.style.display = 'none'; // Cierra subcategorías de "Muros"
+    // });
 
     // Cierra subcategorías y el menú de categorías al hacer clic fuera
     document.addEventListener('click', function (event) {
@@ -48,17 +48,17 @@ document.addEventListener('DOMContentLoaded', function () {
             subcategories.style.display = 'none'; // Oculta el menú de categorías
         }
 
-        if (!pisosLink.contains(event.target) && !subcategoriasPisos.contains(event.target)) {
-            subcategoriasPisos.style.display = 'none'; // Oculta subcategorías de "Pisos"
-        }
+        // if (!pisosLink.contains(event.target) && !subcategoriasPisos.contains(event.target)) {
+        //     subcategoriasPisos.style.display = 'none'; // Oculta subcategorías de "Pisos"
+        // }
 
-        if (!adLink.contains(event.target) && !subcategoriasAd.contains(event.target)) {
-            subcategoriasAd.style.display = 'none'; // Oculta subcategorías de "Adhesivos"
-        }
+        // if (!adLink.contains(event.target) && !subcategoriasAd.contains(event.target)) {
+        //     subcategoriasAd.style.display = 'none'; // Oculta subcategorías de "Adhesivos"
+        // }
 
-        if (!murosLink.contains(event.target) && !subcategoriasMuros.contains(event.target)) {
-            subcategoriasMuros.style.display = 'none'; // Oculta subcategorías de "Muros"
-        }
+        // if (!murosLink.contains(event.target) && !subcategoriasMuros.contains(event.target)) {
+        //     subcategoriasMuros.style.display = 'none'; // Oculta subcategorías de "Muros"
+        // }
     });
 });
 

@@ -17,7 +17,7 @@
     </div>
     <div class="card  mt-10" id="contenido">
         <div class="card-header text-center">
-            <h4>Tabla de productos</h4>
+            <h4>Tabla de muros</h4>
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -53,20 +53,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for porcelanico in porcelanicos %}
+                        {% for muro in muros %}
                         <tr>
                             
-                            <td>{{porcelanico.medidas}}</td>
-                            <td>{{porcelanico.proveedor_nombre}}</td>
-                            <td>{{porcelanico.producto}}</td>
-                            <td >{{porcelanico.calidad}}</td>
-                            <td class="{% if porcelanico.existencias < 10 %}text-danger{% endif %}">{{porcelanico.existencias}}</td>
-                            <td>{{porcelanico.rotas}}</td>
-                            <td>{{porcelanico.precio}}</td>
-                            <td>{{porcelanico.embalaje}}</td>
-                            <td>{{porcelanico.ubicacion}}</td>
-                            <td>{{porcelanico.categoria_nombre}}</td>
-                            
+                            <td>{{muro.medidas}}</td>
+                            <td>{{muro.proveedor_nombre}}</td>
+                            <td>{{muro.producto}}</td>
+                            <td >{{muro.calidad}}</td>
+                            <td class="{% if muro.existencias < 10 %}text-danger{% endif %}">{{muro.existencias}}</td>
+                            <td>{{muro.rotas}}</td>
+                            <td>{{muro.precio}}</td>
+                            <td>{{muro.embalaje}}</td>
+                            <td>{{muro.ubicacion}}</td>
+                            <td>{{muro.categoria_nombre}}</td>
+
+                            <td>
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoMuros" data-id="{{ muro.id_producto }}" data-medidas="{{ muro.medidas }}" data-proveedor="{{ muro.proveedor }}" data-producto="{{muro.producto}}" data-calidad="{{ muro.calidad }}" data-existencias="{{ muro.existencias }}" data-rotas="{{muro.rotas}}" data-precio="{{muro.precio}}" data-embalaje="{{muro.embalaje}}" data-ubicacion="{{muro.ubicacion}}" data-categoria="{{muro.categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
+                                <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarM" value="{{ muro.id_producto }}" data-id="{{ muro.id_producto }}"><i class="bi bi-trash3-fill"></i></button>
+                                <button type="submit" class="btn btn-success" id="btnentradas" data-bs-toggle="modal" data-bs-target="#editarModalProducto" value="#"><i class="bi bi-box-arrow-left"></i></button>
+                                <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarP" ><i class="bi bi-box-arrow-right"></i></button>
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#eliminarP" ><i class="bi bi-printer-fill"></i></button>
+
+                            </td>
+                                                
                         </tr>
                         {% endfor %}
                         <script>

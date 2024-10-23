@@ -34,15 +34,15 @@
                     </a>
                     <ul id="subcategories"> 
                         <li>
-                            <a href="#" class="menu-item" id="pisos-link">Pisos</a>
+                            <a href="/consulta_productos" class="menu-item" id="pisos-link">Pisos</a>
                             <ul class="subcategorias_pisos" style="display: none;">
-                                <li><a href="/consulta_productos">Pisos ceramicos</a></li>
-                                <li><a href="">Pisos porcelanicos</a></li>
+                                <li><a href="/consulta_productos">ceramicos</a></li>
+                                <li><a href="">Porcelanicos</a></li>
                                 <li><a href="">Duelas</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="" class="menu-item" id="ad-link">Muros</a>
+                            <a href="/consulta_muros" class="menu-item" id="ad-link">Muros</a>
                             <ul class="subcategorias_ad" style="display: none;">
                                 <li><a href="">Muro ceramico</a></li>
                                 <li><a href="">Muro importados</a></li>
@@ -50,7 +50,7 @@
                             </ul>
                         </li>
                         <li >
-                            <a href="" class="menu-item" id="muros-link">Adhesivos</a>
+                            <a href="/consulta_adhesivos" class="menu-item" id="muros-link">Adhesivos</a>
                             <ul class="subcategorias_muros" style="display: none;">
                                 <li><a href="">Pegazulejos</a></li>
                                 <li><a href="">Estuco</a></li>
@@ -70,15 +70,14 @@
                 <a class="scroll" href="{{ url_for('logout') }}"><i class="bi bi-power"></i></a>
             </ul>
         </div>
+         
         
-        
-        
-        {% include 'consulta_porcelanicos.html'%}
+        {% include 'consulta_muros.html'%}
+        {% include 'registrar_muros.html' %}
+        {% include 'actualizar_muros.html' %}
+        {% include 'eliminar_muro.html' %}
         
 
-        
-
-        
     </div>
 
     
@@ -86,7 +85,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-    <script src="/static/js/jsproductos.js"></script>
+    <script src="/static/js/jsmuros.js"></script>
     
     
 

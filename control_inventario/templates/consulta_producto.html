@@ -17,7 +17,7 @@
     </div>
     <div class="card  mt-10" id="contenido">
         <div class="card-header text-center">
-            <h4>Tabla de productos</h4>
+            <h4>Tabla de pisos</h4>
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -59,7 +59,7 @@
                             <td>{{producto.medidas}}</td>
                             <td>{{producto.proveedor_nombre}}</td>
                             <td>{{producto.producto}}</td>
-                            <td >{{producto.calidad}}</td>
+                            <td>{{producto.calidad}}</td>
                             <td class="{% if producto.existencias < 10 %}text-danger{% endif %}">{{producto.existencias}}</td>
                             <td>{{producto.rotas}}</td>
                             <td>{{producto.precio}}</td>
