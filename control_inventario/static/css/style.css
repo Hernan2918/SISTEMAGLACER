@@ -6,12 +6,11 @@
 }
 body {
     background: url(/static/img/FondoLogin.jpg);
-    background-size: contain; /* Asegura que la imagen cubra todo el fondo */
+    background-size:  100% 100%; /*vbcdhvdvj Asegura que la imagen cubra todo el fondo */
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 100vh;
-    width: 100vw; /* Asegura que el ancho sea completo */
+   
+    /* Asegura que el ancho sea completo */
 
     
 }
@@ -63,7 +62,7 @@ body {
     }
     
     .Imagen{
-       translate: 60px -147px ;
+       translate: 60px -140px ;
     }
     
     img{

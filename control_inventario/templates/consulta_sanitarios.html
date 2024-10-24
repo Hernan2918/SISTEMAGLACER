@@ -1,0 +1,86 @@
+<main role="main" id="TablaProductos" class="col-md-11">
+    <div id="nombre">
+        <div class="elemento1">
+            {% if 'nombre' in session %}
+            <h4>¡Hola!, {{ session['nombre'] }} </h4>
+            
+        {% else %}
+            
+        {% endif %}
+        </div>
+        <div class="elemento">
+            <button type="button" id="registroProducto" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
+        
+                <i class="fas fa-plus"></i> Producto
+            </button>
+        </div>
+    </div>
+    <div class="card  mt-10" id="contenido">
+        <div class="card-header text-center">
+            <h4>Tabla de sanitarios</h4>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+     <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+        {{ message }}
+      </div>
+      <script>
+        // Cerrar automáticamente la alerta después de 5 segundos
+        setTimeout(function() {
+          $('.alert').alert('close');
+        }, 1500);
+      </script>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+        <div class="card-body">
+            <div class=" table-responsive">
+                <table  class="table table-striped  table-sm" id="tabla_productos">
+                    <thead>
+                        <tr>
+                            
+                            <th scope="col">Proveedor</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Existencia</th>
+                            <th scope="col">Rotas</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sanitario in sanitarios %}
+                        <tr>
+                            
+                            
+                            <td>{{sanitario.proveedor_nombre}}</td>
+                            <td>{{sanitario.nombre}}</td>
+                            <td class="{% if sanitario.existencias < 10 %}text-danger{% endif %}" >{{sanitario.existencias}}</td>
+                            <td>{{sanitario.rotas}}</td>
+                            <td>{{sanitario.precio}}</td>
+                            <td>{{sanitario.ubicacion}}</td>
+                            <td>{{sanitario.categoria_nombre}}</td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <script>
+                            
+                        </script>
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted ">
+            SISTEMA GLACER
+        </div>
+    </div>
+    
+</main>
+
+

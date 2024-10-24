@@ -208,7 +208,6 @@ def eliminar_producto(producto_id):
 
 
 
-
 @app.route('/consulta_proveedores')
 @login_required
 @no_cache
@@ -218,8 +217,6 @@ def consulta_proveedores():
     proveedores = cur.fetchall()
     cur.close()
     return render_template('proveedores.html', proveedores=proveedores)
-
-
 
 UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -331,6 +328,7 @@ def eliminar_proveedor(proveedor_id):
     return redirect(url_for('consulta_proveedores'))
 
 
+
 @app.route('/consulta_categorias')
 @login_required
 @no_cache
@@ -387,8 +385,6 @@ def eliminar_categoria(categoria_id):
         cur.close()
         flash('Categoría eliminada correctamente!', 'error')
     return redirect(url_for('consulta_categorias'))
-
-
 
 
 
@@ -546,8 +542,6 @@ def registro_adhesivos():
         return redirect(url_for('consulta_adhesivos'))
 
 
-
-
 @app.route('/actualizar_adhesivos', methods=['POST'])
 def actualizar_adhesivos():
     if request.method == 'POST':
@@ -587,6 +581,93 @@ def eliminar_adhesivos(adhesivo_id):
         cur.close()
         flash('Producto eliminado correctamente!', 'error')
     return redirect(url_for('consulta_adhesivos'))
+
+
+
+
+
+
+@app.route('/consulta_sanitarios')
+@login_required
+@no_cache
+def consulta_sanitarios():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_sanitario, doc.nombre as proveedor_nombre, d.nombre, existencias, rotas, precio, ubicacion,  esc.nombre as categoria_nombre
+    FROM sanitarios d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    """
+    cur.execute(query)
+    sanitarios = cur.fetchall()
+
+    query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
+    cur.execute(query_proveedores)
+    proveedores = cur.fetchall()
+
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
+    categorias = cur.fetchall()
+    cur.close()
+    
+    form = ProductosForm()
+    form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
+    form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
+
+    return render_template('sanitarios.html', sanitarios=sanitarios, proveedores= proveedores, categorias=categorias)
+
+
+
+@app.route('/registro_sanitarios', methods=['POST'])
+def registro_saniatarios():
+    if request.method == 'POST':
+        proveedor = request.form['proveedores']
+        nombre = request.form['producto']
+        existencias = request.form['existencia']
+        rotas = request.form['rotas']
+        precio = request.form['precio']
+        ubicacion = request.form['ubicacion']
+        categoria_id = request.form['categorias']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO sanitarios (proveedor, nombre, existencias, rotas, precio, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                    (proveedor, nombre, existencias, rotas, precio, ubicacion, categoria_id  ))
+        mysql.connection.commit()
+        cur.close()
+        
+        flash('Producto registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_sanitarios'))
+
+
+
+@app.route('/actualizar_saniatarios', methods=['POST'])
+def actualizar_sanitarios():
+    if request.method == 'POST':
+        id_producto = request.form['id_producto']
+        proveedor_id = request.form['proveedoreseditar']
+        producto = request.form['productoeditar']
+        existencia = request.form['existenciaeditar']
+        rotas = request.form['rotaseditar']
+        precio = request.form['precioeditar']
+        ubicacion = request.form['ubicacioneditar']
+        categoria_id = request.form['categoriaseditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE sanitarios
+            SET  proveedor = %s, nombre = %s, existenciaS = %s, rotas = %s,  precio = %s,  ubicacion = %s, categoria = %s
+            WHERE id_adhesivos = %s
+            """,
+            (proveedor_id, producto, existencia, rotas, precio, ubicacion, categoria_id, id_producto)
+        )
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Producto actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_sanitarios'))
+
+
 
 
 

@@ -64,49 +64,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
    
         function abrirModalRegistro() {
-          var modal = new bootstrap.Modal(document.getElementById('modalRegistro'));
+          var modal = new bootstrap.Modal(document.getElementById('modalRegistroSanitarios'));
           modal.show();
         }
         document.getElementById('registroProducto').addEventListener('click', function() {
           abrirModalRegistro();
         });
     
+
+
+    
         document.addEventListener('DOMContentLoaded', function() {
-            var editarProductoModal = document.getElementById('editarModalProducto');
+            var editarProductoModal = document.getElementById('editarModalProductoSanitarios');
             editarProductoModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
                 var id = button.getAttribute('data-id');
-                var medida = button.getAttribute('data-medidas');
                 var proveedor = button.getAttribute('data-proveedor');
                 var producto = button.getAttribute('data-producto');
-                var calidad = button.getAttribute('data-calidad');
                 var existencias = button.getAttribute('data-existencias');
                 var rotas = button.getAttribute('data-rotas');
                 var precio = button.getAttribute('data-precio');
-                var embalaje = button.getAttribute('data-embalaje');
                 var ubicacion = button.getAttribute('data-ubicacion');
                 var categoria = button.getAttribute('data-categoria');
         
                 var inputId = editarProductoModal.querySelector('#editarproductoId');
-                var inputMedida = editarProductoModal.querySelector('#medidaeditar');
                 var inputproveedor = editarProductoModal.querySelector('#proveedoreseditar');
                 var inputproducto = editarProductoModal.querySelector('#productoeditar');
-                var inputCalidad = editarProductoModal.querySelector('#calidadeditar');
                 var inputExistencias = editarProductoModal.querySelector('#existenciaeditar');
                 var inputRotas = editarProductoModal.querySelector('#rotaseditar');
                 var inputPrecio = editarProductoModal.querySelector('#precioeditar');
-                var inputEmbalaje = editarProductoModal.querySelector('#embalajeeditar');
                 var inputUbicacion = editarProductoModal.querySelector('#ubicacioneditar');
                 var inputCategoria = editarProductoModal.querySelector('#categoriaseditar');
         
                 inputId.value = id;
-                inputMedida.value = medida;
                 inputproducto.value= producto;
-                inputCalidad.value = calidad;
-                inputExistencias.value = existencias;
                 inputRotas.value = rotas;
+                inputExistencias.value = existencias;
                 inputPrecio.value=precio;
-                inputEmbalaje.value = embalaje;
                 inputUbicacion.value = ubicacion;
                 
             
@@ -132,15 +126,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         
 
-
         
             document.addEventListener('DOMContentLoaded', function() {
-                var eliminarModal = document.getElementById('eliminarP');
+                var eliminarModal = document.getElementById('eliminarA');
                 eliminarModal.addEventListener('show.bs.modal', function (event) {
                     var button = event.relatedTarget;
                     var productoId = button.getAttribute('data-id');
                     var formEliminar = document.getElementById('formEliminar');
-                    formEliminar.action = '/eliminar_producto/' + productoId;
+                    formEliminar.action = '/eliminar_adhesivos/' + productoId;
                 });
             });
             
