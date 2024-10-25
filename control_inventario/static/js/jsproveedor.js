@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var editarProveedorModal = document.getElementById('editarModalProveedor');
         
             editarProveedorModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget; // Botón que activó el modal
+                var button = event.relatedTarget; 
                 var id = button.getAttribute('data-id');
                 var nombre = button.getAttribute('data-nombre');
                 var telefono = button.getAttribute('data-telefono');
@@ -127,20 +127,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 var direccion = button.getAttribute('data-direccion');
                 var foto = button.getAttribute('data-foto');
         
-                // Asigna los valores a los campos del formulario
+                
                 editarProveedorModal.querySelector('#editarproveedorId').value = id;
                 editarProveedorModal.querySelector('#nombreeditar').value = nombre;
                 editarProveedorModal.querySelector('#telefonoeditar').value = telefono;
                 editarProveedorModal.querySelector('#correoeditar').value = correo;
                 editarProveedorModal.querySelector('#direccioneditar').value = direccion;
         
-                // Carga la imagen
+                
                 const previeweditar = editarProveedorModal.querySelector('#previeweditar');
                 if (foto) {
-                    previeweditar.src = "/static/uploads/" + foto; // Asigna la URL de la imagen
-                    previeweditar.style.display = 'block'; // Muestra la imagen
+                    previeweditar.src = "/static/uploads/" + foto; 
+                    previeweditar.style.display = 'block'; 
                 } else {
-                    previeweditar.src = ""; // Si no hay imagen, reinicia
+                    previeweditar.src = ""; 
                     previeweditar.style.display = 'none';
                 }
             });

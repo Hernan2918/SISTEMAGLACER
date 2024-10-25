@@ -125,8 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
         
-
-
         
             document.addEventListener('DOMContentLoaded', function() {
                 var eliminarModal = document.getElementById('eliminarA');

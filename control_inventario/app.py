@@ -490,6 +490,8 @@ def eliminar_muros(muro_id):
     return redirect(url_for('consulta_muros'))
 
 
+
+
 @app.route('/consulta_adhesivos')
 @login_required
 @no_cache
@@ -570,8 +572,6 @@ def actualizar_adhesivos():
         return redirect(url_for('consulta_adhesivos'))
 
 
-
-
 @app.route('/eliminar_adhesivos/<int:adhesivo_id>', methods=['POST'])
 def eliminar_adhesivos(adhesivo_id):
     if request.method == 'POST':
@@ -581,8 +581,6 @@ def eliminar_adhesivos(adhesivo_id):
         cur.close()
         flash('Producto eliminado correctamente!', 'error')
     return redirect(url_for('consulta_adhesivos'))
-
-
 
 
 
