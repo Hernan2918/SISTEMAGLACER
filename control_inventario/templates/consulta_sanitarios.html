@@ -64,6 +64,12 @@
                             <td>{{sanitario.categoria_nombre}}</td>
                             <td>
                                 
+                                
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoSanitarios" data-id="{{ sanitario.id_sanitario }}"  data-proveedor="{{ sanitario.proveedor }}" data-producto="{{sanitario.nombre}}" data-existencias="{{sanitario.existencias}}" data-precio="{{sanitario.precio}}" data-rotas="{{ sanitario.rotas }}" data-ubicacion="{{sanitario.ubicacion}}" data-categoria="{{sanitario.categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
+                                
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarProveedor" data-id="{{ sanitario.id_sanitario }}">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
                             </td>
                         </tr>
                         {% endfor %}

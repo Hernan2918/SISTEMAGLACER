@@ -640,7 +640,7 @@ def registro_saniatarios():
 
 
 
-@app.route('/actualizar_saniatarios', methods=['POST'])
+@app.route('/actualizar_sanitarios', methods=['POST'])
 def actualizar_sanitarios():
     if request.method == 'POST':
         id_producto = request.form['id_producto']
@@ -656,8 +656,8 @@ def actualizar_sanitarios():
         cur.execute(
             """
             UPDATE sanitarios
-            SET  proveedor = %s, nombre = %s, existenciaS = %s, rotas = %s,  precio = %s,  ubicacion = %s, categoria = %s
-            WHERE id_adhesivos = %s
+            SET  proveedor = %s, nombre = %s, existencias = %s, rotas = %s,  precio = %s,  ubicacion = %s, categoria = %s
+            WHERE id_sanitario = %s
             """,
             (proveedor_id, producto, existencia, rotas, precio, ubicacion, categoria_id, id_producto)
         )
@@ -668,6 +668,17 @@ def actualizar_sanitarios():
         return redirect(url_for('consulta_sanitarios'))
 
 
+
+
+@app.route('/eliminar_sanitarios/<int:sanitario_id>', methods=['POST'])
+def eliminar_sanitarios(sanitario_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM sanitarios WHERE id_sanitario = %s", (sanitario_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Producto eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_sanitarios'))
 
 
 

@@ -128,12 +128,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
             document.addEventListener('DOMContentLoaded', function() {
-                var eliminarModal = document.getElementById('eliminarA');
+                var eliminarModal = document.getElementById('eliminarSANITARIOS');
                 eliminarModal.addEventListener('show.bs.modal', function (event) {
                     var button = event.relatedTarget;
                     var productoId = button.getAttribute('data-id');
                     var formEliminar = document.getElementById('formEliminar');
-                    formEliminar.action = '/eliminar_adhesivos/' + productoId;
+                    formEliminar.action = '/eliminar_sanitarios/' + productoId;
                 });
             });
             
