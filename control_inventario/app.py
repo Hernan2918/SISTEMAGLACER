@@ -138,7 +138,7 @@ def consulta_productos():
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('productos.html', productos=productos, proveedores= proveedores, categorias=categorias)
+    return render_template('/productos/productos.html', productos=productos, proveedores= proveedores, categorias=categorias)
 
 
 @app.route('/registro_productos', methods=['POST'])
@@ -216,7 +216,7 @@ def consulta_proveedores():
     cur.execute('SELECT * FROM proveedores')
     proveedores = cur.fetchall()
     cur.close()
-    return render_template('proveedores.html', proveedores=proveedores)
+    return render_template('/proveedores/proveedores.html', proveedores=proveedores)
 
 UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -337,7 +337,7 @@ def consulta_categorias():
     cur.execute('SELECT * FROM categorias')
     categorias = cur.fetchall()
     cur.close()
-    return render_template('categorias.html', categorias=categorias)
+    return render_template('/categorias/categorias.html', categorias=categorias)
 
 
 @app.route('/registro_categorias', methods=['POST'])
@@ -415,7 +415,7 @@ def consulta_muros():
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('muros.html', muros=muros, proveedores= proveedores, categorias=categorias)
+    return render_template('/muros/muros.html', muros=muros, proveedores= proveedores, categorias=categorias)
 
 
 
@@ -519,7 +519,7 @@ def consulta_adhesivos():
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias)
+    return render_template('/adhesivos/adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias)
 
 
 @app.route('/registro_adhesivos', methods=['POST'])
@@ -540,7 +540,7 @@ def registro_adhesivos():
         cur.close()
 
         
-        flash('Producto registrada exitosamente!', 'success')
+        flash('Producto registrado exitosamente!', 'success')
         return redirect(url_for('consulta_adhesivos'))
 
 
@@ -612,7 +612,7 @@ def consulta_sanitarios():
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('sanitarios.html', sanitarios=sanitarios, proveedores= proveedores, categorias=categorias)
+    return render_template('/sanitarios/sanitarios.html', sanitarios=sanitarios, proveedores= proveedores, categorias=categorias)
 
 
 
@@ -678,6 +678,101 @@ def eliminar_sanitarios(sanitario_id):
         flash('Producto eliminado correctamente!', 'error')
     return redirect(url_for('consulta_sanitarios'))
 
+
+
+@app.route('/consulta_tinacos')
+@login_required
+@no_cache
+def consulta_tinacos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_tinaco, doc.nombre as proveedor_nombre, d.nombre, litros, color, existencias, rotas, precio, ubicacion,  esc.nombre as categoria_nombre
+    FROM tinacos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    """
+    cur.execute(query)
+    tinacos = cur.fetchall()
+
+    query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
+    cur.execute(query_proveedores)
+    proveedores = cur.fetchall()
+
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
+    categorias = cur.fetchall()
+    cur.close()
+    
+    form = ProductosForm()
+    form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
+    form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
+
+    return render_template('/tinacos/tinacos.html', tinacos=tinacos, proveedores= proveedores, categorias=categorias)
+
+
+
+@app.route('/registro_tinacos', methods=['POST'])
+def registro_tinacos():
+    if request.method == 'POST':
+        proveedor = request.form['proveedores']
+        nombre = request.form['producto']
+        litros = request.form['litros']
+        color = request.form['color']
+        existencias = request.form['existencia']
+        rotas = request.form['rotas']
+        precio = request.form['precio']
+        ubicacion = request.form['ubicacion']
+        categoria_id = request.form['categorias']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO tinacos (proveedor, nombre, litros, color, existencias, rotas, precio, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                    (proveedor, nombre, litros, color, existencias, rotas, precio, ubicacion, categoria_id  ))
+        mysql.connection.commit()
+        cur.close()
+        
+        flash('Producto registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_tinacos'))
+
+
+@app.route('/actualizar_tinacos', methods=['POST'])
+def actualizar_tinacos():
+    if request.method == 'POST':
+        id_producto = request.form['id_producto']
+        proveedor_id = request.form['proveedoreseditar']
+        producto = request.form['productoeditar']
+        litros = request.form['litroseditar']
+        color = request.form['coloreditar']
+        existencia = request.form['existenciaeditar']
+        rotas = request.form['rotaseditar']
+        precio = request.form['precioeditar']
+        ubicacion = request.form['ubicacioneditar']
+        categoria_id = request.form['categoriaseditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE tinacos
+            SET  proveedor = %s, nombre = %s, litros = %s, color= %s, existencias = %s, rotas = %s,  precio = %s,  ubicacion = %s, categoria = %s
+            WHERE id_tinaco = %s
+            """,
+            (proveedor_id, producto, litros, color, existencia, rotas, precio, ubicacion, categoria_id, id_producto)
+        )
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Producto actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_tinacos'))
+
+
+@app.route('/eliminar_tinacos/<int:tinaco_id>', methods=['POST'])
+def eliminar_tinacos(tinaco_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM tinacos WHERE id_tinaco = %s", (tinaco_id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Producto eliminado correctamente!', 'error')
+    return redirect(url_for('consulta_tinacos'))
 
 
 @app.route('/logout')

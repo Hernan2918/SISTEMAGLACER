@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
    
         function abrirModalRegistro() {
-          var modal = new bootstrap.Modal(document.getElementById('modalRegistroSanitarios'));
+          var modal = new bootstrap.Modal(document.getElementById('modalRegistroTinacos'));
           modal.show();
         }
         document.getElementById('registroProducto').addEventListener('click', function() {
@@ -75,21 +75,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
         document.addEventListener('DOMContentLoaded', function() {
-            var editarProductoModal = document.getElementById('editarModalProductoSanitarios');
+            var editarProductoModal = document.getElementById('editarModalProductoTinacos');
             editarProductoModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
+
+                console.log("Botón:", button);
+        console.log("Atributos:", {
+            id: button.getAttribute('data-id'),
+            proveedor: button.getAttribute('data-proveedor'),
+            producto: button.getAttribute('data-producto'),
+            litros: button.getAttribute('data-litros'),
+            color: button.getAttribute('data-color'),
+            existencias: button.getAttribute('data-existencias'),
+            rotas: button.getAttribute('data-rotas'),
+            precio: button.getAttribute('data-precio'),
+            ubicacion: button.getAttribute('data-ubicacion'),
+            categoria: button.getAttribute('data-categoria')
+        });
+
                 var id = button.getAttribute('data-id');
-                var proveedor = button.getAttribute('data-proveedor');
+                var proveedor = button.getAttribute('data-proveedor') || '';
                 var producto = button.getAttribute('data-producto');
+                var litros = button.getAttribute('data-litros');
+                var color = button.getAttribute('data-color');
                 var existencias = button.getAttribute('data-existencias');
                 var rotas = button.getAttribute('data-rotas');
                 var precio = button.getAttribute('data-precio');
                 var ubicacion = button.getAttribute('data-ubicacion');
-                var categoria = button.getAttribute('data-categoria');
+                var categoria = button.getAttribute('data-categoria') || '';
+
+                console.log("ID:", id);
+                console.log("Proveedor:", proveedor);
+                console.log("Categoría:", categoria);
         
                 var inputId = editarProductoModal.querySelector('#editarproductoId');
                 var inputproveedor = editarProductoModal.querySelector('#proveedoreseditar');
                 var inputproducto = editarProductoModal.querySelector('#productoeditar');
+                var inputLitros = editarProductoModal.querySelector('#litroseditar');
+                var inputColor = editarProductoModal.querySelector('#coloreditar');
                 var inputExistencias = editarProductoModal.querySelector('#existenciaeditar');
                 var inputRotas = editarProductoModal.querySelector('#rotaseditar');
                 var inputPrecio = editarProductoModal.querySelector('#precioeditar');
@@ -98,6 +121,8 @@ document.addEventListener('DOMContentLoaded', function () {
         
                 inputId.value = id;
                 inputproducto.value= producto;
+                inputLitros.value= litros;
+                inputColor.value= color;
                 inputRotas.value = rotas;
                 inputExistencias.value = existencias;
                 inputPrecio.value=precio;
@@ -105,27 +130,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 
             
         
-                var inputproveedor = editarProductoModal.querySelector('#proveedoreseditar');
                 Array.from(inputproveedor.options).forEach(option => {
-                    option.selected = (option.value == proveedor); // Asegúrate de que `proveedor` tiene el valor correcto
+                    option.selected = (option.value == proveedor);
                 });
                 
-                var inputCategoria = editarProductoModal.querySelector('#categoriaseditar');
                 Array.from(inputCategoria.options).forEach(option => {
-                    option.selected = (option.value == categoria); // Asegúrate de que `categoria` tiene el valor correcto
+                    option.selected = (option.value == categoria);
                 });
+
+                
+        
             });
         });
+
         
 
         
             document.addEventListener('DOMContentLoaded', function() {
-                var eliminarModal = document.getElementById('eliminarSANITARIOS');
+                var eliminarModal = document.getElementById('eliminarTinacos');
                 eliminarModal.addEventListener('show.bs.modal', function (event) {
                     var button = event.relatedTarget;
                     var productoId = button.getAttribute('data-id');
                     var formEliminar = document.getElementById('formEliminar');
-                    formEliminar.action = '/eliminar_sanitarios/' + productoId;
+                    formEliminar.action = '/eliminar_tinacos/' + productoId;
                 });
             });
             

@@ -60,7 +60,13 @@
                             <td>{{producto.proveedor_nombre}}</td>
                             <td>{{producto.producto}}</td>
                             <td>{{producto.calidad}}</td>
-                            <td class="{% if producto.existencias < 10 %}text-danger{% endif %}">{{producto.existencias}}</td>
+                            <td>
+                                {% if producto.existencias < 10 %}
+                                    <span class="circulo-rojo">{{ producto.existencias }}</span>
+                                {% else %}
+                                    {{ producto.existencias }}
+                                {% endif %}
+                            </td>
                             <td>{{producto.rotas}}</td>
                             <td>{{producto.precio}}</td>
                             <td>{{producto.embalaje}}</td>

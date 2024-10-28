@@ -36,8 +36,8 @@
                         <li>
                             <a href="/consulta_productos" class="menu-item" id="pisos-link">Pisos</a>
                             <ul class="subcategorias_pisos" style="display: none;">
-                                <li><a href="/consulta_productos">Cerámicos</a></li>
-                                <li><a href="/consulta_porcelanicos">Porcelánicos</a></li>
+                                <li><a href="/consulta_productos">ceramicos</a></li>
+                                <li><a href="">Porcelanicos</a></li>
                                 <li><a href="">Duelas</a></li>
                             </ul>
                         </li>
@@ -70,22 +70,22 @@
                 <a class="scroll" href="{{ url_for('logout') }}"><i class="bi bi-power"></i></a>
             </ul>
         </div>
+         
+        
+        {% include 'muros/consulta_muros.html'%}
+        {% include 'muros/registrar_muros.html' %}
+        {% include 'muros/actualizar_muros.html' %}
+        {% include 'muros/eliminar_muro.html' %}
         
 
-        
     </div>
 
-    {% include 'consulta_adhesivos.html' %}
-    {% include 'registrar_adhesivo.html' %}
-    {% include 'eliminar_adhesivos.html' %}
-    {% include 'actualizar_adhesivos.html' %}
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-    <script src="/static/js/jsadhesivos.js"></script>
-    
+    <script src="/static/js/jsmuros.js"></script>
     
     
 

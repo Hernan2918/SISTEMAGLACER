@@ -17,7 +17,7 @@
     </div>
     <div class="card  mt-10" id="contenido">
         <div class="card-header text-center">
-            <h4>Tabla de sanitarios</h4>
+            <h4>Tabla de adhesivos</h4>
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -42,8 +42,8 @@
                             
                             <th scope="col">Proveedor</th>
                             <th scope="col">Nombre</th>
+                            <th scope="col">Kilogramos</th>
                             <th scope="col">Existencia</th>
-                            <th scope="col">Rotas</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Ubicación</th>
                             <th scope="col">Categoría</th>
@@ -51,25 +51,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for sanitario in sanitarios %}
+                        {% for adhesivo in adhesivos %}
                         <tr>
                             
                             
-                            <td>{{sanitario.proveedor_nombre}}</td>
-                            <td>{{sanitario.nombre}}</td>
-                            <td class="{% if sanitario.existencias < 10 %}text-danger{% endif %}" >{{sanitario.existencias}}</td>
-                            <td>{{sanitario.rotas}}</td>
-                            <td>{{sanitario.precio}}</td>
-                            <td>{{sanitario.ubicacion}}</td>
-                            <td>{{sanitario.categoria_nombre}}</td>
+                            <td>{{adhesivo.proveedor_nombre}}</td>
+                            <td>{{adhesivo.nombre}}</td>
+                            <td>{{adhesivo.kilogramos}}</td>
                             <td>
+                                {% if adhesivo.existencia < 10 %}
+                                    <span class="circulo-rojo">{{ adhesivo.existencia }}</span>
+                                {% else %}
+                                    {{ adhesivo.existencia }}
+                                {% endif %}
+                            </td>
+                            <td>{{adhesivo.precio}}</td>
+                            <td>{{adhesivo.ubicacion}}</td>
+                            <td>{{adhesivo.categoria_nombre}}</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoAdhesivos" data-id="{{ adhesivo.id_adhesivos }}"  data-proveedor="{{ adhesivo.proveedor }}" data-producto="{{adhesivo.nombre}}" data-kilogramos="{{ adhesivo.kilogramos }}" data-existencias="{{ adhesivo.existencia }}"  data-precio="{{adhesivo.precio}}" data-ubicacion="{{adhesivo.ubicacion}}" data-categoria="{{adhesivo.categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
                                 
+                                <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarA" value="{{ adhesivo.id_adhesivos }}" data-id="{{ adhesivo.id_adhesivos }}"><i class="bi bi-trash3-fill"></i></button>
                                 
-                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoSanitarios" data-id="{{ sanitario.id_sanitario }}"  data-proveedor="{{ sanitario.proveedor }}" data-producto="{{sanitario.nombre}}" data-existencias="{{sanitario.existencias}}" data-precio="{{sanitario.precio}}" data-rotas="{{ sanitario.rotas }}" data-ubicacion="{{sanitario.ubicacion}}" data-categoria="{{sanitario.categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
-                                
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarProveedor" data-id="{{ sanitario.id_sanitario }}">
-                                    <i class="bi bi-trash3-fill"></i>
-                                </button>
                             </td>
                         </tr>
                         {% endfor %}

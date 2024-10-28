@@ -22,7 +22,7 @@
         <ul class="fondo1">
             <img class="Logovista" src="/static/img/logov.jpeg" alt="">
             <li>GLACER Glamur Cerámico S.A de C.V <p class="titulo">Atlacomulco-Vías</p> </li>
-            <div class=""><input type="search" id="buscarproducto" name="" placeholder="Buscar producto..."><i id="buscar" class="bi bi-search"></i> </div>
+            <div class=""><input type="search" id="buscarproveedor" name="" placeholder="Buscar producto..."><i id="buscar" class="bi bi-search"></i> </div>
             
         </ul>
         <div class="menu2">
@@ -57,7 +57,7 @@
                                 <li><a href="">Juntas y boquillas</a></li>
                             </ul>
                         </li>
-                        <li><a href="/consulta_sanitarios">Sanitoarios</a></li>
+                        <li><a href="">Sanitoarios</a></li>
                         <li><a href="">Tinacos</a></li>
                         <li><a href="">Cisternas</a></li>
                         <li><a href="">Vitroblock</a></li>
@@ -72,14 +72,10 @@
         </div>
         
         
-        
-        {% include 'consulta_producto.html'%}
-        {% include 'registrar_producto.html' %}
-        {% include 'actualizar_productos.html' %}
-        {% include 'eliminar_producto.html' %}
-
-        
-
+        {% include 'proveedores/consulta_proveedor.html'%}
+        {% include 'proveedores/registrar_proveedor.html' %}
+        {% include 'proveedores/actualizar_proveedor.html' %}
+        {% include 'proveedores/eliminar_proveedor.html' %}
         
     </div>
 
@@ -88,7 +84,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-    <script src="/static/js/jsproductos.js"></script>
+    <script src="/static/js/jsproveedor.js"></script>
     
     
 
