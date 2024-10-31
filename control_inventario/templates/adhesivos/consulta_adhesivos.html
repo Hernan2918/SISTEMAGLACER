@@ -69,7 +69,7 @@
                             <td>{{adhesivo.ubicacion}}</td>
                             <td>{{adhesivo.categoria_nombre}}</td>
                             <td>
-                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoAdhesivos" data-id="{{ adhesivo.id_adhesivos }}"  data-proveedor="{{ adhesivo.proveedor }}" data-producto="{{adhesivo.nombre}}" data-kilogramos="{{ adhesivo.kilogramos }}" data-existencias="{{ adhesivo.existencia }}"  data-precio="{{adhesivo.precio}}" data-ubicacion="{{adhesivo.ubicacion}}" data-categoria="{{adhesivo.categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoAdhesivos" data-id="{{ adhesivo.id_adhesivos }}"  data-proveedor="{{ adhesivo.id_proveedor }}" data-producto="{{adhesivo.nombre}}" data-kilogramos="{{ adhesivo.kilogramos }}" data-existencias="{{ adhesivo.existencia }}"  data-precio="{{adhesivo.precio}}" data-ubicacion="{{adhesivo.ubicacion}}" data-categoria="{{adhesivo.id_categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
                                 
                                 <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarA" value="{{ adhesivo.id_adhesivos }}" data-id="{{ adhesivo.id_adhesivos }}"><i class="bi bi-trash3-fill"></i></button>
                                 

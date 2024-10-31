@@ -71,12 +71,14 @@ document.addEventListener('DOMContentLoaded', function () {
           abrirModalRegistro();
         });
     
+        
+
         document.addEventListener('DOMContentLoaded', function() {
             var editarProductoModal = document.getElementById('editarModalProducto');
             editarProductoModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
                 var id = button.getAttribute('data-id');
-                var medida = button.getAttribute('data-medidas');
+                var medidas = button.getAttribute('data-medidas');
                 var proveedor = button.getAttribute('data-proveedor');
                 var producto = button.getAttribute('data-producto');
                 var calidad = button.getAttribute('data-calidad');
@@ -89,48 +91,37 @@ document.addEventListener('DOMContentLoaded', function () {
         
                 var inputId = editarProductoModal.querySelector('#editarproductoId');
                 var inputMedida = editarProductoModal.querySelector('#medidaeditar');
-                var inputproveedor = editarProductoModal.querySelector('#proveedoreseditar');
-                var inputproducto = editarProductoModal.querySelector('#productoeditar');
+                var inputProveedor = editarProductoModal.querySelector('#proveedoreditar');
+                var inputProducto = editarProductoModal.querySelector('#productoeditar');
                 var inputCalidad = editarProductoModal.querySelector('#calidadeditar');
                 var inputExistencias = editarProductoModal.querySelector('#existenciaeditar');
                 var inputRotas = editarProductoModal.querySelector('#rotaseditar');
                 var inputPrecio = editarProductoModal.querySelector('#precioeditar');
                 var inputEmbalaje = editarProductoModal.querySelector('#embalajeeditar');
                 var inputUbicacion = editarProductoModal.querySelector('#ubicacioneditar');
-                var inputCategoria = editarProductoModal.querySelector('#categoriaseditar');
+                var inputCategoria = editarProductoModal.querySelector('#categoriaeditar');
         
                 inputId.value = id;
-                inputMedida.value = medida;
-                inputproducto.value= producto;
+                inputMedida.value = medidas;
+                inputProducto.value = producto;
                 inputCalidad.value = calidad;
                 inputExistencias.value = existencias;
                 inputRotas.value = rotas;
-                inputPrecio.value=precio;
+                inputPrecio.value = precio;
                 inputEmbalaje.value = embalaje;
                 inputUbicacion.value = ubicacion;
                 
-            
-        
-                // Seleccionar la opción correcta en el select de docente
-              Array.from(inputproveedor.options).forEach(option => {
-                  if (option.value == proveedor) {
-                      option.selected = true;
-                  } else {
-                      option.selected = false;
-                  }
-              });
       
-              // Seleccionar la opción correcta en el select de escuela
-              Array.from(inputCategoria.options).forEach(option => {
-                  if (option.value == categoria) {
-                      option.selected = true;
-                  } else {
-                      option.selected = false;
-                  }
-              });
+                Array.from(inputProveedor.options).forEach(option => {
+                    option.selected = option.value === proveedor;
+                });
+        
+                // Seleccionar la categoría registrada
+                Array.from(inputCategoria.options).forEach(option => {
+                    option.selected = option.value === categoria;
+                });
             });
         });
-        
 
 
         
@@ -163,3 +154,52 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 });
                 
+
+                document.getElementById('Descargar').addEventListener('click', async function() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    async function getBase64ImageFromUrl(url) {
+                        const res = await fetch(url);
+                        const blob = await res.blob();
+                        return new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.onerror = reject;
+                            reader.readAsDataURL(blob);
+                        });
+                    }
+                    const imgUrl1 = 'static/img/logo1.png';
+                    const imgUrl2 = 'static/img/logo1.png';
+                    const imgData1 = await getBase64ImageFromUrl(imgUrl1);
+                    const imgData2 = await getBase64ImageFromUrl(imgUrl2);
+              
+                    doc.addImage(imgData1, 'PNG', 10, 3, 50, 50);
+                    doc.addImage(imgData2, 'PNG', 150, 1, 45, 45);
+              
+                    const table = document.getElementById("tabla_productos");
+                    const rows = [];
+              
+                    for (let i = 1; i < table.rows.length; i++) {
+                        const row = table.rows[i];
+                        const rowData = [];
+                        for (let j = 0; j < row.cells.length - 1; j++) {
+                            rowData.push(row.cells[j].innerText);
+                        }
+                        rows.push(rowData);
+                    }
+                    doc.setFontSize(15);
+                    doc.text('Universidad Mexiquence del Bicentenario', 105, 40, { align: 'center' });
+                    doc.text('San José del Rincón', 105, 48, { align: 'center' });
+                    doc.text('Registro de difusión', 105, 56, { align: 'center' });
+              
+                    doc.autoTable({
+                        head: [['Medida', 'Proveedor', 'Nombre', 'Calidad', 'Existencia', 'Rotas', 'Precio', 'Embalaje', 'Ubicacion', 'Categoria']],
+                        body: rows,
+                        theme: 'grid',
+                        styles: { halign: 'center' },
+                        headStyles: { fillColor: [50, 180, 0] }, // Color verde
+                        startY: 63 
+                    });
+              
+                    doc.save('tabla_productos.pdf');
+                });

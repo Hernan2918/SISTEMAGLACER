@@ -117,28 +117,33 @@ def registro_usuarios():
 def consulta_productos():
     cur = mysql.connection.cursor()
     query = """
-    SELECT d.id_producto, d.medidas, doc.nombre as proveedor_nombre, producto, calidad, existencias, rotas, precio, embalaje, ubicacion,  esc.nombre as categoria_nombre
+    SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
     FROM productos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+
     """
+
     cur.execute(query)
     productos = cur.fetchall()
-
+    
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
     cur.execute(query_proveedores)
     proveedores = cur.fetchall()
 
-    query_categorias = "SELECT id_categoria, nombre FROM categorias"
-    cur.execute(query_categorias)
+    query_categroias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categroias)
     categorias = cur.fetchall()
-    cur.close()
     
+    cur.close()
+
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/productos/productos.html', productos=productos, proveedores= proveedores, categorias=categorias)
+    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias)
 
 
 @app.route('/registro_productos', methods=['POST'])
@@ -170,7 +175,7 @@ def actualizar_producto():
     if request.method == 'POST':
         id_producto = request.form['id_producto']
         medida = request.form['medidaeditar']
-        proveedor_id = request.form['proveedoreseditar']
+        proveedor_id = request.form['proveedoreditar']
         producto = request.form['productoeditar']
         calidad = request.form['calidadeditar']
         existencia = request.form['existenciaeditar']
@@ -178,7 +183,7 @@ def actualizar_producto():
         precio = request.form['precioeditar']
         embalaje = request.form['embalajeeditar']
         ubicacion = request.form['ubicacioneditar']
-        categoria_id = request.form['categoriaseditar']
+        categoria_id = request.form['categoriaeditar']
 
         cur = mysql.connection.cursor()
         cur.execute(
@@ -394,10 +399,12 @@ def eliminar_categoria(categoria_id):
 def consulta_muros():
     cur = mysql.connection.cursor()
     query = """
-    SELECT d.id_producto, d.medidas, doc.nombre as proveedor_nombre, producto, calidad, existencias, rotas, precio, embalaje, ubicacion,  esc.nombre as categoria_nombre
+    SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
     FROM muros d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
     """
     cur.execute(query)
     muros = cur.fetchall()
@@ -498,10 +505,12 @@ def eliminar_muros(muro_id):
 def consulta_adhesivos():
     cur = mysql.connection.cursor()
     query = """
-    SELECT d.id_adhesivos, doc.nombre as proveedor_nombre, d.nombre, kilogramos, existencia, precio, ubicacion,  esc.nombre as categoria_nombre
+    SELECT d.id_adhesivos, d.nombre, d.kilogramos, d.existencia,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
     FROM adhesivos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
     """
     cur.execute(query)
     adhesivos = cur.fetchall()
@@ -591,10 +600,13 @@ def eliminar_adhesivos(adhesivo_id):
 def consulta_sanitarios():
     cur = mysql.connection.cursor()
     query = """
-    SELECT d.id_sanitario, doc.nombre as proveedor_nombre, d.nombre, existencias, rotas, precio, ubicacion,  esc.nombre as categoria_nombre
+    SELECT d.id_sanitario, d.nombre, d.existencias, d.rotas,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
     FROM sanitarios d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    
     """
     cur.execute(query)
     sanitarios = cur.fetchall()
@@ -686,10 +698,12 @@ def eliminar_sanitarios(sanitario_id):
 def consulta_tinacos():
     cur = mysql.connection.cursor()
     query = """
-    SELECT d.id_tinaco, doc.nombre as proveedor_nombre, d.nombre, litros, color, existencias, rotas, precio, ubicacion,  esc.nombre as categoria_nombre
+    SELECT d.id_tinaco, d.nombre, d.litros, d.color, d.existencias, d.rotas,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
     FROM tinacos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
     """
     cur.execute(query)
     tinacos = cur.fetchall()
@@ -773,6 +787,93 @@ def eliminar_tinacos(tinaco_id):
         cur.close()
         flash('Producto eliminado correctamente!', 'error')
     return redirect(url_for('consulta_tinacos'))
+
+
+
+@app.route('/consulta_vitroblocks')
+@login_required
+@no_cache
+def consulta_vitroblocks():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_vitroblock, d.tipo, d.medidas, d.nombre, d.existencias, d.rotas,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM vitroblocks d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    """
+    cur.execute(query)
+    vitroblocks = cur.fetchall()
+
+    query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
+    cur.execute(query_proveedores)
+    proveedores = cur.fetchall()
+
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
+    categorias = cur.fetchall()
+    cur.close()
+    
+    form = ProductosForm()
+    form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
+    form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
+
+    return render_template('/vitroblocks/vitroblock.html', vitroblocks=vitroblocks, proveedores= proveedores, categorias=categorias)
+
+@app.route('/registro_vitroblocks', methods=['POST'])
+def registro_vitroblocks():
+    if request.method == 'POST':
+        proveedor = request.form['proveedores']
+        tipo = request.form['tipo']
+        medidas = request.form['medidas']
+        nombre = request.form['nombre']
+        existencias = request.form['existencia']
+        rotas = request.form['rotas']
+        precio = request.form['precio']
+        ubicacion = request.form['ubicacion']
+        categoria_id = request.form['categorias']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO vitroblocks (proveedor, tipo, medidas, nombre, existencias, rotas, precio, ubicacion, categoria) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                    (proveedor, tipo, medidas, nombre, existencias, rotas, precio, ubicacion, categoria_id  ))
+        mysql.connection.commit()
+        cur.close()
+        
+        flash('Producto registrada exitosamente!', 'success')
+        return redirect(url_for('consulta_vitroblocks'))
+
+
+@app.route('/actualizar_vitroblocks', methods=['POST'])
+def actualizar_vitroblocks():
+    if request.method == 'POST':
+        id_producto = request.form['id_producto']
+        proveedor_id = request.form['proveedoreseditar']
+        tipo = request.form['tipoeditar']
+        medidas = request.form['medidaseditar']
+        nombre = request.form['nombreeditar']
+        existencia = request.form['existenciaeditar']
+        rotas = request.form['rotaseditar']
+        precio = request.form['precioeditar']
+        ubicacion = request.form['ubicacioneditar']
+        categoria_id = request.form['categoriaseditar']
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE vitroblocks
+            SET  proveedor = %s, tipo = %s, medidas = %s, nombre= %s, existencias = %s, rotas = %s,  precio = %s,  ubicacion = %s, categoria = %s
+            WHERE id_vitroblock = %s
+            """,
+            (proveedor_id, tipo, medidas, nombre, existencia, rotas, precio, ubicacion, categoria_id, id_producto)
+        )
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Producto actualizado exitosamente!', 'info')
+        return redirect(url_for('consulta_vitroblocks'))
+
+
 
 
 @app.route('/logout')

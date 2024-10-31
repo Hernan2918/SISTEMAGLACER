@@ -41,9 +41,9 @@
                         <tr>
                             
                             <th scope="col">Proveedor</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Medidas</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Litros</th>
-                            <th scope="col">Color</th>
                             <th scope="col">Existencia</th>
                             <th scope="col">Rotas</th>
                             <th scope="col">Precio</th>
@@ -53,31 +53,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for tinaco in tinacos %}
+                        {% for vitroblock in vitroblocks %}
                         <tr>
                             
                             
-                            <td>{{tinaco.proveedor_nombre}}</td>
-                            <td>{{tinaco.nombre}}</td>
-                            <td>{{tinaco.litros}}</td>
-                            <td>{{tinaco.color}}</td>
+                            <td>{{vitroblock.proveedor_nombre}}</td>
+                            <td>{{vitroblock.tipo}}</td>
+                            <td>{{vitroblock.medidas}}</td>
+                            <td>{{vitroblock.nombre}}</td>
                             <td>
-                                {% if tinaco.existencias < 10 %}
-                                    <span class="circulo-rojo">{{ tinaco.existencias }}</span>
+                                {% if vitroblock.existencias < 10 %}
+                                    <span class="circulo-rojo">{{ vitroblock.existencias }}</span>
                                 {% else %}
-                                    {{ tinaco.existencias }}
+                                    {{ vitroblock.existencias }}
                                 {% endif %}
                             </td>
-                            <td>{{tinaco.rotas}}</td>
-                            <td>{{tinaco.precio}}</td>
-                            <td>{{tinaco.ubicacion}}</td>
-                            <td>{{tinaco.categoria_nombre}}</td>
+                            <td>{{vitroblock.rotas}}</td>
+                            <td>{{vitroblock.precio}}</td>
+                            <td>{{vitroblock.ubicacion}}</td>
+                            <td>{{vitroblock.categoria_nombre}}</td>
                             <td>
-                                
-                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoTinacos" data-id="{{ tinaco.id_tinaco }}"  data-proveedor="{{ tinaco.id_proveedor }}" data-producto="{{tinaco.nombre}}" data-litros="{{tinaco.litros}}" data-color="{{tinaco.color}}" data-existencias="{{tinaco.existencias}}" data-precio="{{tinaco.precio}}" data-rotas="{{ tinaco.rotas }}" data-ubicacion="{{tinaco.ubicacion}}" data-categoria="{{tinaco.id_categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarTinacos" value="{{ tinaco.id_tinaco }}" data-id="{{ tinaco.id_tinaco }}">
+                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#editarModalProductoVitroblock" data-id="{{ vitroblock.id_vitroblock }}"  data-proveedor="{{ vitroblock.id_proveedor }}" data-tipo="{{vitroblock.tipo}}" data-medidas="{{vitroblock.medidas}}" data-nombre="{{vitroblock.nombre}}" data-existencias="{{vitroblock.existencias}}" data-precio="{{vitroblock.precio}}" data-rotas="{{ vitroblock.rotas }}" data-ubicacion="{{vitroblock.ubicacion}}" data-categoria="{{vitroblock.id_categoria}}" value="#"><i class="bi bi-arrow-clockwise"></i></button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarTinacos" value="{{ vitroblock.id_vitroblock }}" data-id="{{ vitroblock.id_vitroblock }}">
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>
+                                
                                 
                             </td>
                         </tr>

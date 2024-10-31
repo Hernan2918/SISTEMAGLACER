@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
    
         function abrirModalRegistro() {
-          var modal = new bootstrap.Modal(document.getElementById('modalRegistroTinacos'));
+          var modal = new bootstrap.Modal(document.getElementById('modalRegistroVitroblock'));
           modal.show();
         }
         document.getElementById('registroProducto').addEventListener('click', function() {
@@ -75,54 +75,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
         document.addEventListener('DOMContentLoaded', function() {
-            var editarProductoModal = document.getElementById('editarModalProductoTinacos');
+            var editarProductoModal = document.getElementById('editarModalProductoVitroblock');
             editarProductoModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
-
-                console.log("Botón:", button);
-        console.log("Atributos:", {
-            id: button.getAttribute('data-id'),
-            proveedor: button.getAttribute('data-proveedor'),
-            producto: button.getAttribute('data-producto'),
-            litros: button.getAttribute('data-litros'),
-            color: button.getAttribute('data-color'),
-            existencias: button.getAttribute('data-existencias'),
-            rotas: button.getAttribute('data-rotas'),
-            precio: button.getAttribute('data-precio'),
-            ubicacion: button.getAttribute('data-ubicacion'),
-            categoria: button.getAttribute('data-categoria')
-        });
-
                 var id = button.getAttribute('data-id');
                 var proveedor = button.getAttribute('data-proveedor');
-                var producto = button.getAttribute('data-producto');
-                var litros = button.getAttribute('data-litros');
-                var color = button.getAttribute('data-color');
+                var tipo = button.getAttribute('data-tipo');
+                var medidas = button.getAttribute('data-medidas');
+                var nombre = button.getAttribute('data-nombre');
                 var existencias = button.getAttribute('data-existencias');
                 var rotas = button.getAttribute('data-rotas');
                 var precio = button.getAttribute('data-precio');
                 var ubicacion = button.getAttribute('data-ubicacion');
                 var categoria = button.getAttribute('data-categoria');
 
-                console.log("ID:", id);
-                console.log("Proveedor:", proveedor);
-                console.log("Categoría:", categoria);
-        
+            
                 var inputId = editarProductoModal.querySelector('#editarproductoId');
-                
-                var inputproducto = editarProductoModal.querySelector('#productoeditar');
-                var inputLitros = editarProductoModal.querySelector('#litroseditar');
-                var inputColor = editarProductoModal.querySelector('#coloreditar');
+                var inputProveedor = editarProductoModal.querySelector('#proveedoreditar');
+                var inputTipo = editarProductoModal.querySelector('#tipoeditar');
+                var inputMedidas = editarProductoModal.querySelector('#medidaseditar');
+                var inputNombre = editarProductoModal.querySelector('#nombreeditar');
                 var inputExistencias = editarProductoModal.querySelector('#existenciaeditar');
                 var inputRotas = editarProductoModal.querySelector('#rotaseditar');
                 var inputPrecio = editarProductoModal.querySelector('#precioeditar');
                 var inputUbicacion = editarProductoModal.querySelector('#ubicacioneditar');
-                
+                var inputCategoria = editarProductoModal.querySelector('#categoriaeditar');
+
         
                 inputId.value = id;
-                inputproducto.value= producto;
-                inputLitros.value= litros;
-                inputColor.value= color;
+                inputTipo.value = tipo;
+                inputMedidas.value = medidas;
+                inputNombre.value = nombre;
                 inputRotas.value = rotas;
                 inputExistencias.value = existencias;
                 inputPrecio.value=precio;
@@ -130,8 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 
             
         
-                var inputproveedor = editarProductoModal.querySelector('#proveedoreseditar');
-                Array.from(inputproveedor.options).forEach(option => {
+                var inputProveedor = editarProductoModal.querySelector('#proveedoreseditar');
+                Array.from(inputProveedor.options).forEach(option => {
                     option.selected = (option.value == proveedor); // Asegúrate de que `proveedor` tiene el valor correcto
                 });
                 
@@ -148,16 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
 
         
-            document.addEventListener('DOMContentLoaded', function() {
-                var eliminarModal = document.getElementById('eliminarTinacos');
-                eliminarModal.addEventListener('show.bs.modal', function (event) {
-                    var button = event.relatedTarget;
-                    var productoId = button.getAttribute('data-id');
-                    var formEliminar = document.getElementById('formEliminar');
-                    formEliminar.action = '/eliminar_tinacos/' + productoId;
-                });
-            });
-            
+           
 
            
                 $(document).ready(function(){
@@ -177,3 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 });
                 
+
+
+
+
