@@ -155,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 
 
+
+                
                 document.getElementById('Descargar').addEventListener('click', async function() {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF();
@@ -168,13 +170,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             reader.readAsDataURL(blob);
                         });
                     }
-                    const imgUrl1 = 'static/img/logo1.png';
-                    const imgUrl2 = 'static/img/logo1.png';
+                    const imgUrl1 = 'static/img/logov.jpeg';
+                    
                     const imgData1 = await getBase64ImageFromUrl(imgUrl1);
-                    const imgData2 = await getBase64ImageFromUrl(imgUrl2);
+                    
               
-                    doc.addImage(imgData1, 'PNG', 10, 3, 50, 50);
-                    doc.addImage(imgData2, 'PNG', 150, 1, 45, 45);
+                    doc.addImage(imgData1, 'PNG', 10, 5, 20, 20);
+                    
               
                     const table = document.getElementById("tabla_productos");
                     const rows = [];
@@ -187,18 +189,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         rows.push(rowData);
                     }
-                    doc.setFontSize(15);
-                    doc.text('Universidad Mexiquence del Bicentenario', 105, 40, { align: 'center' });
-                    doc.text('San José del Rincón', 105, 48, { align: 'center' });
-                    doc.text('Registro de difusión', 105, 56, { align: 'center' });
-              
+                    doc.setFontSize(13);
+                    doc.text('PRODUCTOS', 105, 20, { align: 'center' });
+                    doc.text('GLACER Glamur Cerámico', 200, 15, { align: 'right' });
+                    doc.setTextColor(255, 0, 0);
+                    doc.text('Atlacomulco Vías', 200, 20, { align: 'right' } );
+                    
                     doc.autoTable({
                         head: [['Medida', 'Proveedor', 'Nombre', 'Calidad', 'Existencia', 'Rotas', 'Precio', 'Embalaje', 'Ubicacion', 'Categoria']],
                         body: rows,
                         theme: 'grid',
                         styles: { halign: 'center' },
-                        headStyles: { fillColor: [50, 180, 0] }, // Color verde
-                        startY: 63 
+                        headStyles: { fillColor: [255, 0, 0] }, // Color verde
+                        startY: 30 
                     });
               
                     doc.save('tabla_productos.pdf');

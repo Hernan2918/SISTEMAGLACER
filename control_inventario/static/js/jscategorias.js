@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
            
                 $(document).ready(function(){
-                    $("#buscarcategoria").on("keyup", function() {
+                    $("#buscarcatgorias").on("keyup", function() {
                         var value = $(this).val().toLowerCase();
                         var noMatch = true;
                         $("#tabla_categoria tbody tr").filter(function() {
