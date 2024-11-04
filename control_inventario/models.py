@@ -1,6 +1,6 @@
 from app.db import db
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+
 
 class Producto(db.Model):
     __tablename__ = 'producto'

@@ -204,5 +204,5 @@ document.addEventListener('DOMContentLoaded', function () {
                         startY: 30 
                     });
               
-                    doc.save('tabla_productos.pdf');
+                    doc.save('tabla_pisos.pdf');
                 });

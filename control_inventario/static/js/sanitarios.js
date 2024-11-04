@@ -148,3 +148,53 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 });
                 
+
+                document.getElementById('Descargar').addEventListener('click', async function() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    async function getBase64ImageFromUrl(url) {
+                        const res = await fetch(url);
+                        const blob = await res.blob();
+                        return new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.onerror = reject;
+                            reader.readAsDataURL(blob);
+                        });
+                    }
+                    const imgUrl1 = 'static/img/logov.jpeg';
+                    
+                    const imgData1 = await getBase64ImageFromUrl(imgUrl1);
+                    
+              
+                    doc.addImage(imgData1, 'PNG', 10, 5, 20, 20);
+                    
+              
+                    const table = document.getElementById("tabla_productos");
+                    const rows = [];
+              
+                    for (let i = 1; i < table.rows.length; i++) {
+                        const row = table.rows[i];
+                        const rowData = [];
+                        for (let j = 0; j < row.cells.length - 1; j++) {
+                            rowData.push(row.cells[j].innerText);
+                        }
+                        rows.push(rowData);
+                    }
+                    doc.setFontSize(13);
+                    doc.text('PRODUCTOS', 105, 20, { align: 'center' });
+                    doc.text('GLACER Glamur Cerámico', 200, 15, { align: 'right' });
+                    doc.setTextColor(255, 0, 0);
+                    doc.text('Atlacomulco Vías', 200, 20, { align: 'right' } );
+                    
+                    doc.autoTable({
+                        head: [['Proveedor', 'Nombre', 'Existencia', 'Rotas', 'Precio', 'Ubicacion', 'Categoria']],
+                        body: rows,
+                        theme: 'grid',
+                        styles: { halign: 'center' },
+                        headStyles: { fillColor: [255, 0, 0] }, // Color verde
+                        startY: 30 
+                    });
+              
+                    doc.save('tabla_sanitarios.pdf');
+                });
