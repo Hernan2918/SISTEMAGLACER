@@ -546,3 +546,43 @@ thead tr:nth-child(odd){
     margin-right: 5px; 
 }
 
+/* estilos de la paginacion */
+
+    .pagination .page-item {
+        margin: -30px 5px 0 5px;
+        width: 5px;
+        height: auto;
+    }
+
+    .pagination .page-link {
+        font-size: 17px;
+        padding: 4px 10px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    .pagination .page-link {
+        cursor: pointer;
+    }
+
+    .pagination .page-item:hover .page-link {
+        background-color: #f1f1f1;
+    }
+    #pages{
+      
+      width: 90px;
+      height: auto;
+      margin: -37px 0 0 81%  ;
+    }
+
+    

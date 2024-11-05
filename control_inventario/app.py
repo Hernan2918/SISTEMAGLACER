@@ -111,39 +111,73 @@ def registro_usuarios():
     return render_template('login.html')
 
 
+
+
 @app.route('/consulta_productos')
 @login_required
 @no_cache
 def consulta_productos():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
+    
     cur = mysql.connection.cursor()
+
+    # Realizamos la consulta de productos con LIMIT y OFFSET para el paginado
     query = """
     SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
-            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
-            esc.nombre AS categoria_nombre, esc.id_categoria
+           doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+           esc.nombre AS categoria_nombre, esc.id_categoria
     FROM productos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria;
-
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
     """
-
-    cur.execute(query)
+    cur.execute(query, (products_per_page, offset))
     productos = cur.fetchall()
-    
+
+    # Realizamos la consulta para obtener todos los proveedores
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
     cur.execute(query_proveedores)
     proveedores = cur.fetchall()
 
-    query_categroias = "SELECT id_categoria, nombre FROM categorias"
-    cur.execute(query_categroias)
+    # Realizamos la consulta para obtener todas las categorías
+    query_categorias = "SELECT id_categoria, nombre FROM categorias"
+    cur.execute(query_categorias)
     categorias = cur.fetchall()
+
+    # Obtenemos el total de productos para el cálculo del número total de páginas
+    query_count = "SELECT COUNT(*) FROM productos"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    # Calculamos el número total de páginas
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    # Calculamos el rango de páginas que se va a mostrar
+    page_range = list(range(1, total_pages + 1))
     
+    # Determinamos el inicio y el final del rango de páginas para mostrar en la paginación
+    start_index = max(1, page - 2)
+    end_index = min(total_pages, page + 2)
+    
+    # Lógica para agregar "..." si hay más páginas
+    if page - 2 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 2 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
     cur.close()
 
+    # Aquí manejas las opciones del formulario
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias)
+    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias,
+                           page=page, 
+                           total_pages=total_pages,
+                           page_range=page_range)
 
 
 @app.route('/registro_productos', methods=['POST'])
@@ -397,16 +431,22 @@ def eliminar_categoria(categoria_id):
 @login_required
 @no_cache
 def consulta_muros():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
+    
     cur = mysql.connection.cursor()
+    
     query = """
     SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
             doc.nombre AS proveedor_nombre, doc.id_proveedor, 
             esc.nombre AS categoria_nombre, esc.id_categoria
     FROM muros d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
     """
-    cur.execute(query)
+    cur.execute(query, (products_per_page, offset))
     muros = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
@@ -416,13 +456,38 @@ def consulta_muros():
     query_categorias = "SELECT id_categoria, nombre FROM categorias"
     cur.execute(query_categorias)
     categorias = cur.fetchall()
+
+    # Obtenemos el total de productos para el cálculo del número total de páginas
+    query_count = "SELECT COUNT(*) FROM muros"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    # Calculamos el número total de páginas
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    # Calculamos el rango de páginas que se va a mostrar
+    page_range = list(range(1, total_pages + 1))
+    
+    # Determinamos el inicio y el final del rango de páginas para mostrar en la paginación
+    start_index = max(1, page - 2)
+    end_index = min(total_pages, page + 2)
+    
+    # Lógica para agregar "..." si hay más páginas
+    if page - 2 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 2 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
     cur.close()
+
+    
+
     
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/muros/muros.html', muros=muros, proveedores= proveedores, categorias=categorias)
+    return render_template('/muros/muros.html', muros=muros, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 
 
@@ -503,6 +568,9 @@ def eliminar_muros(muro_id):
 @login_required
 @no_cache
 def consulta_adhesivos():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
     cur = mysql.connection.cursor()
     query = """
     SELECT d.id_adhesivos, d.nombre, d.kilogramos, d.existencia,  d.precio,  d.ubicacion,
@@ -510,9 +578,11 @@ def consulta_adhesivos():
             esc.nombre AS categoria_nombre, esc.id_categoria
     FROM adhesivos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
+
     """
-    cur.execute(query)
+    cur.execute(query, (products_per_page, offset))
     adhesivos = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
@@ -522,13 +592,31 @@ def consulta_adhesivos():
     query_categorias = "SELECT id_categoria, nombre FROM categorias"
     cur.execute(query_categorias)
     categorias = cur.fetchall()
+    query_count = "SELECT COUNT(*) FROM adhesivos"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    page_range = list(range(1, total_pages + 1))
+    
+    start_index = max(1, page - 2)
+    end_index = min(total_pages, page + 2)
+    
+    if page - 2 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 2 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
     cur.close()
     
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/adhesivos/adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias)
+    return render_template('/adhesivos/adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias, page=page, 
+                           total_pages=total_pages,
+                           page_range=page_range)
 
 
 @app.route('/registro_adhesivos', methods=['POST'])
@@ -598,6 +686,9 @@ def eliminar_adhesivos(adhesivo_id):
 @login_required
 @no_cache
 def consulta_sanitarios():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
     cur = mysql.connection.cursor()
     query = """
     SELECT d.id_sanitario, d.nombre, d.existencias, d.rotas,  d.precio,  d.ubicacion,
@@ -605,10 +696,10 @@ def consulta_sanitarios():
             esc.nombre AS categoria_nombre, esc.id_categoria
     FROM sanitarios d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria;
-    
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
     """
-    cur.execute(query)
+    cur.execute(query, (products_per_page, offset))
     sanitarios = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
@@ -618,13 +709,38 @@ def consulta_sanitarios():
     query_categorias = "SELECT id_categoria, nombre FROM categorias"
     cur.execute(query_categorias)
     categorias = cur.fetchall()
+    
+     # Obtenemos el total de productos para el cálculo del número total de páginas
+    query_count = "SELECT COUNT(*) FROM sanitarios"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    # Calculamos el número total de páginas
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    # Calculamos el rango de páginas que se va a mostrar
+    page_range = list(range(1, total_pages + 1))
+    
+    # Determinamos el inicio y el final del rango de páginas para mostrar en la paginación
+    start_index = max(1, page - 2)
+    end_index = min(total_pages, page + 2)
+    
+    # Lógica para agregar "..." si hay más páginas
+    if page - 2 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 2 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
     cur.close()
+
     
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/sanitarios/sanitarios.html', sanitarios=sanitarios, proveedores= proveedores, categorias=categorias)
+    return render_template('/sanitarios/sanitarios.html', sanitarios=sanitarios, proveedores= proveedores, categorias=categorias, page=page, 
+                           total_pages=total_pages,
+                           page_range=page_range)
 
 
 
