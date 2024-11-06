@@ -137,6 +137,8 @@ document.addEventListener('DOMContentLoaded', function () {
             
 
            
+
+
                 $(document).ready(function(){
                     $("#buscarproducto").on("keyup", function() {
                         var value = $(this).val().toLowerCase();
@@ -154,7 +156,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 });
                 
-
 
                 
                 document.getElementById('Descargar').addEventListener('click', async function() {

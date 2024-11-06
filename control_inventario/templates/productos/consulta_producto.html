@@ -93,8 +93,11 @@
                                 <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarP" value="{{ producto.id_producto }}" data-id="{{ producto.id_producto }}"><i class="bi bi-trash3-fill"></i></button>
                                 <button type="submit" class="btn btn-success" id="btnentradas" data-bs-toggle="modal" data-bs-target="#editarModalProducto" value="#"><i class="bi bi-box-arrow-left"></i></button>
                                 <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarP" value="{{ producto.id_producto }}" data-id="{{ producto.id_producto }}"><i class="bi bi-box-arrow-right"></i></button>
-                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#eliminarP" value="{{ producto.id_producto }}" data-id="{{ producto.id_producto }}"><i class="bi bi-printer-fill"></i></button>
+                                <button type="button" id="btnactualizar"  class="btn btn-primary"onclick="window.location.href='{{ url_for('descargar_etiqueta_producto', producto_id=producto.id_producto) }}'">
+                                   <i class="bi bi-printer-fill"></i>
+                                </button> 
 
+            
                             </td>
                         </tr>
                         {% endfor %}
@@ -115,12 +118,60 @@
     
 </main>
 
+
+
+<style>
+    /* estilos de la paginacion */
+
+    .pagination .page-item {
+        margin: 0 -10px;
+        width: auto;
+        height: auto;
+    }
+
+    .pagination .page-link {
+        font-size: 17px;
+        padding: 4px 10px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    .pagination .page-link {
+        cursor: pointer;
+    }
+
+    .pagination .page-item:hover .page-link {
+        background-color: #f1f1f1;
+    }
+    #pages{
+      
+      width: 18%;
+      height: 20px;
+      margin: -69px 0 0 80% ;
+    }
+
+</style>
+
+
+
+
+
 <div id="pages" class="card-footer text-muted">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             {% if page > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('consulta_muros', page=page-1) }}" aria-label="Anterior">
+                <a class="page-link" href="{{ url_for('consulta_productos', page=page-1) }}" aria-label="Anterior">
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
@@ -137,14 +188,14 @@
                     </li>
                 {% else %}
                     <li class="page-item {% if p == page %}active{% endif %}">
-                        <a class="page-link" href="{{ url_for('consulta_muros', page=p) }}">{{ p }}</a>
+                        <a class="page-link" href="{{ url_for('consulta_productos', page=p) }}">{{ p }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
 
             {% if page < total_pages %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('consulta_muros', page=page+1) }}" aria-label="Siguiente">
+                <a class="page-link" href="{{ url_for('consulta_productos', page=page+1) }}" aria-label="Siguiente">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>

@@ -8,6 +8,12 @@ from functools import wraps
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from flask import send_file
+from fpdf import FPDF
+
+from io import BytesIO
+
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -123,7 +129,7 @@ def consulta_productos():
     
     cur = mysql.connection.cursor()
 
-    # Realizamos la consulta de productos con LIMIT y OFFSET para el paginado
+
     query = """
     SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
@@ -136,48 +142,38 @@ def consulta_productos():
     cur.execute(query, (products_per_page, offset))
     productos = cur.fetchall()
 
-    # Realizamos la consulta para obtener todos los proveedores
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
     cur.execute(query_proveedores)
     proveedores = cur.fetchall()
 
-    # Realizamos la consulta para obtener todas las categorías
     query_categorias = "SELECT id_categoria, nombre FROM categorias"
     cur.execute(query_categorias)
     categorias = cur.fetchall()
 
-    # Obtenemos el total de productos para el cálculo del número total de páginas
+   
     query_count = "SELECT COUNT(*) FROM productos"
     cur.execute(query_count)
     total_products = cur.fetchone()['COUNT(*)']
 
-    # Calculamos el número total de páginas
     total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
 
-    # Calculamos el rango de páginas que se va a mostrar
     page_range = list(range(1, total_pages + 1))
     
-    # Determinamos el inicio y el final del rango de páginas para mostrar en la paginación
-    start_index = max(1, page - 2)
-    end_index = min(total_pages, page + 2)
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
     
-    # Lógica para agregar "..." si hay más páginas
-    if page - 2 > 1:
+    if page - 1 > 1:
         page_range = [1, '...'] + page_range[start_index-1:end_index]
-    elif page + 2 < total_pages:
+    elif page + 1 < total_pages:
         page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
 
     cur.close()
 
-    # Aquí manejas las opciones del formulario
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias,
-                           page=page, 
-                           total_pages=total_pages,
-                           page_range=page_range)
+    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 
 @app.route('/registro_productos', methods=['POST'])
@@ -251,11 +247,33 @@ def eliminar_producto(producto_id):
 @login_required
 @no_cache
 def consulta_proveedores():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM proveedores')
+
+    cur.execute('SELECT * FROM proveedores LIMIT %s OFFSET %s', (products_per_page, offset))
     proveedores = cur.fetchall()
+    
+    query_count = "SELECT COUNT(*) FROM proveedores"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    page_range = list(range(1, total_pages + 1))
+    
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
+    
+    if page - 1 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 1 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
     cur.close()
-    return render_template('/proveedores/proveedores.html', proveedores=proveedores)
+    
+    return render_template('/proveedores/proveedores.html', proveedores=proveedores, page=page,total_pages=total_pages, page_range=page_range)
 
 UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -372,11 +390,33 @@ def eliminar_proveedor(proveedor_id):
 @login_required
 @no_cache
 def consulta_categorias():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM categorias')
+    
+    cur.execute('SELECT * FROM categorias LIMIT %s OFFSET %s', (products_per_page, offset))
     categorias = cur.fetchall()
+
+    query_count = "SELECT COUNT(*) FROM categorias"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    page_range = list(range(1, total_pages + 1))
+    
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
+    
+    if page - 1 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 1 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
+    
     cur.close()
-    return render_template('/categorias/categorias.html', categorias=categorias)
+    return render_template('/categorias/categorias.html', categorias=categorias, page=page,total_pages=total_pages, page_range=page_range)
 
 
 @app.route('/registro_categorias', methods=['POST'])
@@ -457,39 +497,29 @@ def consulta_muros():
     cur.execute(query_categorias)
     categorias = cur.fetchall()
 
-    # Obtenemos el total de productos para el cálculo del número total de páginas
     query_count = "SELECT COUNT(*) FROM muros"
     cur.execute(query_count)
     total_products = cur.fetchone()['COUNT(*)']
 
-    # Calculamos el número total de páginas
     total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
 
-    # Calculamos el rango de páginas que se va a mostrar
     page_range = list(range(1, total_pages + 1))
     
-    # Determinamos el inicio y el final del rango de páginas para mostrar en la paginación
-    start_index = max(1, page - 2)
-    end_index = min(total_pages, page + 2)
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
     
-    # Lógica para agregar "..." si hay más páginas
-    if page - 2 > 1:
+    if page - 1 > 1:
         page_range = [1, '...'] + page_range[start_index-1:end_index]
-    elif page + 2 < total_pages:
+    elif page + 1 < total_pages:
         page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
 
     cur.close()
 
-    
-
-    
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
     return render_template('/muros/muros.html', muros=muros, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
-
-
 
 
 
@@ -514,7 +544,6 @@ def registro_muros():
         mysql.connection.commit()
         cur.close()
 
-        
         flash('Producto registrada exitosamente!', 'success')
         return redirect(url_for('consulta_muros'))
 
@@ -600,12 +629,12 @@ def consulta_adhesivos():
 
     page_range = list(range(1, total_pages + 1))
     
-    start_index = max(1, page - 2)
-    end_index = min(total_pages, page + 2)
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
     
-    if page - 2 > 1:
+    if page - 1 > 1:
         page_range = [1, '...'] + page_range[start_index-1:end_index]
-    elif page + 2 < total_pages:
+    elif page + 1 < total_pages:
         page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
 
     cur.close()
@@ -614,9 +643,7 @@ def consulta_adhesivos():
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/adhesivos/adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias, page=page, 
-                           total_pages=total_pages,
-                           page_range=page_range)
+    return render_template('/adhesivos/adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 
 @app.route('/registro_adhesivos', methods=['POST'])
@@ -710,25 +737,20 @@ def consulta_sanitarios():
     cur.execute(query_categorias)
     categorias = cur.fetchall()
     
-     # Obtenemos el total de productos para el cálculo del número total de páginas
     query_count = "SELECT COUNT(*) FROM sanitarios"
     cur.execute(query_count)
     total_products = cur.fetchone()['COUNT(*)']
 
-    # Calculamos el número total de páginas
     total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
 
-    # Calculamos el rango de páginas que se va a mostrar
     page_range = list(range(1, total_pages + 1))
     
-    # Determinamos el inicio y el final del rango de páginas para mostrar en la paginación
-    start_index = max(1, page - 2)
-    end_index = min(total_pages, page + 2)
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
     
-    # Lógica para agregar "..." si hay más páginas
-    if page - 2 > 1:
+    if page - 1 > 1:
         page_range = [1, '...'] + page_range[start_index-1:end_index]
-    elif page + 2 < total_pages:
+    elif page + 1 < total_pages:
         page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
 
     cur.close()
@@ -812,6 +834,9 @@ def eliminar_sanitarios(sanitario_id):
 @login_required
 @no_cache
 def consulta_tinacos():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
     cur = mysql.connection.cursor()
     query = """
     SELECT d.id_tinaco, d.nombre, d.litros, d.color, d.existencias, d.rotas,  d.precio,  d.ubicacion,
@@ -819,9 +844,11 @@ def consulta_tinacos():
             esc.nombre AS categoria_nombre, esc.id_categoria
     FROM tinacos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
+   
     """
-    cur.execute(query)
+    cur.execute(query, (products_per_page, offset))
     tinacos = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
@@ -831,13 +858,31 @@ def consulta_tinacos():
     query_categorias = "SELECT id_categoria, nombre FROM categorias"
     cur.execute(query_categorias)
     categorias = cur.fetchall()
+
+    query_count = "SELECT COUNT(*) FROM tinacos"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    page_range = list(range(1, total_pages + 1))
+    
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
+    
+    if page - 1 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 1 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
+    
     cur.close()
     
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/tinacos/tinacos.html', tinacos=tinacos, proveedores= proveedores, categorias=categorias)
+    return render_template('/tinacos/tinacos.html', tinacos=tinacos, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 
 
@@ -910,6 +955,10 @@ def eliminar_tinacos(tinaco_id):
 @login_required
 @no_cache
 def consulta_vitroblocks():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
+    
     cur = mysql.connection.cursor()
     query = """
     SELECT d.id_vitroblock, d.tipo, d.medidas, d.nombre, d.existencias, d.rotas,  d.precio,  d.ubicacion,
@@ -917,9 +966,11 @@ def consulta_vitroblocks():
             esc.nombre AS categoria_nombre, esc.id_categoria
     FROM vitroblocks d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
+  
     """
-    cur.execute(query)
+    cur.execute(query, (products_per_page, offset))
     vitroblocks = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
@@ -929,13 +980,31 @@ def consulta_vitroblocks():
     query_categorias = "SELECT id_categoria, nombre FROM categorias"
     cur.execute(query_categorias)
     categorias = cur.fetchall()
+    
+    query_count = "SELECT COUNT(*) FROM vitroblocks"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    page_range = list(range(1, total_pages + 1))
+    
+    start_index = max(1, page - 1)
+    end_index = min(total_pages, page + 1)
+    
+    if page - 1 > 1:
+        page_range = [1, '...'] + page_range[start_index-1:end_index]
+    elif page + 1 < total_pages:
+        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
+
+    
     cur.close()
     
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/vitroblocks/vitroblock.html', vitroblocks=vitroblocks, proveedores= proveedores, categorias=categorias)
+    return render_template('/vitroblocks/vitroblock.html', vitroblocks=vitroblocks, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 @app.route('/registro_vitroblocks', methods=['POST'])
 def registro_vitroblocks():
@@ -989,6 +1058,215 @@ def actualizar_vitroblocks():
         flash('Producto actualizado exitosamente!', 'info')
         return redirect(url_for('consulta_vitroblocks'))
 
+
+
+
+
+@app.route('/descargar_etiqueta_producto/<int:producto_id>')
+def descargar_etiqueta_producto(producto_id):
+    # Obtener datos del producto y la imagen del proveedor
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT p.medidas, p.producto, p.calidad, p.existencias, p.rotas, p.precio, 
+               p.embalaje, p.ubicacion, p.categoria,
+               prov.nombre AS proveedor_nombre, prov.foto AS proveedor_imagen
+        FROM productos p
+        JOIN proveedores prov ON p.proveedor = prov.id_proveedor
+        WHERE p.id_producto = %s
+    """, (producto_id,))
+    producto = cur.fetchone()
+    cur.close()
+
+    # Configurar PDF
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_line_width(1)  # Grosor del borde
+    pdf.rect(10, 10, 90, 50)  # Posición x, y, ancho, alto de la etiqueta
+
+    nombre_imagen = producto['proveedor_imagen'] 
+
+    # Ruta completa de la imagen del proveedor
+    ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
+
+    # Verificar si la imagen existe
+    if os.path.exists(ruta_imagen):
+        pdf.image(ruta_imagen, x=11, y=11, w=30)
+    else:
+        print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
+
+   
+
+   
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(75, 15)  # Posición cerca de la esquina inferior derecha
+    pdf.cell(0, 10, txt=f"{producto['medidas']}")
+    
+
+    # Nombre del producto en el centro
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 30)  # Centrar el texto horizontalmente dentro del borde
+    pdf.cell(90, 10, txt=producto['producto'].upper(), align="C")  # `align="C"` centra el texto en la celda
+
+    # Precio en la parte inferior derecha
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(78, 48)  # Posición cerca de la esquina inferior derecha
+    pdf.cell(0, 10, txt=f"{producto['precio']}")
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(15, 48)  # Posición cerca de la esquina inferior derecha
+    pdf.cell(0, 10, txt=f"{producto['embalaje']}")
+
+
+
+    # Generar el archivo PDF
+    response = make_response(pdf.output(dest="S").encode("latin1"))
+    response.headers["Content-Disposition"] = f"attachment; filename={producto['producto']}_etiqueta.pdf"
+    response.headers["Content-Type"] = "application/pdf"
+    return response
+
+
+@app.route('/descargar_etiqueta_muro/<int:muro_id>')
+def descargar_etiqueta_muro(muro_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT p.medidas, p.producto, p.calidad, p.existencias, p.rotas, p.precio, 
+               p.embalaje, p.ubicacion, p.categoria,
+               prov.nombre AS proveedor_nombre, prov.foto AS proveedor_imagen
+        FROM muros p
+        JOIN proveedores prov ON p.proveedor = prov.id_proveedor
+        WHERE p.id_producto = %s
+    """, (muro_id,))
+    muro = cur.fetchone()
+    cur.close()
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_line_width(1)  
+    pdf.rect(10, 10, 90, 50)  
+
+    nombre_imagen = muro['proveedor_imagen'] 
+
+    ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
+
+    if os.path.exists(ruta_imagen):
+        pdf.image(ruta_imagen, x=11, y=11, w=30)
+    else:
+        print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(75, 15)  
+    pdf.cell(0, 10, txt=f"{muro['medidas']}")
+    
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 30)  
+    pdf.cell(90, 10, txt=muro['producto'].upper(), align="C")  
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(78, 48)  
+    pdf.cell(0, 10, txt=f"{muro['precio']}")
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(15, 48)  
+    pdf.cell(0, 10, txt=f"{muro['embalaje']}")
+
+    response = make_response(pdf.output(dest="S").encode("latin1"))
+    response.headers["Content-Disposition"] = f"attachment; filename={muro['producto']}_etiqueta.pdf"
+    response.headers["Content-Type"] = "application/pdf"
+    return response
+
+@app.route('/descargar_etiqueta_adhesivo/<int:adhesivo_id>')
+def descargar_etiqueta_adhesivo(adhesivo_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT p.nombre, p.kilogramos, p.existencia, p.precio, p.ubicacion, p.categoria,
+               prov.nombre AS proveedor_nombre, prov.foto AS proveedor_imagen
+        FROM adhesivos p
+        JOIN proveedores prov ON p.proveedor = prov.id_proveedor
+        WHERE p.id_adhesivos = %s
+    """, (adhesivo_id,))
+    adhesivo = cur.fetchone()
+    cur.close()
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_line_width(1)  
+    pdf.rect(10, 10, 90, 50)  
+
+    nombre_imagen = adhesivo['proveedor_imagen'] 
+
+    ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
+
+    if os.path.exists(ruta_imagen):
+        pdf.image(ruta_imagen, x=11, y=11, w=30)
+    else:
+        print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(78, 15)  
+    pdf.cell(0, 10, txt=f"{adhesivo['kilogramos']}")
+    
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 25)  
+    pdf.cell(90, 10, txt=adhesivo['proveedor_nombre'].upper(), align="C")  
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 35)  
+    pdf.cell(90, 10, txt=adhesivo['nombre'].upper(), align="C")  
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(78, 48)  
+    pdf.cell(0, 10, txt=f"{adhesivo['precio']}")
+
+    response = make_response(pdf.output(dest="S").encode("latin1"))
+    response.headers["Content-Disposition"] = f"attachment; filename={adhesivo['nombre']}_etiqueta.pdf"
+    response.headers["Content-Type"] = "application/pdf"
+    return response
+
+@app.route('/descargar_etiqueta_sanitario/<int:sanitario_id>')
+def descargar_etiqueta_sanitario(sanitario_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT p.nombre, p.existencias, p.rotas, p.precio, p.ubicacion, p.categoria,
+               prov.nombre AS proveedor_nombre, prov.foto AS proveedor_imagen
+        FROM sanitarios p
+        JOIN proveedores prov ON p.proveedor = prov.id_proveedor
+        WHERE p.id_sanitario = %s
+    """, (sanitario_id,))
+    sanitario = cur.fetchone()
+    cur.close()
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_line_width(1)  
+    pdf.rect(10, 10, 90, 50)  
+
+    nombre_imagen = sanitario['proveedor_imagen'] 
+
+    ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
+
+    if os.path.exists(ruta_imagen):
+        pdf.image(ruta_imagen, x=40, y=13, w=30)
+    else:
+        print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 30)  
+    pdf.cell(90, 10, txt=sanitario['nombre'].upper(), align="C")  
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(50, 48)  
+    pdf.cell(90, 10, txt=f"{sanitario['precio']}")
+
+    response = make_response(pdf.output(dest="S").encode("latin1"))
+    response.headers["Content-Disposition"] = f"attachment; filename={sanitario['nombre']}_etiqueta.pdf"
+    response.headers["Content-Type"] = "application/pdf"
+    return response
 
 
 

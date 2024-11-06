@@ -76,6 +76,9 @@
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarSANITARIOS" value="{{ sanitario.id_sanitario }}" data-id="{{ sanitario.id_sanitario }}">
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>
+                                <button type="button" id="btnactualizar"  class="btn btn-primary"onclick="window.location.href='{{ url_for('descargar_etiqueta_sanitario', sanitario_id=sanitario.id_sanitario) }}'">
+                                    <i class="bi bi-printer-fill"></i>
+                                 </button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -96,10 +99,11 @@
 </main>
 
 
-<style>
+<style>/* estilos de la paginacion */
+
     .pagination .page-item {
-        margin: -30px 5px 0 30px;
-        width: 5px;
+        margin: 0 5px;
+        width: auto;
         height: auto;
     }
 
@@ -128,12 +132,11 @@
         background-color: #f1f1f1;
     }
     #pages{
-      
-      width: 90px;
-      height: auto;
-      margin: -37px 0 0 81%  ;
+     
+      width: 18%;
+      height: 20px;
+      margin: -53px 0 0 75.5% ;
     }
-
 </style>
 
 <div id="pages" class="card-footer text-muted">
@@ -177,4 +180,3 @@
         </ul>
     </nav>
 </div>
-

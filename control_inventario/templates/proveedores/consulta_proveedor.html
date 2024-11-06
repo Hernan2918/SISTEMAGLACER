@@ -79,4 +79,87 @@
     
 </main>
 
+<style>
+    /* estilos de la paginacion */
+
+    .pagination .page-item {
+        margin: 0 -10px;
+        width: auto;
+        height: auto;
+    }
+
+    .pagination .page-link {
+        font-size: 17px;
+        padding: 4px 10px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    .pagination .page-link {
+        cursor: pointer;
+    }
+
+    .pagination .page-item:hover .page-link {
+        background-color: #f1f1f1;
+    }
+    #pages{
+      
+      width: 18%;
+      height: 20px;
+      margin: -69px 0 0 75% ;
+    }
+
+</style>
+
+<div id="pages" class="card-footer text-muted">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('consulta_proveedores', page=page-1) }}" aria-label="Anterior">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&lt;</span>
+            </li>
+            {% endif %}
+
+            {% for p in page_range %}
+                {% if p == '...' %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% else %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('consulta_proveedores', page=p) }}">{{ p }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('consulta_proveedores', page=page+1) }}" aria-label="Siguiente">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&gt;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 

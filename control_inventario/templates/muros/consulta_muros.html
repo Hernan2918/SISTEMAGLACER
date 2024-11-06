@@ -78,8 +78,9 @@
                                 <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarM" value="{{ muro.id_producto }}" data-id="{{ muro.id_producto }}"><i class="bi bi-trash3-fill"></i></button>
                                 <button type="submit" class="btn btn-success" id="btnentradas" data-bs-toggle="modal" data-bs-target="#editarModalProducto" value="#"><i class="bi bi-box-arrow-left"></i></button>
                                 <button type="submit" class="btn btn-danger" id="btneliminar" data-bs-toggle="modal" data-bs-target="#eliminarP" ><i class="bi bi-box-arrow-right"></i></button>
-                                <button type="submit" class="btn btn-primary" id="btnactualizar" data-bs-toggle="modal" data-bs-target="#eliminarP" ><i class="bi bi-printer-fill"></i></button>
-
+                                <button type="button" id="btnactualizar"  class="btn btn-primary"onclick="window.location.href='{{ url_for('descargar_etiqueta_muro', muro_id=muro.id_producto) }}'">
+                                    <i class="bi bi-printer-fill"></i>
+                                 </button>
                             </td>
                                                 
                         </tr>
@@ -99,6 +100,50 @@
     </div>
     
 </main>
+
+<style>
+    /* estilos de la paginacion */
+
+    .pagination .page-item {
+        margin: 0 -10px;
+        width: auto;
+        height: auto;
+    }
+
+    .pagination .page-link {
+        font-size: 17px;
+        padding: 4px 10px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    .pagination .page-link {
+        cursor: pointer;
+    }
+
+    .pagination .page-item:hover .page-link {
+        background-color: #f1f1f1;
+    }
+    #pages{
+      
+      width: 18%;
+      height: 20px;
+      margin: -69px 0 0 80% ;
+    }
+
+</style>
+
+
 
 <div id="pages" class="card-footer text-muted">
     <nav aria-label="Page navigation example">
