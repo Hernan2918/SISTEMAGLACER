@@ -13,6 +13,8 @@ from flask import send_file
 from fpdf import FPDF
 
 from io import BytesIO
+from flask import jsonify
+
 
 app = Flask(__name__)
 
@@ -174,6 +176,24 @@ def consulta_productos():
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
     return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
+
+
+
+@app.route('/obtener_todos_productos')
+@login_required
+def obtener_todos_productos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.medidas, doc.nombre AS proveedor_nombre, d.producto, d.calidad, d.existencias,
+           d.rotas, d.precio, d.embalaje, d.ubicacion, esc.nombre AS categoria_nombre
+    FROM productos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+    cur.close()
+    return jsonify(productos)
 
 
 @app.route('/registro_productos', methods=['POST'])
@@ -646,6 +666,24 @@ def consulta_adhesivos():
     return render_template('/adhesivos/adhesivos.html', adhesivos=adhesivos, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 
+@app.route('/obtener_todos_adhesivos')
+@login_required
+def obtener_todos_adhesivos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_adhesivos, d.nombre, d.kilogramos, d.existencia,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM adhesivos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+    cur.close()
+    return jsonify(productos)
+
 @app.route('/registro_adhesivos', methods=['POST'])
 def registro_adhesivos():
     if request.method == 'POST':
@@ -763,6 +801,9 @@ def consulta_sanitarios():
     return render_template('/sanitarios/sanitarios.html', sanitarios=sanitarios, proveedores= proveedores, categorias=categorias, page=page, 
                            total_pages=total_pages,
                            page_range=page_range)
+
+
+
 
 
 
@@ -1268,13 +1309,111 @@ def descargar_etiqueta_sanitario(sanitario_id):
     response.headers["Content-Type"] = "application/pdf"
     return response
 
+@app.route('/descargar_etiqueta_tinaco/<int:tinaco_id>')
+def descargar_etiqueta_tinaco(tinaco_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT p.nombre, p.litros, p.color, p.existencias, p.precio, p.ubicacion, p.categoria,
+               prov.nombre AS proveedor_nombre, prov.foto AS proveedor_imagen
+        FROM tinacos p
+        JOIN proveedores prov ON p.proveedor = prov.id_proveedor
+        WHERE p.id_tinaco = %s
+    """, (tinaco_id,))
+    tinaco = cur.fetchone()
+    cur.close()
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_line_width(1)  
+    pdf.rect(10, 10, 90, 50)  
+
+    nombre_imagen = tinaco['proveedor_imagen'] 
+
+    ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
+
+    if os.path.exists(ruta_imagen):
+        pdf.image(ruta_imagen, x=40, y=13, w=30)
+    else:
+        print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(0, 30)  
+    pdf.cell(78, 10, txt=tinaco['nombre'].upper(), align="C")  
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(15, 45)  
+    pdf.cell(90, 10, txt=f"{tinaco['litros']}")
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(20, 30)  
+    pdf.cell(98, 10, txt=tinaco['color'].upper(), align="C")
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(73, 45)  
+    pdf.cell(90, 10, txt=f"{tinaco['precio']}")
+
+    response = make_response(pdf.output(dest="S").encode("latin1"))
+    response.headers["Content-Disposition"] = f"attachment; filename={tinaco['nombre']}_etiqueta.pdf"
+    response.headers["Content-Type"] = "application/pdf"
+    return response
+
+@app.route('/descargar_etiqueta_vitroblock/<int:vitroblock_id>')
+def descargar_etiqueta_vitroblock(vitroblock_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT p.nombre, p.tipo, p.medidas, p.existencias, p.precio, p.ubicacion, p.categoria,
+               prov.nombre AS proveedor_nombre, prov.foto AS proveedor_imagen
+        FROM vitroblocks p
+        JOIN proveedores prov ON p.proveedor = prov.id_proveedor
+        WHERE p.id_vitroblock = %s
+    """, (vitroblock_id,))
+    vitroblock = cur.fetchone()
+    cur.close()
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_line_width(1)  
+    pdf.rect(10, 10, 90, 50)  
+
+    nombre_imagen = vitroblock['proveedor_imagen'] 
+
+    ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
+
+    if os.path.exists(ruta_imagen):
+        pdf.image(ruta_imagen, x=10, y=13, w=30)
+    else:
+        print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 25)  
+    pdf.cell(90, 10, txt=vitroblock['nombre'].upper(), align="C")  
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(15, 45)  
+    pdf.cell(90, 10, txt=f"{vitroblock['medidas']}")
+
+    pdf.set_font("Arial", "B", size=18)
+    pdf.set_xy(10, 35)  
+    pdf.cell(90, 10, txt=vitroblock['tipo'].upper(), align="C")
+
+    pdf.set_font("Arial", "B", size=15)
+    pdf.set_xy(73, 45)  
+    pdf.cell(90, 10, txt=f"{vitroblock['precio']}")
+
+    response = make_response(pdf.output(dest="S").encode("latin1"))
+    response.headers["Content-Disposition"] = f"attachment; filename={vitroblock['nombre']}_etiqueta.pdf"
+    response.headers["Content-Type"] = "application/pdf"
+    return response
 
 
 @app.route('/logout')
 def logout():
+
     session.pop('logeado', None)  # Eliminar 'logeado' de la sesión
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.secret_key = "GLACER2024"
-    app.run(debug=True)
+    app.run( host='0.0.0.0', port=5000, debug=True)
