@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         doc.text('DEPARTAMENTO: ADHESIVOS', 105, 23, { align: 'center' });
                         doc.setFontSize(13);
                         doc.text('GLACER Glamur Cerámico', 195, 15, { align: 'right' });
-                        doc.setTextColor(255, 0, 0);
+                        doc.setTextColor(220, 0, 0);
                         doc.text('Atlacomulco Vías', 195, 23, { align: 'right' });
                 
                         doc.autoTable({
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             body: rows,
                             theme: 'grid',
                             styles: { halign: 'center' },
-                            headStyles: { fillColor: [255, 0, 0] },
+                            headStyles: { fillColor: [220, 0, 0] },
                             startY: 30
                         });
                 

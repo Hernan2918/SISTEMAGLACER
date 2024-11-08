@@ -542,6 +542,22 @@ def consulta_muros():
     return render_template('/muros/muros.html', muros=muros, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
 
+@app.route('/obtener_todos_muros')
+@login_required
+def obtener_todos_muros():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM muros d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+    cur.close()
+    return jsonify(productos)
 
 
 @app.route('/registro_muros', methods=['POST'])
@@ -745,8 +761,6 @@ def eliminar_adhesivos(adhesivo_id):
     return redirect(url_for('consulta_adhesivos'))
 
 
-
-
 @app.route('/consulta_sanitarios')
 @login_required
 @no_cache
@@ -804,7 +818,22 @@ def consulta_sanitarios():
 
 
 
-
+@app.route('/obtener_todos_sanitarios')
+@login_required
+def obtener_todos_sanitarios():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_sanitario, d.nombre, d.existencias, d.rotas,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM sanitarios d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+    cur.close()
+    return jsonify(productos)
 
 
 @app.route('/registro_sanitarios', methods=['POST'])
@@ -925,6 +954,24 @@ def consulta_tinacos():
 
     return render_template('/tinacos/tinacos.html', tinacos=tinacos, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
+
+@app.route('/obtener_todos_tinacos')
+@login_required
+def obtener_todos_tinacos():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_tinaco, d.nombre, d.litros, d.color, d.existencias, d.rotas,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM tinacos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+   
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+    cur.close()
+    return jsonify(productos)
 
 
 @app.route('/registro_tinacos', methods=['POST'])
@@ -1047,6 +1094,29 @@ def consulta_vitroblocks():
 
     return render_template('/vitroblocks/vitroblock.html', vitroblocks=vitroblocks, proveedores= proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
 
+
+
+@app.route('/obtener_todos_vitroblocks')
+@login_required
+def obtener_todos_vitroblocks():
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_vitroblock, d.tipo, d.medidas, d.nombre, d.existencias, d.rotas,  d.precio,  d.ubicacion,
+            doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+            esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM vitroblocks d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
+  
+    """
+    cur.execute(query)
+    productos = cur.fetchall()
+    cur.close()
+    return jsonify(productos)
+
+
+
+
 @app.route('/registro_vitroblocks', methods=['POST'])
 def registro_vitroblocks():
     if request.method == 'POST':
@@ -1105,7 +1175,6 @@ def actualizar_vitroblocks():
 
 @app.route('/descargar_etiqueta_producto/<int:producto_id>')
 def descargar_etiqueta_producto(producto_id):
-    # Obtener datos del producto y la imagen del proveedor
     cur = mysql.connection.cursor()
     cur.execute("""
         SELECT p.medidas, p.producto, p.calidad, p.existencias, p.rotas, p.precio, 
@@ -1118,44 +1187,35 @@ def descargar_etiqueta_producto(producto_id):
     producto = cur.fetchone()
     cur.close()
 
-    # Configurar PDF
     pdf = FPDF()
     pdf.add_page()
 
-    pdf.set_line_width(1)  # Grosor del borde
-    pdf.rect(10, 10, 90, 50)  # Posición x, y, ancho, alto de la etiqueta
+    pdf.set_line_width(1)
+    pdf.rect(10, 10, 90, 50)
 
     nombre_imagen = producto['proveedor_imagen'] 
 
-    # Ruta completa de la imagen del proveedor
     ruta_imagen = os.path.join(os.getcwd(), 'static', 'uploads', nombre_imagen)
 
-    # Verificar si la imagen existe
     if os.path.exists(ruta_imagen):
         pdf.image(ruta_imagen, x=11, y=11, w=30)
     else:
         print("La imagen no se encuentra en la ruta especificada:", ruta_imagen)
 
-   
-
-   
     pdf.set_font("Arial", "B", size=15)
-    pdf.set_xy(75, 15)  # Posición cerca de la esquina inferior derecha
+    pdf.set_xy(75, 15) 
     pdf.cell(0, 10, txt=f"{producto['medidas']}")
     
-
-    # Nombre del producto en el centro
     pdf.set_font("Arial", "B", size=18)
-    pdf.set_xy(10, 30)  # Centrar el texto horizontalmente dentro del borde
-    pdf.cell(90, 10, txt=producto['producto'].upper(), align="C")  # `align="C"` centra el texto en la celda
+    pdf.set_xy(10, 30)
+    pdf.cell(90, 10, txt=producto['producto'].upper(), align="C")  
 
-    # Precio en la parte inferior derecha
     pdf.set_font("Arial", "B", size=15)
-    pdf.set_xy(78, 48)  # Posición cerca de la esquina inferior derecha
+    pdf.set_xy(78, 48)  
     pdf.cell(0, 10, txt=f"{producto['precio']}")
 
     pdf.set_font("Arial", "B", size=15)
-    pdf.set_xy(15, 48)  # Posición cerca de la esquina inferior derecha
+    pdf.set_xy(15, 48)  
     pdf.cell(0, 10, txt=f"{producto['embalaje']}")
 
 
