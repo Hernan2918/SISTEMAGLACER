@@ -75,15 +75,30 @@ document.addEventListener('DOMContentLoaded', function () {
           abrirModalRegistro();
         });
 
+        
         $(document).ready(function(){
             $("#buscarproveedor").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
+                var value = $(this).val();
                 var noMatch = true;
+        
+                if (value === "") {
+                    $("#tabla_proveedores tbody tr").show();
+                    $("#noMatches").hide();
+                    return;
+                }
+        
+                if (value.trim() === "") {
+                    $("#tabla_proveedores tbody tr").hide();
+                    $("#noMatches").show();
+                    return;
+                }
+        
                 $("#tabla_proveedores tbody tr").filter(function() {
-                    var match = $(this).text().toLowerCase().indexOf(value) > -1;
+                    var match = $(this).text().toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
                     $(this).toggle(match);
                     if (match) noMatch = false;
                 });
+        
                 if (noMatch) {
                     $("#noMatches").show();
                 } else {
@@ -176,7 +191,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
         
+        document.getElementById("buscar2").addEventListener("click", function() {
+            document.getElementById("buscarproveedor").focus();
+        });
         
+
             
             
 

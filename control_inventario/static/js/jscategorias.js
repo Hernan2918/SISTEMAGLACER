@@ -113,20 +113,41 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
            
+                
+
                 $(document).ready(function(){
                     $("#buscarcatgorias").on("keyup", function() {
-                        var value = $(this).val().toLowerCase();
+                        var value = $(this).val();
                         var noMatch = true;
+                
+                        if (value === "") {
+                            $("#tabla_categoria tbody tr").show();
+                            $("#noMatches").hide();
+                            return;
+                        }
+                
+                        if (value.trim() === "") {
+                            $("#tabla_categoria tbody tr").hide();
+                            $("#noMatches").show();
+                            return;
+                        }
+                
                         $("#tabla_categoria tbody tr").filter(function() {
-                            var match = $(this).text().toLowerCase().indexOf(value) > -1;
+                            var match = $(this).text().toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
                             $(this).toggle(match);
                             if (match) noMatch = false;
                         });
+                
                         if (noMatch) {
                             $("#noMatches").show();
                         } else {
                             $("#noMatches").hide();
                         }
                     });
+                });
+                
+
+                document.getElementById("buscar2").addEventListener("click", function() {
+                    document.getElementById("buscarcatgorias").focus();
                 });
                 

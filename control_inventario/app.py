@@ -1,5 +1,3 @@
-
-
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
 from forms import ProductosForm 

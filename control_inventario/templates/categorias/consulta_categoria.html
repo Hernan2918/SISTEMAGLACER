@@ -1,6 +1,6 @@
 <main role="main" id="Tabla" class="col-md-10">
     <div id="nombre">
-        <div class="elemento1">
+        <div class="elemento2">
             {% if 'nombre' in session %}
             <h4>¡Hola!, {{ session['nombre'] }} </h4>
             
@@ -62,6 +62,9 @@
                         
                     </tbody>
                 </table>
+                <div id="noMatches" class="alert alert-warning mt-3" style="display: none;">
+                    No se encontraron coincidencias.
+                </div>
             </div>
         </div>
         <div class="card-footer text-muted ">

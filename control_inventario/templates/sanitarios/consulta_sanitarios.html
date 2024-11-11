@@ -9,6 +9,7 @@
         {% endif %}
         </div>
         <div class="elemento">
+            <i id="Descargar" class="bi bi-download"></i>
             <button type="button" id="registroProducto" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
         
                 <i class="fas fa-plus"></i> Producto
@@ -89,6 +90,9 @@
                         
                     </tbody>
                 </table>
+                <div id="noMatches" class="alert alert-warning mt-3" style="display: none;">
+                    No se encontraron coincidencias.
+                </div>
             </div>
         </div>
         <div class="card-footer text-muted ">

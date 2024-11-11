@@ -138,23 +138,37 @@ document.addEventListener('DOMContentLoaded', function () {
             
 
            
-                $(document).ready(function(){
-                    $("#buscarproducto").on("keyup", function() {
-                        var value = $(this).val().toLowerCase();
-                        var noMatch = true;
-                        $("#tabla_productos tbody tr").filter(function() {
-                            var match = $(this).text().toLowerCase().indexOf(value) > -1;
-                            $(this).toggle(match);
-                            if (match) noMatch = false;
-                        });
-                        if (noMatch) {
-                            $("#noMatches").show();
-                        } else {
-                            $("#noMatches").hide();
-                        }
+            $(document).ready(function(){
+                $("#buscarproducto").on("keyup", function() {
+                    var value = $(this).val();
+                    var noMatch = true;
+            
+                    if (value === "") {
+                        $("#tabla_productos tbody tr").show();
+                        $("#noMatches").hide();
+                        return;
+                    }
+            
+                    if (value.trim() === "") {
+                        $("#tabla_productos tbody tr").hide();
+                        $("#noMatches").show();
+                        return;
+                    }
+            
+                    $("#tabla_productos tbody tr").filter(function() {
+                        var match = $(this).text().toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
+                        $(this).toggle(match);
+                        if (match) noMatch = false;
                     });
+            
+                    if (noMatch) {
+                        $("#noMatches").show();
+                    } else {
+                        $("#noMatches").hide();
+                    }
                 });
-                
+            });
+            
 
 
 
@@ -228,5 +242,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         console.error("No se pudo cargar la imagen correctamente.");
                     }
+                });
+                
+
+                document.getElementById("buscar").addEventListener("click", function() {
+                    document.getElementById("buscarproducto").focus();
                 });
                 
