@@ -60,8 +60,8 @@ body{
     
 }
 .menu ul input{
-    border: 2px solid transparent;
-    border-color: rgb(243, 242, 242);
+    border: 0.5px solid #000;
+    border-color: rgb(7, 7, 7);
     padding: 16px;
     width: 20%;
     height: 6.5%;
@@ -70,11 +70,17 @@ body{
     border-radius: 10px;
     margin-left: 78%;
     translate: 0 -56px;
+
+}
+.menu ul input:focus{
+    outline: 0.5px solid #000;
+    
+
 }
 
 #buscarcatgorias{
-    border: 2px solid transparent;
-    border-color: rgb(243, 242, 242);
+    border: 0.5px solid transparent;
+    border-color: rgb(8, 8, 8);
     padding: 16px;
     width: 20%;
     height: 6.5%;
@@ -112,6 +118,7 @@ body{
     justify-content: center;
     align-items: center;
     font-size: 1.1em;
+    
 }
 
 .menu #buscar{
@@ -119,12 +126,13 @@ body{
     width: 2.5%;
     height: 31px;
     border-radius: 5px;
-    translate: 1065px -43px;
+    translate: 1055px -43px;
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
     font-size: 1.2em;
+    
     
 }
 

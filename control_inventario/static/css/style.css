@@ -62,12 +62,12 @@ body {
     }
     
     .Imagen{
-       translate: 60px -140px ;
+       translate: 60px -130px ;
     }
     
     img{
        border-radius: 50%;
-        margin-left: 15%;
+       margin-left: 15%;
        width: 33%;
        height: 63%;
      
@@ -101,12 +101,12 @@ body {
     .Usuario i{
       display: grid;
       place-items: center;
-      width: 10%;
-      height: 28px;
+      width: 9.5%;
+      height: 29px;
       position: absolute;
       left: 62px; 
       top: 50%;
-      transform: translateY(-265%);
+      transform: translateY(-257%);
       pointer-events: none; 
       color: #050505; 
       background-color: rgb(171, 177, 175);
@@ -131,12 +131,12 @@ body {
     .Contraseña i{
       display: grid;
       place-items: center;
-      width: 10%;
-      height: 28px;
+      width: 9.5%;
+      height: 29px;
       position: absolute;
       left: 62px; 
       top: 50%;
-      transform: translateY(-220%);
+      transform: translateY(-213%);
       pointer-events: none; 
       color: #050505; 
       background-color: rgb(171, 177, 175);
@@ -156,7 +156,8 @@ body {
         margin-left: 100px;
     }
     .mensaje{
-        margin: -4px 0 15px 0;
+        width: 20%;
+        margin: 200px 0 0 63%;
         text-align: center;
         color: #d61313;
     }
@@ -165,10 +166,10 @@ body {
         background-color: #d61313;
         color: #fff;
         border: none;
-        width: 110px;
-        height: 60%;
-        border-radius: 5px;
-        box-shadow: 2px 2px 3px #2f2e2e ;
+        width: 120px;
+        height: 70%;
+        box-shadow: 3px 3px 6px #4e4e4e ;
+        border-radius: 8%;
     }
     
     #registro{
@@ -180,15 +181,12 @@ body {
     #texto{
         font-size: 1.1em;
     }
-    
-    
-
-
 
 
 .mensajerE{
-    margin: 560px 0 0 550px;
+    margin: 200px 0 0 63%;
     width: 20%;
     
     
 }
+

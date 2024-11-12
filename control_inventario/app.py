@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash, make_response
 from flask_mysqldb import MySQL
-from forms import ProductosForm 
+from forms import ProductosForm
 from flask import flash
 from functools import wraps
 import os
@@ -92,12 +92,7 @@ def registro_usuarios():
         genero = request.form['registrargenero']
         usuario = request.form['registrarusuario']
         contrasena= request.form['registrarcontraseña']
-        confirmar_c = request.form['registrarcontraseñaC']
-
-        if contrasena != confirmar_c:
-            flash("Las contraseñas no coinciden. Inténtalo de nuevo.")
-            return redirect('/registro')  # Redirigir de nuevo al formulario de registro
-
+        
         hashed_contrasena = generate_password_hash(contrasena)
         print(f"Hash almacenado: {hashed_contrasena}") 
 
