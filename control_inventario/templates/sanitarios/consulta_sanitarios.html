@@ -1,24 +1,28 @@
 <main role="main" id="TablaProductos" class="col-md-11">
-    <div id="nombre">
+    <div class="encabezado">
         <div class="elemento1">
             {% if 'nombre' in session %}
-            <h4>¡Hola!, {{ session['nombre'] }} </h4>
+            <h5>¡Hola!, {{ session['nombre'] }} </h5>
             
         {% else %}
             
         {% endif %}
         </div>
-        <div class="elemento">
-            <i id="Descargar" class="bi bi-download"></i>
-            <button type="button" id="registroProducto" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
-        
-                <i class="fas fa-plus"></i> Producto
-            </button>
+        <div id="bienvenidoUduario">
+            <div class="elemento2">
+                <i id="Descargar" class="bi bi-download"></i>
+            </div>
+            <div class="elemento3">
+                <button type="button" id="registroProducto" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
+            
+                    <i class="fas fa-plus"></i> Producto
+                </button>
+            </div>
         </div>
     </div>
     <div class="card  mt-10" id="contenido">
         <div class="card-header text-center">
-            <h4>Consulta sanitarios</h4>
+            <h5>Consulta sanitarios</h5>
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}

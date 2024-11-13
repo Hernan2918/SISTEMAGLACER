@@ -1,24 +1,24 @@
 <main role="main" id="Tabla" class="col-md-10">
 
-    <div id="nombre">
-        <div class="elemento2">
+    <div class="encabezadoPC">
+        <div class="elemento5">
             {% if 'nombre' in session %}
-            <h4>¡Hola!, {{ session['nombre'] }} </h4>
+            <h5>¡Hola!, {{ session['nombre'] }} </h5>
             
         {% else %}
             
         {% endif %}
         </div>
-        <div class="elemento">
+        <div class="elemento6">
             <button type="button" id="registroProveedor" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productos">
-                <i class="fas fa-plus"></i> Proveedor
-            </button>
+
+                <i class="fas fa-plus"></i> Proveedor</button>
         </div>
     </div>
     
     <div class="card  mt-10" id="contenido">
         <div class="card-header text-center">
-            <h4>Consulta proveedores</h4>
+            <h5>Consulta proveedores</h5>
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}

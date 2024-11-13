@@ -1,6 +1,6 @@
 @font-face{
-    font-family: Medium;
-    src: url(../css/Nunito/static/Nunito-Medium.ttf);
+    font-family: 'Montserrat';
+    src: url(../css/Montserrat/static/Montserrat-Regular.ttf);
     font-weight: normal;
     font-style: normal;
 }
@@ -8,12 +8,38 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: 'Medium';
-
+    font-family: 'Montserrat';
     
 }
+#tabla_productos button{
+    
+    width: 33px;
+    height: 33px;
+    align-items: center ;
+    justify-content: center;
+    padding: 0;
+}
+#tabla_categoria button{
+    width: 33px;
+    height: 33px;
+    align-items: center ;
+    justify-content: center;
+    padding: 0;
+}
+
+#tabla_proveedores button{
+    width: 33px;
+    height: 33px;
+    align-items: center ;
+    justify-content: center;
+    padding: 0;
+
+}
+
 body{
     background-color: #fff;
+    
+
 }
 
 .menu .fondo1{
@@ -40,7 +66,7 @@ body{
 }
 .titulo{
     color: #d61313;
-    translate: 95px -40px;
+    translate: 110px -40px;
     margin-left: 50%;
     display: flex;
     position: absolute;
@@ -52,11 +78,12 @@ body{
 }
 
 #Descargar{
-    translate: 925px 10px;
-    display: flex;
+    
+    display: inline-block;
     background-color: #020202;
     font-size: 1.5em;
     background-color: #fff;
+    
     
 }
 .menu ul input{
@@ -93,8 +120,8 @@ body{
 }
 
 #buscarproveedor{
-    border: 2px solid transparent;
-    border-color: rgb(243, 242, 242);
+    border: 0.5px solid transparent;
+    border-color: rgb(10, 10, 10);
     padding: 16px;
     width: 20%;
     height: 6.5%;
@@ -126,7 +153,7 @@ body{
     width: 2.5%;
     height: 31px;
     border-radius: 5px;
-    translate: 1055px -43px;
+    translate: 1064px -43px;
     display: flex;
     text-align: center;
     justify-content: center;
@@ -417,32 +444,25 @@ thead tr:nth-child(odd){
 #registroProducto {
     width: 100%;
     height: 35px;
-    translate: 890px -20px;
-    margin: 2% 0 0 85%;
+    display: inline-block;
+    
+    
 }
 
 .elemento1{
-    translate: 0px 5px
+    display: inline-block;
+    translate: 0px 5px;
+    width: 40%;
+
 }
 
-.elemento2{
-    translate: 0px -7px
-}
 
 
-#registroProveedor{
-    width: 100%;
-    height: 35px;
-    translate: 755px -15px;
-    margin: 2% 0 0 85%;
+.elemento3{
+    margin-left: 23%;
+    
 }
 
-#registroCategoria{
-    width: 100%;
-    height: 35px;
-    translate: 755px -15px;
-    margin: 2% 0 0 85%;
-}
 
 
 #tabla_productos, #tabla_proveedores, #tabla_categorias th, td{
@@ -540,11 +560,36 @@ thead tr:nth-child(odd){
     
 }
 
-#nombre{
+#bienvenidoUduario{
+    display: flex;
+    margin-left: 50%;
+    width: 18%;
+
+}
+.encabezado{
+    margin-bottom: 10px;
     display: flex;
 }
 
+.encabezadoPC{
+    
+    display: flex;
+    margin-top: -5px;
+}
+.elemento5{
+    
+    width: 40%;
+    margin-bottom: 8px;
+}
 
+.elemento6{
+    margin-top: -5px;
+    
+    width: auto;
+    margin-left: 540px;
+
+
+}
 
 .text-rojo {
     color: #d61313;
