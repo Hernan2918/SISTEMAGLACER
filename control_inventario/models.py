@@ -9,7 +9,7 @@ class Producto(db.Model):
     proveedor = db.Column(db.Integer, ForeignKey('proveedores.id_proveedor'))
     producto = db.Column(db.String(250))
     calidad = db.Column(db.String(250))
-    existencia = db.Column(db.Interger(250))
+    existencia = db.Column(db.Integer, nullable=False)
     rotas = db.Column(db.String(250))
     precio = db.Column(db.String(250))
     embalaje = db.Column(db.String(250))

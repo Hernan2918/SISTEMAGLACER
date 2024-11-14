@@ -208,9 +208,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const imgData1 = await getBase64ImageFromUrl(imgUrl1);
                 
                     if (imgData1) {
-                        doc.addImage(imgData1, 'JPEG', 13, 6, 20, 20); // Añadir imagen al PDF
+                        doc.addImage(imgData1, 'JPEG', 13, 6, 20, 20); 
                 
-                        // Obtener los productos y agregarlos al PDF
                         const response = await fetch('/obtener_todos_productos');
                         const productos = await response.json();
                 
@@ -245,7 +244,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             startY: 30
                         });
                 
-                        // Guardar el archivo PDF
                         doc.save('tabla_pisos.pdf');
                     } else {
                         console.error("No se pudo cargar la imagen correctamente.");
@@ -258,3 +256,291 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById("buscarproducto").focus();
                 });
                 
+
+
+                // SECCION DE VALIDACION DE FORMULARIO DE REGISTRO 
+
+                function validarFormularioproducto() {
+                    var isValid = true;
+                
+                    var medida = document.getElementById('medida').value;
+                    var medidaError = document.getElementById('medidaError');
+                    var expresionme = /^\d{2}x\d{2,3}$/;
+            
+            
+                     if (!expresionme.test(medida)) {
+                        medidaError.textContent = 'Por favor, ingresa una medida valida, ejemplo 30x60.';
+                        medidaError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        medidaError.textContent = '';
+                        medidaError.style.display = 'none';
+                    }
+            
+                    var producto = document.getElementById('producto').value;
+                    var productoError = document.getElementById('productoError');
+                    var expresionpro = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+            
+                     if (!expresionpro.test(producto)) {
+                        productoError.textContent = 'Por favor, ingresa un nombre valido. Sin espacios.';
+                        productoError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        productoError.textContent = '';
+                        productoError.style.display = 'none';
+                    }
+            
+                    var calidad = document.getElementById('calidad').value;
+                    var calidadError = document.getElementById('calidadError');
+                    var expresioncal = /^[0-9]+[a-z]{2,3}$/;
+            
+                     if (!expresioncal.test(calidad)) {
+                        calidadError.textContent = 'Por favor, ingresa una calidad correcta, primero un numero seguido de la abreviatura de ese número.';
+                        calidadError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        calidadError.textContent = '';
+                        calidadError.style.display = 'none';
+                    }
+            
+                    var existencia = document.getElementById('existencia').value;
+                    var existenciaError = document.getElementById('existenciaError');
+                    var expresionexi = /^[0-9]{1,10}$/;
+            
+                     if (!expresionexi.test(existencia)) {
+                        existenciaError.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        existenciaError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        existenciaError.textContent = '';
+                        existenciaError.style.display = 'none';
+                    }
+            
+                    var rotas = document.getElementById('rotas').value;
+                    var rotasError = document.getElementById('rotasError');
+                    var expresionerot = /^[0-9]{1,10}$/;
+            
+                     if (!expresionerot.test(rotas)) {
+                        rotasError.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        rotasError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        rotasError.textContent = '';
+                        rotasError.style.display = 'none';
+                    }
+            
+            
+                    var precio = document.getElementById('precio').value;
+                    var precioError = document.getElementById('precioError');
+                    var expresionpre = /^\$[0-9]{1,10}$/;
+            
+                     if (!expresionpre.test(precio)) {
+                        precioError.textContent = 'Por favor, ingresa un precio iniciando con el símbolo $. Sin espacios.';
+                        precioError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        precioError.textContent = '';
+                        precioError.style.display = 'none';
+                    }
+            
+                    var embalaje = document.getElementById('embalaje').value;
+                    var embalajeError = document.getElementById('embalajeError');
+                    var expresionemb = /^[0-9]*\.?[0-9]+ CJ$/;
+            
+                     if (!expresionemb.test(embalaje)) {
+                        embalajeError.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        embalajeError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        embalajeError.textContent = '';
+                        embalajeError.style.display = 'none';
+                    }
+            
+            
+                    var ubicacion = document.getElementById('ubicacion').value;
+                    var ubicacionError = document.getElementById('ubicacionError');
+                    var expresionubi = /^[A-Z](?:[a-zA-Z0-9]+(?:\s[a-zA-Z0-9]+)*)?$/;
+            
+                     if (!expresionubi.test(ubicacion)) {
+                        ubicacionError.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        ubicacionError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        ubicacionError.textContent = '';
+                        ubicacionError.style.display = 'none';
+                    }
+            
+            
+            
+                    var proveedor = document.getElementById('proveedores').value;
+                    var proveedorError = document.getElementById('proveedoresError');
+                    if (proveedor === "") {
+                        proveedorError.textContent = 'Por favor, selecciona un proveedor.';
+                        proveedorError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        proveedorError.textContent = '';
+                        proveedorError.style.display = 'none';
+                    }
+            
+            
+                    var categorias = document.getElementById('categorias').value;
+                    var categoriasError = document.getElementById('categoriasError');
+                    if (categorias === "") {
+                        categoriasError.textContent = 'Por favor, selecciona una categoría.';
+                        categoriasError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        categoriasError.textContent = '';
+                        categoriasError.style.display = 'none';
+                    }
+            
+            
+                
+                    return isValid;
+                }
+
+
+
+                // FUNCION PARA LA VALIDACION DEL FORMULARIO DE ACTUALIZAR 
+
+
+                function validarFormularioproductoA() {
+                    var isValid = true;
+                
+                    var medidaA = document.getElementById('medidaeditar').value;
+                    var medidaErrorA = document.getElementById('medidaErrorA');
+                    var expresionmeA = /^\d{2}x\d{2,3}$/;
+            
+            
+                     if (!expresionmeA.test(medidaA)) {
+                        medidaErrorA.textContent = 'Por favor, ingresa una medida valida, ejemplo 30x60.';
+                        medidaErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        medidaErrorA.textContent = '';
+                        medidaErrorA.style.display = 'none';
+                    }
+            
+                    var productoA = document.getElementById('productoeditar').value;
+                    var productoErrorA = document.getElementById('productoErrorA');
+                    var expresionproA = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+            
+                     if (!expresionproA.test(productoA)) {
+                        productoErrorA.textContent = 'Por favor, ingresa un nombre valido. Sin espacios.';
+                        productoErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        productoErrorA.textContent = '';
+                        productoErrorA.style.display = 'none';
+                    }
+            
+                    var calidadA = document.getElementById('calidadeditar').value;
+                    var calidadErrorA = document.getElementById('calidadErrorA');
+                    var expresioncalA = /^[0-9]+[a-z]{2,3}$/;
+            
+                     if (!expresioncalA.test(calidadA)) {
+                        calidadErrorA.textContent = 'Por favor, ingresa una calidad correcta, primero un numero seguido de la abreviatura de ese número.';
+                        calidadErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        calidadErrorA.textContent = '';
+                        calidadErrorA.style.display = 'none';
+                    }
+            
+                    var existenciaA = document.getElementById('existenciaeditar').value;
+                    var existenciaErrorA = document.getElementById('existenciaErrorA');
+                    var expresionexiA = /^[0-9]{1,10}$/;
+            
+                     if (!expresionexiA.test(existenciaA)) {
+                        existenciaErrorA.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        existenciaErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        existenciaErrorA.textContent = '';
+                        existenciaErrorA.style.display = 'none';
+                    }
+            
+                    var rotasA = document.getElementById('rotaseditar').value;
+                    var rotasErrorA = document.getElementById('rotasErrorA');
+                    var expresionerotA = /^[0-9]{1,10}$/;
+            
+                     if (!expresionerotA.test(rotasA)) {
+                        rotasErrorA.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        rotasErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        rotasErrorA.textContent = '';
+                        rotasErrorA.style.display = 'none';
+                    }
+            
+            
+                    var precioA = document.getElementById('precioeditar').value;
+                    var precioErrorA = document.getElementById('precioErrorA');
+                    var expresionpreA = /^\$[0-9]{1,10}$/;
+            
+                     if (!expresionpreA.test(precioA)) {
+                        precioErrorA.textContent = 'Por favor, ingresa un precio iniciando con el símbolo $. Sin espacios.';
+                        precioErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        precioErrorA.textContent = '';
+                        precioErrorA.style.display = 'none';
+                    }
+            
+                    var embalajeA = document.getElementById('embalajeeditar').value;
+                    var embalajeErrorA = document.getElementById('embalajeErrorA');
+                    var expresionembA = /^[0-9]*\.?[0-9]+ CJ$/;
+            
+                     if (!expresionembA.test(embalajeA)) {
+                        embalajeErrorA.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        embalajeErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        embalajeErrorA.textContent = '';
+                        embalajeErrorA.style.display = 'none';
+                    }
+            
+            
+                    var ubicacionA = document.getElementById('ubicacioneditar').value;
+                    var ubicacionErrorA = document.getElementById('ubicacionErrorA');
+                    var expresionubiA = /^[A-Z](?:[a-zA-Z0-9]+(?:\s[a-zA-Z0-9]+)*)?$/;
+            
+                     if (!expresionubiA.test(ubicacionA)) {
+                        ubicacionErrorA.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        ubicacionErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        ubicacionErrorA.textContent = '';
+                        ubicacionErrorA.style.display = 'none';
+                    }
+            
+            
+            
+                    var proveedorA = document.getElementById('proveedoreditar').value;
+                    var proveedorErrorA = document.getElementById('proveedoresErrorA');
+                    if (proveedorA === "") {
+                        proveedorErrorA.textContent = 'Por favor, selecciona un proveedor.';
+                        proveedorErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        proveedorErrorA.textContent = '';
+                        proveedorErrorA.style.display = 'none';
+                    }
+            
+            
+                    var categoriasA = document.getElementById('categoriaeditar').value;
+                    var categoriasErrorA = document.getElementById('categoriasErrorA');
+                    if (categoriasA === "") {
+                        categoriasErrorA.textContent = 'Por favor, selecciona una categoría.';
+                        categoriasErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        categoriasErrorA.textContent = '';
+                        categoriasErrorA.style.display = 'none';
+                    }
+            
+            
+                
+                    return isValid;
+                }

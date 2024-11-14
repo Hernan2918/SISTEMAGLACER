@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/registro_muros" method="post" onsubmit="return validarFormulario()">
+                <form action="/registro_muros" method="post" onsubmit="return validarFormularioproducto()">
                     <div class="mb-3">
                         <label for="medida" class="form-label">Media</label>
                         <input type="txt" class="form-control" id="medida" name="medida">
@@ -25,7 +25,7 @@
                     <div class="mb-3">
                         <label for="producto" class="form-label">Nombre</label>
                         <input type="txt" class="form-control" id="producto" name="producto">
-                        <div class="invalid-feedback" id="prouductoError"></div>
+                        <div class="invalid-feedback" id="productoError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="calidad" class="form-label">Calidad</label>

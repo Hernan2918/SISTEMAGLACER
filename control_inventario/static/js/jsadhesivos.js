@@ -103,9 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputPrecio.value=precio;
                 inputUbicacion.value = ubicacion;
                 
-            
-        
-                // Seleccionar la opción correcta en el select de docente
+    
               Array.from(inputproveedor.options).forEach(option => {
                   if (option.value == proveedor) {
                       option.selected = true;
@@ -114,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
                   }
               });
       
-              // Seleccionar la opción correcta en el select de escuela
               Array.from(inputCategoria.options).forEach(option => {
                   if (option.value == categoria) {
                       option.selected = true;
@@ -176,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF();
                 
-                    // Agregar el logo
                     const imgUrl1 = '/static/img/logov.jpeg';
                 
                     async function getBase64ImageFromUrl(url) {
@@ -190,8 +186,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             const reader = new FileReader();
                 
                             return new Promise((resolve, reject) => {
-                                reader.onloadend = () => resolve(reader.result); // Resuelve con el resultado Base64
-                                reader.onerror = reject; // Rechaza si hay un error
+                                reader.onloadend = () => resolve(reader.result); 
+                                reader.onerror = reject; 
                                 reader.readAsDataURL(blob);
                             });
                         } catch (error) {
@@ -205,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (imgData1) {
                         doc.addImage(imgData1, 'JPEG', 13, 6, 20, 20); 
                 
-                        // Obtener los productos y agregarlos al PDF
+                    
                         const response = await fetch('/obtener_todos_adhesivos');
                         const productos = await response.json();
                 

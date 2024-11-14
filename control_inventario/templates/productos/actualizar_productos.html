@@ -6,13 +6,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/actualizar_producto" method="post" onsubmit="return validarFormulario()">
+                <form action="/actualizar_producto" method="post" onsubmit="return validarFormularioproductoA()">
                     <input type="hidden" id="editarproductoId" name="id_producto">
                     <div class="mb-3">
                         <label for="medidaeditar" class="form-label">Media</label>
 
                         <input type="txt" class="form-control" id="medidaeditar" name="medidaeditar">
-                        <div class="invalid-feedback" id="medidaError"></div>
+                        <div class="invalid-feedback" id="medidaErrorA"></div>
                     </div>
                     <div class="mb-3">
                         <label for="proveedoreditar" class="form-label">Proveedor</label><br>
@@ -21,41 +21,41 @@
                                 <option value="{{ proveedor.id_proveedor }}">{{ proveedor.nombre }}</option>
                             {% endfor %}
                         </select> 
-                        <div class="invalid-feedback" id="proveedoresError"></div>
+                        <div class="invalid-feedback" id="proveedoresErrorA"></div>
                     </div>
                     
                     <div class="mb-3">
                         <label for="productoeditar" class="form-label">Nombre</label>
                         <input type="txt" class="form-control" id="productoeditar" name="productoeditar">
-                        <div class="invalid-feedback" id="prouductoError"></div>
+                        <div class="invalid-feedback" id="productoErrorA"></div>
                     </div>
                     <div class="mb-3">
                         <label for="calidadeditar" class="form-label">Calidad</label>
                         <input type="txt" class="form-control" id="calidadeditar" name="calidadeditar">
-                        <div class="invalid-feedback" id="calidadError"></div>
+                        <div class="invalid-feedback" id="calidadErrorA"></div>
                     </div>
                     <div class="mb-3">
                         <label for="existenciaeditar" class="form-label">Existencia</label>
                         <input type="txt" class="form-control" id="existenciaeditar" name="existenciaeditar">
-                        <div class="invalid-feedback" id="existenciaError"></div>
+                        <div class="invalid-feedback" id="existenciaErrorA"></div>
                     </div>
                     <div class="mb-3">
                         <label for="rotaseditar" class="form-label">Rotas</label>
                         <input type="txt" class="form-control" id="rotaseditar" name="rotaseditar">
-                        <div class="invalid-feedback" id="rotasError"></div>
+                        <div class="invalid-feedback" id="rotasErrorA"></div>
                     </div>
                     <div class="mb-3">
                         <label for="precioeditar" class="form-label">Precio</label>
                         <input type="txt" class="form-control" id="precioeditar" name="precioeditar">
-                        <div class="invalid-feedback" id="precioError"></div>
+                        <div class="invalid-feedback" id="precioErrorA"></div>
                     </div><div class="mb-3">
                         <label for="embalajeeditar" class="form-label">Embalaje</label>
                         <input type="txt" class="form-control" id="embalajeeditar" name="embalajeeditar">
-                        <div class="invalid-feedback" id="embalajeError"></div>
+                        <div class="invalid-feedback" id="embalajeErrorA"></div>
                     </div><div class="mb-3">
                         <label for="ubicacioneditar" class="form-label">Ubicación</label>
                         <input type="txt" class="form-control" id="ubicacioneditar" name="ubicacioneditar">
-                        <div class="invalid-feedback" id="ubicacionError"></div>
+                        <div class="invalid-feedback" id="ubicacionErrorA"></div>
                     </div>
                     <div class="mb-3">
                         <label for="categoriaeditar" class="form-label">Categoría</label><br>
@@ -64,7 +64,7 @@
                             <option value="{{ categoria.id_categoria }}">{{categoria.nombre}}</option>
                             {% endfor %}
                         </select> 
-                        <div class="invalid-feedback" id="categoriasError"></div>
+                        <div class="invalid-feedback" id="categoriasErrorA"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -75,4 +75,5 @@
         </div>
     </div>
   </div>
-  
+
+
