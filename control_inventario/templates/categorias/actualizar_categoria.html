@@ -6,18 +6,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/actualizar_categoria" method="post" enctype="multipart/form-data" onsubmit="return validarFormulario()">
+                <form action="/actualizar_categoria" method="post" enctype="multipart/form-data" onsubmit="return validarFormularioCategoriA()">
                     <input type="hidden" id="editarcategoriaId" name="id_categoria">
                     <div class="mb-3">
                         <label for="nombreeditar" class="form-label">Nombre</label>
                         <input type="txt" class="form-control" id="nombreeditar" name="nombreeditar">
-                        <div class="invalid-feedback" id="nombreError"></div>
+                        <div class="invalid-feedback" id="nombreErrorA"></div>
                     </div>
                     
                     <div class="mb-3">
                         <label for="descripcioneditar" class="form-label">Descripción</label>
                         <input type="txt" class="form-control" id="descripcioneditar" name="descripcioneditar">
-                        <div class="invalid-feedback" id="descripcionError"></div>
+                        <div class="invalid-feedback" id="descripcionErrorA"></div>
                     </div>
                     
                     <div class="modal-footer">

@@ -278,4 +278,266 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById("buscar").addEventListener("click", function() {
                     document.getElementById("buscarproducto").focus();
                 });
+
+
+                // FUNCION PARA VALIDAR EL REGISTRO DE UN PRODUCTO
+
+                function validarFormularioproducto() {
+                    var isValid = true;
+                
+                    var producto = document.getElementById('producto').value;
+                    var productoError = document.getElementById('productoError');
+                    if (producto === "") {
+                        productoError.textContent = 'Por favor, selecciona un tipo de tinaco.';
+                        productoError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        productoError.textContent = '';
+                        productoError.style.display = 'none';
+                    }
+
+                    var litros = document.getElementById('litros').value;
+                    var litrosError = document.getElementById('litrosError');
+                    var expresionlit = /^\d{1,3}\skg$/;
+
+                    if (!expresionlit.test(litros)) {
+                        litrosError.textContent = 'Por favor, ingresa una cantida en litros.';
+                        litrosError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        litrosError.textContent = '';
+                        litrosError.style.display = 'none';
+                    }
+
+
+                    var color = document.getElementById('color').value;
+                    var colorError = document.getElementById('colorError');
+                    var expresioncol = /^\d{1,3}\skg$/;
+
+                    if (!expresioncol.test(color)) {
+                        colorError.textContent = 'Por favor, ingresa una nombre de color valido.';
+                        colorError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        colorError.textContent = '';
+                        colorError.style.display = 'none';
+                    }
+
+                    var existencia = document.getElementById('existencia').value;
+                    var existenciaError = document.getElementById('existenciaError');
+                    var expresionexi = /^[0-9]{1,10}$/;
+
+                    if (!expresionexi.test(existencia)) {
+                        existenciaError.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        existenciaError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        existenciaError.textContent = '';
+                        existenciaError.style.display = 'none';
+                    }
+
+                    
+
+                    var precio = document.getElementById('precio').value;
+                    var precioError = document.getElementById('precioError');
+                    var expresionpre = /^\$[0-9]{1,10}$/;
+
+                    if (!expresionpre.test(precio)) {
+                        precioError.textContent = 'Por favor, ingresa un precio iniciando con el símbolo $. Sin espacios.';
+                        precioError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        precioError.textContent = '';
+                        precioError.style.display = 'none';
+                    }
+
+                    var rotas = document.getElementById('rotas').value;
+                    var rotasError = document.getElementById('rotasError');
+                    var expresionerot = /^[0-9]{1,10}$/;
+                        
+                    if (!expresionerot.test(rotas)) {
+                        rotasError.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        rotasError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        rotasError.textContent = '';
+                        rotasError.style.display = 'none';
+                    }
+
+                    var ubicacion = document.getElementById('ubicacion').value;
+                    var ubicacionError = document.getElementById('ubicacionError');
+                    var expresionubi = /^[A-Z](?:[a-zA-Z0-9]+(?:\s[a-zA-Z0-9]+)*)?$/;
+
+                    if (!expresionubi.test(ubicacion)) {
+                        ubicacionError.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        ubicacionError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        ubicacionError.textContent = '';
+                        ubicacionError.style.display = 'none';
+                    }
+
+
+
+                    var proveedor = document.getElementById('proveedores').value;
+                    var proveedorError = document.getElementById('proveedoresError');
+                    if (proveedor === "") {
+                        proveedorError.textContent = 'Por favor, selecciona un proveedor.';
+                        proveedorError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        proveedorError.textContent = '';
+                        proveedorError.style.display = 'none';
+                    }
+
+
+                    var categorias = document.getElementById('categorias').value;
+                    var categoriasError = document.getElementById('categoriasError');
+                    if (categorias === "") {
+                        categoriasError.textContent = 'Por favor, selecciona una categoría.';
+                        categoriasError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        categoriasError.textContent = '';
+                        categoriasError.style.display = 'none';
+                    }
+
+
+                
+                    return isValid;
+                }
+                
+
+
+                // FUNCION PARA LA VALIDACION DEL FORMULARIO DE ACTUALIZAR 
+
+
+                function validarFormularioproductoA() {
+                    var isValid = true;
+                
+                    
+                    var productoA = document.getElementById('productoeditar').value;
+                    var productoErrorA = document.getElementById('productoErrorA');
+                    if (productoA === "") {
+                        productoErrorA.textContent = 'Por favor, selecciona un tipo de tinaco.';
+                        productoErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        productoErrorA.textContent = '';
+                        productoErrorA.style.display = 'none';
+                    }
+
+                    var litrosA = document.getElementById('litroseditar').value;
+                    var litrosErrorA = document.getElementById('litrosErrorA');
+                    var expresionlitA = /^\d{1,3}\skg$/;
+
+                    if (!expresionlitA.test(litrosA)) {
+                        litrosErrorA.textContent = 'Por favor, ingresa una cantida en litros.';
+                        litrosErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        litrosErrorA.textContent = '';
+                        litrosErrorA.style.display = 'none';
+                    }
+
+
+                    var colorA = document.getElementById('coloreditar').value;
+                    var colorErrorA = document.getElementById('colorErrorA');
+                    var expresioncolA = /^\d{1,3}\skg$/;
+
+                    if (!expresioncolA.test(colorA)) {
+                        colorErrorA.textContent = 'Por favor, ingresa una nombre de color valido.';
+                        colorErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        colorErrorA.textContent = '';
+                        colorErrorA.style.display = 'none';
+                    }
+
+                    var existenciaA = document.getElementById('existenciaeditar').value;
+                    var existenciaErrorA = document.getElementById('existenciaErrorA');
+                    var expresionexiA = /^[0-9]{1,10}$/;
+
+                    if (!expresionexiA.test(existenciaA)) {
+                        existenciaErrorA.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        existenciaErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        existenciaErrorA.textContent = '';
+                        existenciaErrorA.style.display = 'none';
+                    }
+
+                    var rotasA = document.getElementById('rotaseditar').value;
+                    var rotasErrorA = document.getElementById('rotasErrorA');
+                    var expresionerotA = /^[0-9]{1,10}$/;
+
+                    if (!expresionerotA.test(rotasA)) {
+                        rotasErrorA.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        rotasErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        rotasErrorA.textContent = '';
+                        rotasErrorA.style.display = 'none';
+                    }
+
+
+                    var precioA = document.getElementById('precioeditar').value;
+                    var precioErrorA = document.getElementById('precioErrorA');
+                    var expresionpreA = /^\$[0-9]{1,10}$/;
+
+                    if (!expresionpreA.test(precioA)) {
+                        precioErrorA.textContent = 'Por favor, ingresa un precio iniciando con el símbolo $. Sin espacios.';
+                        precioErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        precioErrorA.textContent = '';
+                        precioErrorA.style.display = 'none';
+                    }
+
+                    
+
+                    var ubicacionA = document.getElementById('ubicacioneditar').value;
+                    var ubicacionErrorA = document.getElementById('ubicacionErrorA');
+                    var expresionubiA = /^[A-Z](?:[a-zA-Z0-9]+(?:\s[a-zA-Z0-9]+)*)?$/;
+
+                    if (!expresionubiA.test(ubicacionA)) {
+                        ubicacionErrorA.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        ubicacionErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        ubicacionErrorA.textContent = '';
+                        ubicacionErrorA.style.display = 'none';
+                    }
+
+
+
+                    var proveedorA = document.getElementById('proveedoreseditar').value;
+                    var proveedorErrorA = document.getElementById('proveedoresErrorA');
+                    if (proveedorA === "") {
+                        proveedorErrorA.textContent = 'Por favor, selecciona un proveedor.';
+                        proveedorErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        proveedorErrorA.textContent = '';
+                        proveedorErrorA.style.display = 'none';
+                    }
+
+
+                    var categoriasA = document.getElementById('categoriaseditar').value;
+                    var categoriasErrorA = document.getElementById('categoriasErrorA');
+                    if (categoriasA === "") {
+                        categoriasErrorA.textContent = 'Por favor, selecciona una categoría.';
+                        categoriasErrorA.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        categoriasErrorA.textContent = '';
+                        categoriasErrorA.style.display = 'none';
+                    }
+
+
+                
+                    return isValid;
+                }
+
+
                 

@@ -6,10 +6,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/registro_sanitarios" method="post" onsubmit="return validarFormulario()">
+                <form action="/registro_sanitarios" method="post" onsubmit="return validarFormularioproducto()">
                     
                     <div class="mb-3">
-                        <label for="proveedores" class="form-label">Proveedor</label><br>
+                        <label for="proveedores" class="form-label">Proveedor</label>
                         <select id="proveedores" name="proveedores" class="form-control">
                             <option value="" id="proveedores">Selecciona una opción</option>
                             {% for proveedor in proveedores %}
@@ -21,7 +21,7 @@
                     <div class="mb-3">
                         <label for="producto" class="form-label">Nombre</label>
                         <input type="txt" class="form-control" id="producto" name="producto">
-                        <div class="invalid-feedback" id="prouductoError"></div>
+                        <div class="invalid-feedback" id="productoError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="existencia" class="form-label">Existencia</label>
@@ -31,19 +31,20 @@
                     <div class="mb-3">
                         <label for="rotas" class="form-label">Rotas</label>
                         <input type="txt" class="form-control" id="rotas" name="rotas">
-                        <div class="invalid-feedback" id="rotasError">
+                        <div class="invalid-feedback" id="rotasError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="precio" class="form-label">Precio</label>
                         <input type="txt" class="form-control" id="precio" name="precio">
-                        <div class="invalid-feedback" id="kilogramosError"></div>
+                        <div class="invalid-feedback" id="precioError"></div>
                     </div>
+                    <div class="mb-3">
                         <label for="ubicacion" class="form-label">Ubicación</label>
                         <input type="txt" class="form-control" id="ubicacion" name="ubicacion">
                         <div class="invalid-feedback" id="ubicacionError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="categorias" class="form-label">Categoría</label><br>
+                        <label for="categorias" class="form-label">Categoría</label>
                         <select id="categorias" name="categorias" class="form-control">
                             <option value="" id="categorias">Selecciona una opción</option>
                             {% for categoria in categorias %}
@@ -61,4 +62,3 @@
         </div>
     </div>
   </div>
-  

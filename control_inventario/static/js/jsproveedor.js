@@ -194,10 +194,149 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("buscar2").addEventListener("click", function() {
             document.getElementById("buscarproveedor").focus();
         });
-        
 
+
+        // FUNCION DE VALIDACION PARA EL REGSITRO DE UN PROVEEFOR
+
+
+        function validarFormularioProveedor() {
+            var isValid = true;
             
+            var nombre = document.getElementById('nombre').value;
+            var nombreError = document.getElementById('nombreError');
+            var expresionnom = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+    
+            if (!expresionnom.test(nombre)){
+                nombreError.textContent = 'Por favor ingresa un nombre de proveedor valido';
+                nombreError.style.display = 'block';
+                isValid = false;
+            }else{
+                nombreError.textContent = '';
+                nombreError.style.display = 'none';
+            }
+    
+    
+            var telefono = document.getElementById('telefono').value;
+            var telefonoError = document.getElementById('telefonoError');
+            var expresiontel = /^\d{10}$/;
+    
+            if (!expresiontel.test(telefono)){
+                telefonoError.textContent = 'Por favor ingresa un numero telefonico valido, debe contener 10 digitos';
+                telefonoError.style.display = 'block';
+                isValid = false;
+            }else{
+                telefonoError.textContent = '';
+                telefonoError.style.display = 'none';
+            }
+    
+            var correo = document.getElementById('correo').value;
+            var correoError = document.getElementById('correoError');
+            var expresioncor = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+            if (!expresioncor.test(correo)){
+                correoError.textContent = 'Por favor ingresa correo valido, debe contener un arroba y una terminación como .com';
+                correoError.style.display = 'block';
+                isValid = false;
+            }else{
+                correoError.textContent = '';
+                correoError.style.display = 'none';
+            }
+    
+            var direccion = document.getElementById('direccion').value;
+            var direccionError = document.getElementById('direccionError');
+            var expresiondic = /^[a-zA-Z0-9\s.,#-]+,\s?\d+(,\s?\d+)?\s*,\s?\d{5}$/;
+    
+            if (!expresiondic.test(direccion)){
+                direccionError.textContent = 'Por favor ingresa una dirección correcta, ejemplo Av. Insurgentes Sur 123, Col. Roma, 06760.';
+                direccionError.style.display = 'block';
+                isValid = false;
+            }else{
+                direccionError.textContent = '';
+                direccionError.style.display = 'none';
+            }
+    
+    
+            var foto = document.getElementById('foto').value;
+            var fotoError = document.getElementById('fotoError');
+            if (foto === "") {
+                fotoError.textContent = 'Por favor, selecciona una imagen.';
+                fotoError.style.display = 'block';
+                isValid = false;
+            } else {
+                fotoError.textContent = '';
+                fotoError.style.display = 'none';
+            }
+    
+    
+            return isValid
+                
+    
+        }
+
+        // FUNCION PARA LA VALIDACION DE LA ACTUALIZACION DE UN PROVEEDOR
+
+        function validarFormularioProveedorA() {
+            var isValid = true;
             
+            var nombreA = document.getElementById('nombreeditar').value;
+            var nombreErrorA = document.getElementById('nombreErrorA');
+            var expresionnomA = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+    
+            if (!expresionnomA.test(nombreA)){
+                nombreErrorA.textContent = 'Por favor ingresa un nombre de proveedor valido';
+                nombreErrorA.style.display = 'block';
+                isValid = false;
+            }else{
+                nombreErrorA.textContent = '';
+                nombreErrorA.style.display = 'none';
+            }
+    
+    
+            var telefonoA = document.getElementById('telefonoeditar').value;
+            var telefonoErrorA = document.getElementById('telefonoErrorA');
+            var expresiontelA = /^\d{10}$/;
+    
+            if (!expresiontelA.test(telefonoA)){
+                telefonoErrorA.textContent = 'Por favor ingresa un numero telefonico valido, debe contener 10 digitos';
+                telefonoErrorA.style.display = 'block';
+                isValid = false;
+            }else{
+                telefonoErrorA.textContent = '';
+                telefonoErrorA.style.display = 'none';
+            }
+    
+            var correoA = document.getElementById('correoeditar').value;
+            var correoErrorA = document.getElementById('correoErrorA');
+            var expresioncorA = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+            if (!expresioncorA.test(correoA)){
+                correoErrorA.textContent = 'Por favor ingresa correo valido, debe contener un arroba y una terminación como .com';
+                correoErrorA.style.display = 'block';
+                isValid = false;
+            }else{
+                correoErrorA.textContent = '';
+                correoErrorA.style.display = 'none';
+            }
+    
+            var direccionA = document.getElementById('direccioneditar').value;
+            var direccionErrorA = document.getElementById('direccionErrorA');
+            var expresiondicA = /^[a-zA-Z0-9\s.,#-]+,\s?\d+(,\s?\d+)?\s*,\s?\d{5}$/;
+    
+            if (!expresiondicA.test(direccionA)){
+                direccionErrorA.textContent = 'Por favor ingresa una dirección correcta, ejemplo Av. Insurgentes Sur 123, Col. Roma, 06760.';
+                direccionErrorA.style.display = 'block';
+                isValid = false;
+            }else{
+                direccionErrorA.textContent = '';
+                direccionErrorA.style.display = 'none';
+            }
+    
+    
+    
+            return isValid
+                
+    
+        }
 
            
                 

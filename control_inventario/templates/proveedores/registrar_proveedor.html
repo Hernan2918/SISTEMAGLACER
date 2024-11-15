@@ -6,31 +6,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/registro_proveedor" method="post" enctype="multipart/form-data" onsubmit="return validarFormulario()">
+                <form action="/registro_proveedor" method="post" enctype="multipart/form-data" onsubmit="return validarFormularioProveedor()">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="txt" class="form-control" id="nombre" name="nombre">
-                        <div class="invalid-feedback" id="medidaError"></div>
+                        <div class="invalid-feedback" id="nombreError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Telefono</label><br>
                         <input type="text" class="form-control" id="telefono" name="telefono">
-                        <div class="invalid-feedback" id="proveedoresError"></div>
+                        <div class="invalid-feedback" id="telefonoError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="txt" class="form-control" id="correo" name="correo">
-                        <div class="invalid-feedback" id="prouductoError"></div>
+                        <input type="email" class="form-control" id="correo" name="correo">
+                        <div class="invalid-feedback" id="correoError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="direccion" class="form-label">Dirección</label>
                         <input type="txt" class="form-control" id="direccion" name="direccion">
-                        <div class="invalid-feedback" id="calidadError"></div>
+                        <div class="invalid-feedback" id="direccionError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="foto" class="form-label">Foto</label>
                         <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
-                        <div class="invalid-feedback" id="existenciaError"></div>
+                        <div class="invalid-feedback" id="fotoError"></div>
                         <img id="preview" src="" alt="Preview" >
                     </div>
                     
@@ -45,3 +45,4 @@
     </div>
   </div>
   
+

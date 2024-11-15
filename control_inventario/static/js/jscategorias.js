@@ -151,3 +151,81 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById("buscarcatgorias").focus();
                 });
                 
+
+
+                // FUNCION PARA VALIDAR EL REGISTRO DE CATEGORIAS
+
+                function validarFormularioCategoria() {
+                    var isValid = true;
+                    
+                    var nombre = document.getElementById('nombre').value;
+                    var nombreError = document.getElementById('nombreError');
+                    var expresionnom = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+            
+                    if (!expresionnom.test(nombre)){
+                        nombreError.textContent = 'Por favor ingresa un nombre de categoría valido.';
+                        nombreError.style.display = 'block';
+                        isValid = false;
+                    }else{
+                        nombreError.textContent = '';
+                        nombreError.style.display = 'none';
+                    }
+            
+            
+                    var descripcion = document.getElementById('descripcion').value;
+                    var descripcionError = document.getElementById('descripcionError');
+                    var expresiondes = /^[A-Z](?:[a-zA-Z0-9,.áéíóúüñ]+(?:\s[a-zA-Z0-9,.áéíóúüñ]+)*)?$/;
+            
+                    if (!expresiondes.test(descripcion)){
+                        descripcionError.textContent = 'Por favor ingresa una descripción correcta, no debe contener multiples espacios.';
+                        descripcionError.style.display = 'block';
+                        isValid = false;
+                    }else{
+                        descripcionError.textContent = '';
+                        descripcionError.style.display = 'none';
+                    }
+            
+            
+                    return isValid
+                        
+            
+                }
+
+
+                // FUNCION PARA VALIDAR LA ACTUALIZACION DE UNA CATEGORIA
+
+                function validarFormularioCategoriA() {
+                    var isValid = true;
+                    
+                    var nombreA = document.getElementById('nombreeditar').value;
+                    var nombreErrorA = document.getElementById('nombreErrorA');
+                    var expresionnomA = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+            
+                    if (!expresionnomA.test(nombreA)){
+                        nombreErrorA.textContent = 'Por favor ingresa un nombre de categoría valido.';
+                        nombreErrorA.style.display = 'block';
+                        isValid = false;
+                    }else{
+                        nombreErrorA.textContent = '';
+                        nombreErrorA.style.display = 'none';
+                    }
+            
+            
+                    var descripcionA = document.getElementById('descripcioneditar').value;
+                    var descripcionErrorA = document.getElementById('descripcionErrorA');
+                    var expresiondesA = /^[A-Z](?:[a-zA-Z0-9,.áéíóúüñ]+(?:\s[a-zA-Z0-9,.áéíóúüñ]+)*)?$/;
+            
+                    if (!expresiondesA.test(descripcionA)){
+                        descripcionErrorA.textContent = 'Por favor ingresa una descripción correcta, no debe contener multiples espacios.';
+                        descripcionErrorA.style.display = 'block';
+                        isValid = false;
+                    }else{
+                        descripcionErrorA.textContent = '';
+                        descripcionErrorA.style.display = 'none';
+                    }
+            
+                    return isValid
+                        
+            
+                }
+

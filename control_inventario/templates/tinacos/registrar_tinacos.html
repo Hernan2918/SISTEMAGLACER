@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/registro_tinacos" method="post" onsubmit="return validarFormulario()">
+                <form action="/registro_tinacos" method="post" onsubmit="return validarFormularioproducto()">
                     
                     <div class="mb-3">
                         <label for="proveedores" class="form-label">Proveedor</label><br>
@@ -27,7 +27,7 @@
                             <option>Cisterna</option>
                             
                         </select> 
-                        <div class="invalid-feedback" id="proveedoresError"></div>
+                        <div class="invalid-feedback" id="productoError"></div>
                     </div>
                    
                     <div class="mb-3">
@@ -38,7 +38,7 @@
                     <div class="mb-3">
                         <label for="color" class="form-label">Color</label>
                         <input type="txt" class="form-control" id="color" name="color">
-                        <div class="invalid-feedback" id="litrosError"></div>
+                        <div class="invalid-feedback" id="colorError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="existencia" class="form-label">Existencia</label>
@@ -48,13 +48,14 @@
                     <div class="mb-3">
                         <label for="rotas" class="form-label">Rotas</label>
                         <input type="txt" class="form-control" id="rotas" name="rotas">
-                        <div class="invalid-feedback" id="rotasError">
+                        <div class="invalid-feedback" id="rotasError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="precio" class="form-label">Precio</label>
                         <input type="txt" class="form-control" id="precio" name="precio">
-                        <div class="invalid-feedback" id="kilogramosError"></div>
+                        <div class="invalid-feedback" id="precioError"></div>
                     </div>
+                    <div class="mb-3">
                         <label for="ubicacion" class="form-label">Ubicación</label>
                         <input type="txt" class="form-control" id="ubicacion" name="ubicacion">
                         <div class="invalid-feedback" id="ubicacionError"></div>

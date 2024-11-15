@@ -254,3 +254,131 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById("buscarproducto").focus();
                 });
                 
+
+                // SECCION DE VALIDACION DE FORMULARIO DE REGISTRO 
+
+                function validarFormularioproducto() {
+                    var isValid = true;
+                
+                    var medida = document.getElementById('medidas').value;
+                    var medidaError = document.getElementById('medidasError');
+                    var expresionme = /^\d{2,3}x\d{2,3}x\d{2,3}$/;
+
+
+                    if (!expresionme.test(medida)) {
+                        medidaError.textContent = 'Por favor, ingresa una medida valida, ejemplo 19x10x08.';
+                        medidaError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        medidaError.textContent = '';
+                        medidaError.style.display = 'none';
+                    }
+
+                    var producto = document.getElementById('nombre').value;
+                    var productoError = document.getElementById('nombreError');
+                    var expresionpro = /^[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+(?:\s[a-záéíóúüñ]+)?$/;
+
+                    if (!expresionpro.test(producto)) {
+                        productoError.textContent = 'Por favor, ingresa un nombre valido. Sin espacios.';
+                        productoError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        productoError.textContent = '';
+                        productoError.style.display = 'none';
+                    }
+
+                    
+
+                    var existencia = document.getElementById('existencia').value;
+                    var existenciaError = document.getElementById('existenciaError');
+                    var expresionexi = /^[0-9]{1,10}$/;
+
+                    if (!expresionexi.test(existencia)) {
+                        existenciaError.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        existenciaError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        existenciaError.textContent = '';
+                        existenciaError.style.display = 'none';
+                    }
+
+                    var rotas = document.getElementById('rotas').value;
+                    var rotasError = document.getElementById('rotasError');
+                    var expresionerot = /^[0-9]{1,10}$/;
+
+                    if (!expresionerot.test(rotas)) {
+                        rotasError.textContent = 'Por favor, ingresa un número. Sin espacios.';
+                        rotasError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        rotasError.textContent = '';
+                        rotasError.style.display = 'none';
+                    }
+
+
+                    var precio = document.getElementById('precio').value;
+                    var precioError = document.getElementById('precioError');
+                    var expresionpre = /^\$[0-9]{1,10}$/;
+
+                    if (!expresionpre.test(precio)) {
+                        precioError.textContent = 'Por favor, ingresa un precio iniciando con el símbolo $. Sin espacios.';
+                        precioError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        precioError.textContent = '';
+                        precioError.style.display = 'none';
+                    }
+
+
+                    var ubicacion = document.getElementById('ubicacion').value;
+                    var ubicacionError = document.getElementById('ubicacionError');
+                    var expresionubi = /^[A-Z](?:[a-zA-Z0-9]+(?:\s[a-zA-Z0-9]+)*)?$/;
+
+                    if (!expresionubi.test(ubicacion)) {
+                        ubicacionError.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
+                        ubicacionError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        ubicacionError.textContent = '';
+                        ubicacionError.style.display = 'none';
+                    }
+
+
+                    var proveedor = document.getElementById('proveedores').value;
+                    var proveedorError = document.getElementById('proveedoresError');
+                    if (proveedor === "") {
+                        proveedorError.textContent = 'Por favor, selecciona un proveedor.';
+                        proveedorError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        proveedorError.textContent = '';
+                        proveedorError.style.display = 'none';
+                    }
+
+
+                    var tipo = document.getElementById('tipo').value;
+                    var tipoError = document.getElementById('tiposError');
+                    if (tipo === "") {
+                        tipoError.textContent = 'Por favor, selecciona un tipo de vitroblock.';
+                        tipoError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        tipoError.textContent = '';
+                        tipoError.style.display = 'none';
+                    }
+
+
+                    var categorias = document.getElementById('categorias').value;
+                    var categoriasError = document.getElementById('categoriasError');
+                    if (categorias === "") {
+                        categoriasError.textContent = 'Por favor, selecciona una categoría.';
+                        categoriasError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        categoriasError.textContent = '';
+                        categoriasError.style.display = 'none';
+                    }
+
+
+                    return isValid;
+                }
