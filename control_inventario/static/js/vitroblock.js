@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     var ubicacion = document.getElementById('ubicacion').value;
                     var ubicacionError = document.getElementById('ubicacionError');
-                    var expresionubi = /^[A-Z](?:[a-zA-Z0-9]+(?:\s[a-zA-Z0-9]+)*)?$/;
+                    var expresionubi = /^[A-Z](?:[a-zA-Z0-9áéíóúüñ]+(?:\s[a-zA-Z0-9áéíóúüñ]+)*)?$/;
 
                     if (!expresionubi.test(ubicacion)) {
                         ubicacionError.textContent = 'Por favor, ingresa un número decimal seguido de "CJ". Sin espacios.';
