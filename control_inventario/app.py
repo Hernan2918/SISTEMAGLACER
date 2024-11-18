@@ -118,9 +118,7 @@ def registro_usuarios():
 @login_required
 @no_cache
 def consulta_productos():
-    page = request.args.get('page', 1, type=int)
-    products_per_page = 5
-    offset = (page - 1) * products_per_page
+    
     
     cur = mysql.connection.cursor()
 
@@ -131,10 +129,9 @@ def consulta_productos():
            esc.nombre AS categoria_nombre, esc.id_categoria
     FROM productos d
     JOIN proveedores doc ON d.proveedor = doc.id_proveedor
-    JOIN categorias esc ON d.categoria = esc.id_categoria
-    LIMIT %s OFFSET %s
+    JOIN categorias esc ON d.categoria = esc.id_categoria;
     """
-    cur.execute(query, (products_per_page, offset))
+    cur.execute(query)
     productos = cur.fetchall()
 
     query_proveedores = "SELECT id_proveedor, nombre FROM proveedores"
@@ -146,29 +143,14 @@ def consulta_productos():
     categorias = cur.fetchall()
 
    
-    query_count = "SELECT COUNT(*) FROM productos"
-    cur.execute(query_count)
-    total_products = cur.fetchone()['COUNT(*)']
-
-    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
-
-    page_range = list(range(1, total_pages + 1))
     
-    start_index = max(1, page - 1)
-    end_index = min(total_pages, page + 1)
-    
-    if page - 1 > 1:
-        page_range = [1, '...'] + page_range[start_index-1:end_index]
-    elif page + 1 < total_pages:
-        page_range = page_range[start_index-1:end_index] + ['...'] + [total_pages]
-
     cur.close()
 
     form = ProductosForm()
     form.proveedores.choices = [(proveedor['id_proveedor'], proveedor['nombre']) for proveedor in proveedores]
     form.categorias.choices = [(categoria['id_categoria'], categoria['nombre']) for categoria in categorias]
 
-    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias, page=page, total_pages=total_pages, page_range=page_range)
+    return render_template('/productos/productos.html', productos=productos, form=form, proveedores=proveedores, categorias=categorias)
 
 
 
@@ -187,6 +169,45 @@ def obtener_todos_productos():
     productos = cur.fetchall()
     cur.close()
     return jsonify(productos)
+
+
+
+
+
+@app.route('/paginacion_productos')
+@login_required
+@no_cache
+def paginacion_productos():
+    page = request.args.get('page', 1, type=int)
+    products_per_page = 5
+    offset = (page - 1) * products_per_page
+    
+    cur = mysql.connection.cursor()
+    query = """
+    SELECT d.id_producto, d.medidas, d.producto, d.calidad, d.existencias, d.rotas, d.precio, d.embalaje, d.ubicacion,
+           doc.nombre AS proveedor_nombre, doc.id_proveedor, 
+           esc.nombre AS categoria_nombre, esc.id_categoria
+    FROM productos d
+    JOIN proveedores doc ON d.proveedor = doc.id_proveedor
+    JOIN categorias esc ON d.categoria = esc.id_categoria
+    LIMIT %s OFFSET %s
+    """
+    cur.execute(query, (products_per_page, offset))
+    productos = cur.fetchall()
+
+    query_count = "SELECT COUNT(*) FROM productos"
+    cur.execute(query_count)
+    total_products = cur.fetchone()['COUNT(*)']
+
+    total_pages = (total_products // products_per_page) + (1 if total_products % products_per_page > 0 else 0)
+
+    cur.close()
+
+    return jsonify({
+        'productos': productos,
+        'total_pages': total_pages,
+        'current_page': page
+    })
 
 
 @app.route('/registro_productos', methods=['POST'])

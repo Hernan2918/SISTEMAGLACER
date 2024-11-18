@@ -29,43 +29,51 @@
             <div class="Boton">
                 <button type="submit">Iniciar sesión</button>
             </div>
+
+            <div class="mensaje" id="M">
+                {% if mensaje %}
+                    <div class="alert alert-danger">
+                        {{ mensaje }}
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            $('.alert').alert('close');
+                        }, 3000);  // Espera 4 segundos (4000 ms)
+                    </script>
+                {% endif %}
+            </div>
+
+            <div class="mensajerE">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+                        {{ message }}
+                        </div>
+                    <script>
+                        setTimeout(function() {
+                        $('.alert').alert('close');
+                        }, 3000);
+                    </script>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            
            
             <div class="Registro">
                 <h4 id="texto">¿No tienes cuenta? <a id="registro" href="/registro">Regístrate</a></h4>
             </div>
+
+            
         </form>
 
        
     </div>
-    <div class="mensaje" id="M">
-        {% if mensaje %}
-            <div class="alert alert-danger">
-                {{ mensaje }}
-            </div>
-            <script>
-                setTimeout(function() {
-                    $('.alert').alert('close');
-                }, 3000);  // Espera 4 segundos (4000 ms)
-            </script>
-        {% endif %}
-    </div>
     
-    <div class="mensajerE">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                {{ message }}
-                </div>
-            <script>
-                setTimeout(function() {
-                $('.alert').alert('close');
-                }, 3000);
-            </script>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-    </div>
+    
+    
  
     {% include "registrar_usuario.html" %}
 

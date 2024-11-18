@@ -63,7 +63,7 @@ body {
     }
     
     .Imagen{
-       translate: 60px -130px ;
+       translate: 60px -135px ;
     }
     
     img{
@@ -95,9 +95,10 @@ body {
     .Usuario input{
         
         padding-left: 40px; 
-        
     
     }
+
+    
     
     .Usuario i{
       display: grid;
@@ -114,6 +115,8 @@ body {
       border-radius: 2px;
      
     }
+
+    
     
     .Contraseña {
         translate: 0 -10px;
@@ -157,8 +160,8 @@ body {
         margin-left: 100px;
     }
     .mensaje{
-        width: 25%;
-        margin: 200px 0 0 63%;
+        width: 96%;
+        margin-left: 6px;
         text-align: center;
         color: #d61313;
     }
@@ -185,9 +188,9 @@ body {
 
 
 .mensajerE{
-    margin: 200px 0 0 63%;
-    width: 25%;
-    
+   
+    width: 96%;
+    margin-left: 6px;
     
 }
 

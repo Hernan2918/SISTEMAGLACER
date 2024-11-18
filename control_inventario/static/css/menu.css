@@ -163,8 +163,9 @@ body{
     
 }
 
-.menu #buscarproducto{
+.menu #search-input{
     padding-left: 40px;
+    height: 3px;
 }
 
 .menu ul i{
@@ -506,6 +507,7 @@ thead tr:nth-child(odd){
 
 .menu2 li {
     position: relative; 
+    
 
     
 }
@@ -517,7 +519,7 @@ thead tr:nth-child(odd){
     z-index: 100;
     display: none; /* Ocultar por defecto */
     left: -22.5px;
-   
+    
 
 }
 
@@ -526,14 +528,24 @@ thead tr:nth-child(odd){
 #subcategories a {
 
     padding: 4px 0 0 10px;
-    margin: 2px;
+    margin: 0px;
+    margin-left: 3px;
     width: 120px;
     height: 30px;
     background-color: rgb(236, 236, 236);
     color: #0e0d0d;
     font-size: 0.9em;
     text-align: left; 
+    text-decoration: none;
     
+    
+    
+    
+}
+
+#subcategories a:hover {
+    background-color: #b8b7b7; /* Cambia el color de fondo */
+    transition: background-color 0.3s ease; /* Suaviza el cambio de color */
 }
 
 
@@ -608,7 +620,12 @@ thead tr:nth-child(odd){
     margin-right: 5px; 
 }
 
-
+.paginado{
+ 
+    width: 20%;
+    display: inline-flex;
+    translate: 1000px -40px;
+}
     
 
 
